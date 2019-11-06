@@ -28,7 +28,7 @@ ExternalProject_Add(
 
 ExternalProject_Add(
     bison
-    URL https://ftp.gnu.org/gnu/bison/bison-3.4.2.tar.gz
+    URL http://ftpmirror.gnu.org/bison/bison-3.4.2.tar.gz
     SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/bison-src
     CONFIGURE_COMMAND ${CMAKE_CURRENT_BINARY_DIR}/bison-src/configure --prefix=${CMAKE_INSTALL_PREFIX}
     BUILD_COMMAND make

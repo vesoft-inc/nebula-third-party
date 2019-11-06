@@ -18,6 +18,20 @@ ExternalProject_Add(
 )
 
 ExternalProject_Add(
+    gflags
+    GIT_REPOSITORY https://github.com/gflags/gflags.git
+    GIT_TAG v2.2.1
+    PREFIX ${CMAKE_CURRENT_BINARY_DIR}/gflags
+    TMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/gflags/build-meta
+    STAMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/gflags/build-meta
+    SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/gflags/source
+    CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+    BUILD_IN_SOURCE 1
+    LOG_BUILD 1
+    LOG_INSTALL 1
+)
+
+ExternalProject_Add(
     flex
     URL https://github.com/westes/flex/releases/download/v2.6.4/flex-2.6.4.tar.gz
     URL_HASH MD5=2882e3179748cc9f9c23ec593d6adc8d

@@ -64,6 +64,24 @@ ExternalProject_Add(
 )
 
 ExternalProject_Add(
+    jemalloc
+    GIT_REPOSITORY https://github.com/jemalloc/jemalloc.git
+    GIT_TAG 5.1.0
+    GIT_SHALLOW TRUE
+    GIT_PROGRESS TRUE
+    PREFIX ${CMAKE_CURRENT_BINARY_DIR}/jemalloc
+    TMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/jemalloc/build-meta
+    STAMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/jemalloc/build-meta
+    SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/jemalloc/source
+    CONFIGURE_COMMAND ${CMAKE_CURRENT_BINARY_DIR}/jemalloc/source/autogen.sh --quiet --prefix=${CMAKE_INSTALL_PREFIX} --enable-autogen --disable-valgrind --enable-prof
+    BUILD_COMMAND make -s
+    BUILD_IN_SOURCE 1
+    INSTALL_COMMAND make -s install_bin install_include install_lib
+    LOG_BUILD 1
+    LOG_INSTALL 1
+)
+
+ExternalProject_Add(
     flex
     URL https://github.com/westes/flex/releases/download/v2.6.4/flex-2.6.4.tar.gz
     URL_HASH MD5=2882e3179748cc9f9c23ec593d6adc8d

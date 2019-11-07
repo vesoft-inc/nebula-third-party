@@ -98,6 +98,24 @@ ExternalProject_Add(
 )
 
 ExternalProject_Add(
+    mstch
+    URL https://github.com/no1msd/mstch/archive/1.0.2.tar.gz
+#URL_HASH MD5=e54191af2dbef5f172ca5b7ceea08307
+    DOWNLOAD_NAME mstch-1.0.2.tar.gz
+    PREFIX ${CMAKE_CURRENT_BINARY_DIR}/mstch
+    TMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/mstch/build-meta
+    STAMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/mstch/build-meta
+    DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/mstch/download
+    SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/mstch/source
+    CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX} -DCMAKE_BUILD_TYPE=Release
+    BUILD_COMMAND make -s -j${ncpu}
+    BUILD_IN_SOURCE 1
+    INSTALL_COMMAND make -s install -j${ncpu}
+    LOG_BUILD 1
+    LOG_INSTALL 1
+)
+
+ExternalProject_Add(
     jemalloc
     GIT_REPOSITORY https://github.com/jemalloc/jemalloc.git
     GIT_TAG 5.1.0
@@ -200,7 +218,25 @@ ExternalProject_Add(
     UPDATE_COMMAND ""
     CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX} -DPORTABLE=ON -DWITH_TESTS=OFF -DWITH_GFLAGS=OFF -DWITH_JEMALLOC=OFF -DWITH_TOOLS=OFF -DCMAKE_CXX_FLAGS:STRING=${ROCKSDB_CXX_FLAGS}
     BUILD_IN_SOURCE 1
-    BUILD_COMMAND make -s -j${ncpu} VERBOSE=1
+    BUILD_COMMAND make -s -j${ncpu}
+    INSTALL_COMMAND make -s install -j${ncpu}
+    LOG_BUILD 1
+    LOG_INSTALL 1
+)
+
+ExternalProject_Add(
+    double-conversion
+    URL https://github.com/google/double-conversion/archive/v1.1.6.tar.gz
+    URL_HASH MD5=94f9abc9b1367083cf3e4569886b4170
+    DOWNLOAD_NAME double-conversion-1.1.6.tar.gz
+    PREFIX ${CMAKE_CURRENT_BINARY_DIR}/double-conversion
+    TMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/double-conversion/build-meta
+    STAMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/double-conversion/build-meta
+    DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/double-conversion/download
+    SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/double-conversion/source
+    CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+    BUILD_IN_SOURCE 1
+    BUILD_COMMAND make -s -j${ncpu}
     INSTALL_COMMAND make -s install -j${ncpu}
     LOG_BUILD 1
     LOG_INSTALL 1
@@ -293,6 +329,7 @@ ExternalProject_Add(
 ExternalProject_Add(
     krb5
     URL https://kerberos.org/dist/krb5/1.16/krb5-1.16.3.tar.gz
+    URL_HASH MD5=65f5f695bd78ba6a64ac786f571047f4
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/krb5
     TMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/krb5/build-meta
     STAMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/krb5/build-meta

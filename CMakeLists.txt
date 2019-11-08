@@ -9,15 +9,14 @@ endif()
 
 ExternalProject_Add(
     googletest
-    GIT_REPOSITORY https://github.com/google/googletest.git
-    GIT_TAG release-1.8.0
-    GIT_SHALLOW TRUE
-    GIT_PROGRESS TRUE
+    URL https://github.com/google/googletest/archive/release-1.8.0.tar.gz
+    URL_HASH MD5=16877098823401d1bf2ed7891d7dce36
+    DOWNLOAD_NAME  googletest-1.8.0.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/googletest
     TMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/googletest/build-meta
     STAMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/googletest/build-meta
     SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/googletest/source
-    UPDATE_COMMAND ""
+    DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/googletest/download
     BUILD_IN_SOURCE 1
     CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
     LOG_BUILD 1
@@ -26,15 +25,14 @@ ExternalProject_Add(
 
 ExternalProject_Add(
     gflags
-    GIT_REPOSITORY https://github.com/gflags/gflags.git
-    GIT_TAG v2.2.1
-    GIT_SHALLOW TRUE
-    GIT_PROGRESS TRUE
+    URL https://github.com/gflags/gflags/archive/v2.2.1.tar.gz
+    URL_HASH MD5=b98e772b4490c84fc5a87681973f75d1
+    DOWNLOAD_NAME gflags-2.2.1.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/gflags
     TMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/gflags/build-meta
     STAMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/gflags/build-meta
     SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/gflags/source
-    UPDATE_COMMAND ""
+    DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/gflags/download
     CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX} -DCMAKE_BUILD_TYPE=Release
     BUILD_IN_SOURCE 1
     LOG_BUILD 1
@@ -43,16 +41,14 @@ ExternalProject_Add(
 
 ExternalProject_Add(
     glog
-    GIT_REPOSITORY https://github.com/google/glog.git
-    GIT_TAG v0.3.5
-    GIT_SHALLOW TRUE
-    GIT_PROGRESS TRUE
+    URL https://github.com/google/glog/archive/v0.3.5.tar.gz
+    URL_HASH MD5=5df6d78b81e51b90ac0ecd7ed932b0d4
+    DOWNLOAD_NAME glog-0.3.5.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/glog
     TMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/glog/build-meta
     STAMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/glog/build-meta
     SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/glog/source
-    UPDATE_COMMAND ""
-#CONFIGURE_COMMAND CXXFLAGS="" LDFLAGS="-L${CMAKE_INSTALL_PREFIX}/lib" CPPFLAGS="-isystem ${CMAKE_INSTALL_PREFIX}/include" ./configure --quiet --prefix=${CMAKE_INSTALL_PREFIX} --disable-shared --enable-static
+    DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/glog/download
     CONFIGURE_COMMAND autoreconf -ivf && ./configure --quiet --prefix=${CMAKE_INSTALL_PREFIX} --disable-shared --enable-static
     BUILD_COMMAND make -s -j${ncpu}
     BUILD_IN_SOURCE 1
@@ -64,16 +60,14 @@ add_dependencies(glog gflags)
 
 ExternalProject_Add(
     libunwind
-    GIT_REPOSITORY https://github.com/libunwind/libunwind.git
-    GIT_TAG v1.2.1
-    GIT_SHALLOW TRUE
-    GIT_PROGRESS TRUE
+    URL https://github.com/libunwind/libunwind/releases/download/v1.2.1/libunwind-1.2.1.tar.gz
+    URL_HASH MD5=06ba9e60d92fd6f55cd9dadb084df19e
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/libunwind
     TMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/libunwind/build-meta
     STAMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/libunwind/build-meta
     SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/libunwind/source
-    UPDATE_COMMAND ""
-    CONFIGURE_COMMAND ${CMAKE_CURRENT_BINARY_DIR}/libunwind/source/autogen.sh --quiet --disable-shared --enable-static --prefix=${CMAKE_INSTALL_PREFIX}
+    DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/libunwind/download
+    CONFIGURE_COMMAND ./configure --quiet --disable-shared --enable-static --prefix=${CMAKE_INSTALL_PREFIX}
     BUILD_COMMAND make -s -j${ncpu}
     BUILD_IN_SOURCE 1
     INSTALL_COMMAND make -s install -j${ncpu}
@@ -102,7 +96,7 @@ ExternalProject_Add(
 ExternalProject_Add(
     mstch
     URL https://github.com/no1msd/mstch/archive/1.0.2.tar.gz
-#URL_HASH MD5=e54191af2dbef5f172ca5b7ceea08307
+    URL_HASH MD5=306e7fead7480884f698ab47a6082e18
     DOWNLOAD_NAME mstch-1.0.2.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/mstch
     TMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/mstch/build-meta
@@ -135,7 +129,7 @@ ExternalProject_Add(
     LOG_INSTALL 1
 )
 
-set(FollyCXXFlags "-Wno-array-bounds -Wno-class-memaccess -fPIC -DPIC -DFOLLY_HAVE_MEMRCHR -Wno-noexcept-type -Wno-error=parentheses -Wno-error=shadow=compatible-local -H")
+set(FollyCXXFlags "-Wno-array-bounds -Wno-class-memaccess -fPIC -DPIC -DFOLLY_HAVE_MEMRCHR -Wno-noexcept-type -Wno-error=parentheses -Wno-error=shadow=compatible-local")
 ExternalProject_Add(
     folly
     URL https://github.com/facebook/folly/archive/v2018.08.20.00.tar.gz
@@ -158,16 +152,14 @@ ExternalProject_Add(
 
 ExternalProject_Add(
     jemalloc
-    GIT_REPOSITORY https://github.com/jemalloc/jemalloc.git
-    GIT_TAG 5.1.0
-    GIT_SHALLOW TRUE
-    GIT_PROGRESS TRUE
+    URL https://github.com/jemalloc/jemalloc/releases/download/5.1.0/jemalloc-5.1.0.tar.bz2
+    URL_HASH MD5=1f47a5aff2d323c317dfa4cf23be1ce4
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/jemalloc
     TMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/jemalloc/build-meta
     STAMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/jemalloc/build-meta
     SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/jemalloc/source
-    UPDATE_COMMAND ""
-    CONFIGURE_COMMAND ${CMAKE_CURRENT_BINARY_DIR}/jemalloc/source/autogen.sh --quiet --prefix=${CMAKE_INSTALL_PREFIX} --enable-prof
+    DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/jemalloc/download
+    CONFIGURE_COMMAND ./configure --quiet --prefix=${CMAKE_INSTALL_PREFIX} --disable-stats --enable-prof
     BUILD_COMMAND make -s -j${ncpu}
     BUILD_IN_SOURCE 1
     INSTALL_COMMAND make -s install_bin install_include install_lib_static -j${ncpu}
@@ -354,6 +346,7 @@ ExternalProject_Add(
 ExternalProject_Add(
     bison
     URL http://ftpmirror.gnu.org/bison/bison-3.4.2.tar.gz
+    URL_HASH MD5=a6f6a617994f8906125abae57d71d5b5
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/bison
     TMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/bison/build-meta
     STAMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/bison/build-meta

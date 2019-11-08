@@ -41,7 +41,6 @@ ExternalProject_Add(
     LOG_INSTALL 1
 )
 
-# TODO Use built gflags
 ExternalProject_Add(
     glog
     GIT_REPOSITORY https://github.com/google/glog.git
@@ -53,8 +52,11 @@ ExternalProject_Add(
     STAMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/glog/build-meta
     SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/glog/source
     UPDATE_COMMAND ""
-    CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX} -DCMAKE_BUILD_TYPE=Release
+#CONFIGURE_COMMAND CXXFLAGS="" LDFLAGS="-L${CMAKE_INSTALL_PREFIX}/lib" CPPFLAGS="-isystem ${CMAKE_INSTALL_PREFIX}/include" ./configure --quiet --prefix=${CMAKE_INSTALL_PREFIX} --disable-shared --enable-static
+    CONFIGURE_COMMAND autoreconf -ivf && ./configure --quiet --prefix=${CMAKE_INSTALL_PREFIX} --disable-shared --enable-static
+    BUILD_COMMAND make -s -j${ncpu}
     BUILD_IN_SOURCE 1
+    INSTALL_COMMAND make -s -j${ncpu} install
     LOG_BUILD 1
     LOG_INSTALL 1
 )
@@ -113,6 +115,45 @@ ExternalProject_Add(
     INSTALL_COMMAND make -s install -j${ncpu}
     LOG_BUILD 1
     LOG_INSTALL 1
+)
+
+ExternalProject_Add(
+    boost
+    URL https://dl.bintray.com/boostorg/release/1.67.0/source/boost_1_67_0.tar.gz
+    URL_HASH MD5=4850fceb3f2222ee011d4f3ea304d2cb
+    DOWNLOAD_NAME boost-1.67.0.tar.gz
+    PREFIX ${CMAKE_CURRENT_BINARY_DIR}/boost
+    TMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/boost/build-meta
+    STAMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/boost/build-meta
+    DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/boost/download
+    SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/boost/source
+    CONFIGURE_COMMAND ./bootstrap.sh --without-icu --without-libraries=python --prefix=${CMAKE_INSTALL_PREFIX}
+    BUILD_COMMAND ./b2 --prefix=${CMAKE_INSTALL_PREFIX} runtime-link=static install -j${ncpu}
+    BUILD_IN_SOURCE 1
+    INSTALL_COMMAND ""
+    LOG_BUILD 1
+    LOG_INSTALL 1
+)
+
+set(FollyCXXFlags "-Wno-array-bounds -Wno-class-memaccess -fPIC -DPIC -DFOLLY_HAVE_MEMRCHR -Wno-noexcept-type -Wno-error=parentheses -Wno-error=shadow=compatible-local -H")
+ExternalProject_Add(
+    folly
+    URL https://github.com/facebook/folly/archive/v2018.08.20.00.tar.gz
+    URL_HASH MD5=1260231dd088526297ec52e3e12bf0ee
+    DOWNLOAD_NAME folly-2018-08-20.tar.gz
+    PREFIX ${CMAKE_CURRENT_BINARY_DIR}/folly
+    TMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/folly/build-meta
+    STAMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/folly/build-meta
+    DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/folly/download
+    SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/folly/source
+    CMAKE_ARGS -DCMAKE_INCLUDE_PATH=${CMAKE_INSTALL_PREFIX}/include -DCMAKE_LIBRARY_PATH=${CMAKE_INSTALL_PREFIX}/lib -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX} -DCMAKE_CXX_FLAGS:STRING=${FollyCXXFlags}
+    BUILD_COMMAND make -s -j${ncpu}
+    BUILD_IN_SOURCE 1
+    INSTALL_COMMAND make -s -j${ncpu} install
+    LOG_CONFIGURE TRUE
+    LOG_BUILD TRUE
+    LOG_INSTALL TRUE
+    LOG_MERGED_STDOUTERR TRUE
 )
 
 ExternalProject_Add(

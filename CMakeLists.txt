@@ -10,10 +10,14 @@ endif()
 message(STATUS "CXX: $ENV{CXX}")
 message(STATUS "Compiler: ${CMAKE_CXX_COMPILER}")
 
+option(WITH_PIC "Whether to build PIC archive" OFF)
+
 set(common_cmake_args
     -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
     -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
     -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
+    "-DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS} -fPIC"
+    "-DCMAKE_C_FLAGS=${CMAKE_C_FLAGS} -fPIC"
     -DCMAKE_INCLUDE_PATH=${CMAKE_INSTALL_PREFIX}/include
     -DCMAKE_LIBRARY_PATH=${CMAKE_INSTALL_PREFIX}/lib
 )
@@ -23,9 +27,18 @@ set(common_configure_args
 )
 
 set(common_configure_envs
-    CC=${CMAKE_C_COMPILER}
-    CXX=${CMAKE_CXX_COMPILER}
+    "env"
+    "CC=${CMAKE_C_COMPILER}"
+    "CXX=${CMAKE_CXX_COMPILER}"
+    "CFLAGS=${CMAKE_C_FLAGS} -fPIC"
+    "CXXFLAGS=${CMAKE_CXX_FLAGS} -fPIC"
+    "CPPFLAGS=-isystem ${CMAKE_INSTALL_PREFIX}/include"
+    "LDFLAGS=-L${CMAKE_INSTALL_PREFIX}/lib -L${CMAKE_INSTALL_PREFIX}/lib64"
 )
+
+if (WITH_PIC)
+    set(common_cmake_args "${common_cmake_args} -DCMAKE_CXX_FLAGS=-fPIC")
+endif()
 
 ExternalProject_Add(
     googletest
@@ -43,6 +56,7 @@ ExternalProject_Add(
     LOG_BUILD 1
     LOG_INSTALL 1
 )
+add_dependencies(googletest rocksdb)
 
 ExternalProject_Add(
     gflags
@@ -187,7 +201,68 @@ ExternalProject_Add(
     LOG_INSTALL TRUE
     LOG_MERGED_STDOUTERR TRUE
 )
-add_dependencies(folly glog gflags boost double-conversion)
+add_dependencies(folly glog gflags boost double-conversion libevent)
+
+ExternalProject_Add(
+    wangle
+    URL https://github.com/facebook/wangle/archive/v2018.08.20.00.tar.gz
+    URL_HASH MD5=b20856081c1d21c1a033f9ca161398c5
+    DOWNLOAD_NAME wangle-2018-08-20.tar.gz
+    PREFIX ${CMAKE_CURRENT_BINARY_DIR}/wangle
+    TMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/wangle/build-meta
+    STAMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/wangle/build-meta
+    DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/download
+    SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/wangle/source
+    CMAKE_ARGS
+        ${common_cmake_args}
+        -DBoost_NO_SYSTEM_PATHS=OFF
+        -DBUILD_TESTS=OFF
+        -D_OPENSSL_LIBDIR=${CMAKE_INSTALL_PREFIX}/lib64
+        wangle
+    BUILD_COMMAND make -s -j${NCPU}
+    BUILD_IN_SOURCE 1
+    INSTALL_COMMAND make -s -j${NCPU} install
+    LOG_CONFIGURE TRUE
+    LOG_BUILD TRUE
+    LOG_INSTALL TRUE
+    LOG_MERGED_STDOUTERR TRUE
+)
+add_dependencies(wangle folly glog gflags boost double-conversion openssl libevent)
+
+ExternalProject_Add(
+    proxygen
+    URL https://github.com/facebook/proxygen/archive/v2018.08.20.00.tar.gz
+    URL_HASH MD5=cc71ffdf502355b05451bcd81478f3d7
+    DOWNLOAD_NAME proxygen-2018-08-20.tar.gz
+    PREFIX ${CMAKE_CURRENT_BINARY_DIR}/proxygen
+    TMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/proxygen/build-meta
+    STAMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/proxygen/build-meta
+    DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/download
+    SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/proxygen/source
+    PATCH_COMMAND patch -p0 < ${CMAKE_SOURCE_DIR}/patches/proxygen-2018-08-20.patch
+    CONFIGURE_COMMAND ""
+    BUILD_COMMAND make -s -j${NCPU} -C proxygen
+    BUILD_IN_SOURCE 1
+    INSTALL_COMMAND make -s -j${NCPU} install -C proxygen
+    LOG_CONFIGURE TRUE
+    LOG_BUILD TRUE
+    LOG_INSTALL TRUE
+    LOG_MERGED_STDOUTERR TRUE
+)
+add_dependencies(proxygen wangle folly glog gflags boost double-conversion openssl libevent libunwind gperf)
+ExternalProject_Add_Step(proxygen mannual-configure
+    DEPENDEES download update patch configure
+    DEPENDERS build install
+    COMMAND autoreconf -ivf
+    COMMAND
+        ${common_configure_envs}
+        "LIBS=-lssl -lcrypto -ldl -lrt -lglog -lunwind"
+        ${CMAKE_CURRENT_BINARY_DIR}/proxygen/source/proxygen/configure
+            ${common_configure_args}
+            --disable-shared
+            --enable-static
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/proxygen/source/proxygen
+)
 
 ExternalProject_Add(
     jemalloc
@@ -232,6 +307,7 @@ ExternalProject_Add(
     zstd
     URL https://github.com/facebook/zstd/archive/v1.3.4.tar.gz
     URL_HASH MD5=10bf0353e3dedd8bae34a188c25d4261
+    DOWNLOAD_NAME zstd-1.3.4.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/zstd
     TMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/zstd/build-meta
     STAMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/zstd/build-meta
@@ -249,12 +325,14 @@ ExternalProject_Add(
     zlib
     URL https://github.com/madler/zlib/archive/v1.2.11.tar.gz
     URL_HASH MD5=0095d2d2d1f3442ce1318336637b695f
+    DOWNLOAD_NAME zlib-1.2.11.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/zlib
     TMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/zlib/build-meta
     STAMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/zlib/build-meta
     DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/download
     SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/zlib/source
     CONFIGURE_COMMAND
+        ${common_configure_envs}
         ./configure ${common_configure_args} --static
     BUILD_COMMAND make -s -j${NCPU}
     BUILD_IN_SOURCE 1
@@ -289,6 +367,7 @@ ExternalProject_Add(
     rocksdb
     URL https://github.com/facebook/rocksdb/archive/v5.15.10.tar.gz
     URL_HASH MD5=5b1c1fa7ff4756218514205238d8900d
+    DOWNLOAD_NAME rocksdb-5.15.10.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/rocksdb
     TMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/rocksdb/build-meta
     STAMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/rocksdb/build-meta
@@ -298,17 +377,23 @@ ExternalProject_Add(
     CMAKE_ARGS
         ${common_cmake_args}
         -DPORTABLE=ON
-        -DWITH_TESTS=OFF
-        -DWITH_GFLAGS=OFF
+        -DWITH_SNAPPY=ON
+        -DWITH_ZSTD=OFF
+        -DWITH_ZLIB=ON
         -DWITH_JEMALLOC=OFF
+        -DWITH_GFLAGS=OFF
+        -DWITH_TESTS=OFF
         -DWITH_TOOLS=OFF
+        -DCMAKE_BUILD_TYPE=Release
         -DCMAKE_CXX_FLAGS:STRING=${ROCKSDB_CXX_FLAGS}
+    PATCH_COMMAND patch CMakeLists.txt ${CMAKE_SOURCE_DIR}/patches/rocksdb-5.15.10.patch
     BUILD_IN_SOURCE 1
     BUILD_COMMAND make -s -j${NCPU} VERBOSE=1
     INSTALL_COMMAND make -s install -j${NCPU}
     LOG_BUILD 1
     LOG_INSTALL 1
 )
+add_dependencies(rocksdb snappy zlib)
 
 ExternalProject_Add(
     double-conversion
@@ -341,7 +426,10 @@ ExternalProject_Add(
     CONFIGURE_COMMAND
         ${common_configure_envs}
         ./configure ${common_configure_args}
-                    --disable-shared --enable-static --disable-samples
+                    --disable-shared
+                    --enable-static
+                    --disable-samples
+                    --disable-libevent-regress
     BUILD_COMMAND make -s -j${NCPU}
     BUILD_IN_SOURCE 1
     INSTALL_COMMAND make -s install -j${NCPU}

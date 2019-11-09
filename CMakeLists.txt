@@ -2,10 +2,30 @@ cmake_minimum_required(VERSION 3.0.0)
 project("Nebula Third Party")
 include(ExternalProject)
 
-cmake_host_system_information(RESULT ncpu QUERY NUMBER_OF_PHYSICAL_CORES)
-if (NOT ncpu OR ncpu EQUAL 0)
-    set(ncpu 1)
+cmake_host_system_information(RESULT NCPU QUERY NUMBER_OF_PHYSICAL_CORES)
+if (NOT NCPU OR NCPU EQUAL 0)
+    set(NCPU 1)
 endif()
+
+message(STATUS "CXX: $ENV{CXX}")
+message(STATUS "Compiler: ${CMAKE_CXX_COMPILER}")
+
+set(common_cmake_args
+    -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+    -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
+    -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
+    -DCMAKE_INCLUDE_PATH=${CMAKE_INSTALL_PREFIX}/include
+    -DCMAKE_LIBRARY_PATH=${CMAKE_INSTALL_PREFIX}/lib
+)
+
+set(common_configure_args
+    --prefix=${CMAKE_INSTALL_PREFIX}
+)
+
+set(common_configure_envs
+    CC=${CMAKE_C_COMPILER}
+    CXX=${CMAKE_CXX_COMPILER}
+)
 
 ExternalProject_Add(
     googletest
@@ -16,9 +36,10 @@ ExternalProject_Add(
     TMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/googletest/build-meta
     STAMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/googletest/build-meta
     SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/googletest/source
-    DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/googletest/download
+    DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/download
     BUILD_IN_SOURCE 1
-    CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+    CMAKE_ARGS
+        ${common_cmake_args}
     LOG_BUILD 1
     LOG_INSTALL 1
 )
@@ -32,8 +53,10 @@ ExternalProject_Add(
     TMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/gflags/build-meta
     STAMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/gflags/build-meta
     SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/gflags/source
-    DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/gflags/download
-    CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX} -DCMAKE_BUILD_TYPE=Release
+    DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/download
+    CMAKE_ARGS
+        ${common_cmake_args}
+        -DCMAKE_BUILD_TYPE=Release
     BUILD_IN_SOURCE 1
     LOG_BUILD 1
     LOG_INSTALL 1
@@ -48,11 +71,16 @@ ExternalProject_Add(
     TMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/glog/build-meta
     STAMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/glog/build-meta
     SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/glog/source
-    DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/glog/download
-    CONFIGURE_COMMAND autoreconf -ivf && ./configure --quiet --prefix=${CMAKE_INSTALL_PREFIX} --disable-shared --enable-static
-    BUILD_COMMAND make -s -j${ncpu}
+    DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/download
+    CONFIGURE_COMMAND
+        autoreconf -ivf &&
+        ${common_configure_envs}
+        ./configure ${common_configure_args}
+                    --disable-shared
+                    --enable-static
+    BUILD_COMMAND make -s -j${NCPU}
     BUILD_IN_SOURCE 1
-    INSTALL_COMMAND make -s -j${ncpu} install
+    INSTALL_COMMAND make -s -j${NCPU} install
     LOG_BUILD 1
     LOG_INSTALL 1
 )
@@ -66,11 +94,14 @@ ExternalProject_Add(
     TMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/libunwind/build-meta
     STAMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/libunwind/build-meta
     SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/libunwind/source
-    DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/libunwind/download
-    CONFIGURE_COMMAND ./configure --quiet --disable-shared --enable-static --prefix=${CMAKE_INSTALL_PREFIX}
-    BUILD_COMMAND make -s -j${ncpu}
+    DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/download
+    CONFIGURE_COMMAND
+        ${common_configure_envs}
+        ./configure ${common_configure_args}
+                    --disable-shared --enable-static
+    BUILD_COMMAND make -s -j${NCPU}
     BUILD_IN_SOURCE 1
-    INSTALL_COMMAND make -s install -j${ncpu}
+    INSTALL_COMMAND make -s install -j${NCPU}
     LOG_BUILD 1
     LOG_INSTALL 1
 )
@@ -83,12 +114,14 @@ ExternalProject_Add(
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/openssl
     TMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/openssl/build-meta
     STAMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/openssl/build-meta
-    DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/openssl/download
+    DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/download
     SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/openssl/source
-    CONFIGURE_COMMAND ./config no-shared threads --prefix=${CMAKE_INSTALL_PREFIX}
-    BUILD_COMMAND make -s -j${ncpu}
+    CONFIGURE_COMMAND
+        ${common_configure_envs}
+        ./config no-shared threads --prefix=${CMAKE_INSTALL_PREFIX}
+    BUILD_COMMAND make -s -j${NCPU}
     BUILD_IN_SOURCE 1
-    INSTALL_COMMAND make -s install_sw -j${ncpu}
+    INSTALL_COMMAND make -s install_sw -j${NCPU}
     LOG_BUILD 1
     LOG_INSTALL 1
 )
@@ -101,12 +134,13 @@ ExternalProject_Add(
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/mstch
     TMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/mstch/build-meta
     STAMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/mstch/build-meta
-    DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/mstch/download
+    DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/download
     SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/mstch/source
-    CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX} -DCMAKE_BUILD_TYPE=Release
-    BUILD_COMMAND make -s -j${ncpu}
+    CMAKE_ARGS
+        ${common_cmake_args}
+    BUILD_COMMAND make -s -j${NCPU}
     BUILD_IN_SOURCE 1
-    INSTALL_COMMAND make -s install -j${ncpu}
+    INSTALL_COMMAND make -s install -j${NCPU}
     LOG_BUILD 1
     LOG_INSTALL 1
 )
@@ -119,10 +153,10 @@ ExternalProject_Add(
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/boost
     TMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/boost/build-meta
     STAMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/boost/build-meta
-    DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/boost/download
+    DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/download
     SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/boost/source
     CONFIGURE_COMMAND ./bootstrap.sh --without-icu --without-libraries=python --prefix=${CMAKE_INSTALL_PREFIX}
-    BUILD_COMMAND ./b2 --prefix=${CMAKE_INSTALL_PREFIX} runtime-link=static install -j${ncpu}
+    BUILD_COMMAND ./b2 --prefix=${CMAKE_INSTALL_PREFIX} runtime-link=static install -j${NCPU}
     BUILD_IN_SOURCE 1
     INSTALL_COMMAND ""
     LOG_BUILD 1
@@ -130,6 +164,7 @@ ExternalProject_Add(
 )
 
 set(FollyCXXFlags "-Wno-array-bounds -Wno-class-memaccess -fPIC -DPIC -DFOLLY_HAVE_MEMRCHR -Wno-noexcept-type -Wno-error=parentheses -Wno-error=shadow=compatible-local")
+#set(FollyCXXFlags "-Wno-defaulted-function-deleted")
 ExternalProject_Add(
     folly
     URL https://github.com/facebook/folly/archive/v2018.08.20.00.tar.gz
@@ -138,17 +173,21 @@ ExternalProject_Add(
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/folly
     TMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/folly/build-meta
     STAMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/folly/build-meta
-    DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/folly/download
+    DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/download
     SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/folly/source
-    CMAKE_ARGS -DCMAKE_INCLUDE_PATH=${CMAKE_INSTALL_PREFIX}/include -DCMAKE_LIBRARY_PATH=${CMAKE_INSTALL_PREFIX}/lib -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX} -DCMAKE_CXX_FLAGS:STRING=${FollyCXXFlags}
-    BUILD_COMMAND make -s -j${ncpu}
+    CMAKE_ARGS
+        ${common_cmake_args}
+        -DCMAKE_CXX_FLAGS:STRING=${FollyCXXFlags}
+        -DCMAKE_EXE_LINKER_FLAGS=-latomic
+    BUILD_COMMAND make -s -j${NCPU}
     BUILD_IN_SOURCE 1
-    INSTALL_COMMAND make -s -j${ncpu} install
+    INSTALL_COMMAND make -s -j${NCPU} install
     LOG_CONFIGURE TRUE
     LOG_BUILD TRUE
     LOG_INSTALL TRUE
     LOG_MERGED_STDOUTERR TRUE
 )
+add_dependencies(folly glog gflags boost double-conversion)
 
 ExternalProject_Add(
     jemalloc
@@ -158,11 +197,14 @@ ExternalProject_Add(
     TMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/jemalloc/build-meta
     STAMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/jemalloc/build-meta
     SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/jemalloc/source
-    DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/jemalloc/download
-    CONFIGURE_COMMAND ./configure --quiet --prefix=${CMAKE_INSTALL_PREFIX} --disable-stats --enable-prof
-    BUILD_COMMAND make -s -j${ncpu}
+    DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/download
+    CONFIGURE_COMMAND
+        ${common_configure_envs}
+        ./configure ${common_configure_args}
+                    --disable-stats --enable-prof
+    BUILD_COMMAND make -s -j${NCPU}
     BUILD_IN_SOURCE 1
-    INSTALL_COMMAND make -s install_bin install_include install_lib_static -j${ncpu}
+    INSTALL_COMMAND make -s install_bin install_include install_lib_static -j${NCPU}
     LOG_BUILD 1
     LOG_INSTALL 1
 )
@@ -174,12 +216,12 @@ ExternalProject_Add(
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/bzip2
     TMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/bzip2/build-meta
     STAMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/bzip2/build-meta
-    DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/bzip2/download
+    DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/download
     SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/bzip2/source
     CONFIGURE_COMMAND ""
-    BUILD_COMMAND make -s -j${ncpu}
+    BUILD_COMMAND make -s -j${NCPU}
     BUILD_IN_SOURCE 1
-    INSTALL_COMMAND make -s install -j${ncpu} PREFIX=${CMAKE_INSTALL_PREFIX}
+    INSTALL_COMMAND make -s install -j${NCPU} PREFIX=${CMAKE_INSTALL_PREFIX}
     LOG_BUILD 1
     LOG_INSTALL 1
 )
@@ -193,12 +235,12 @@ ExternalProject_Add(
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/zstd
     TMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/zstd/build-meta
     STAMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/zstd/build-meta
-    DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/zstd/download
+    DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/download
     SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/zstd/source
     CONFIGURE_COMMAND ""
-    BUILD_COMMAND make -e -s -j${ncpu}
+    BUILD_COMMAND make -e -s -j${NCPU}
     BUILD_IN_SOURCE 1
-    INSTALL_COMMAND make -s install -j${ncpu} PREFIX=${CMAKE_INSTALL_PREFIX}
+    INSTALL_COMMAND make -s install -j${NCPU} PREFIX=${CMAKE_INSTALL_PREFIX}
     LOG_BUILD 1
     LOG_INSTALL 1
 )
@@ -210,12 +252,13 @@ ExternalProject_Add(
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/zlib
     TMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/zlib/build-meta
     STAMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/zlib/build-meta
-    DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/zlib/download
+    DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/download
     SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/zlib/source
-    CONFIGURE_COMMAND ./configure --prefix=${CMAKE_INSTALL_PREFIX} --static
-    BUILD_COMMAND make -s -j${ncpu}
+    CONFIGURE_COMMAND
+        ./configure ${common_configure_args} --static
+    BUILD_COMMAND make -s -j${NCPU}
     BUILD_IN_SOURCE 1
-    INSTALL_COMMAND make -s install -j${ncpu} PREFIX=${CMAKE_INSTALL_PREFIX}
+    INSTALL_COMMAND make -s install -j${NCPU} PREFIX=${CMAKE_INSTALL_PREFIX}
     LOG_BUILD 1
     LOG_INSTALL 1
 )
@@ -227,18 +270,21 @@ ExternalProject_Add(
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/snappy
     TMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/snappy/build-meta
     STAMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/snappy/build-meta
-    DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/snappy/download
+    DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/download
     SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/snappy/source
     UPDATE_COMMAND ""
-    CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX} -DSNAPPY_BUILD_TESTS=OFF
+    CMAKE_ARGS
+        ${common_cmake_args}
+        -DSNAPPY_BUILD_TESTS=OFF
     BUILD_IN_SOURCE 1
-    BUILD_COMMAND make -s -j${ncpu}
-    INSTALL_COMMAND make -s install -j${ncpu}
+    BUILD_COMMAND make -s -j${NCPU}
+    INSTALL_COMMAND make -s install -j${NCPU}
     LOG_BUILD 1
     LOG_INSTALL 1
 )
 
 set(ROCKSDB_CXX_FLAGS "-Wno-pessimizing-move -Wno-redundant-move -Wno-deprecated-copy -Wno-error=shadow -Wno-error=sign-compare")
+#set(ROCKSDB_CXX_FLAGS "-Wno-error=shadow -Wno-error=sign-compare")
 ExternalProject_Add(
     rocksdb
     URL https://github.com/facebook/rocksdb/archive/v5.15.10.tar.gz
@@ -246,13 +292,20 @@ ExternalProject_Add(
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/rocksdb
     TMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/rocksdb/build-meta
     STAMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/rocksdb/build-meta
-    DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/rocksdb/download
+    DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/download
     SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/rocksdb/source
     UPDATE_COMMAND ""
-    CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX} -DPORTABLE=ON -DWITH_TESTS=OFF -DWITH_GFLAGS=OFF -DWITH_JEMALLOC=OFF -DWITH_TOOLS=OFF -DCMAKE_CXX_FLAGS:STRING=${ROCKSDB_CXX_FLAGS}
+    CMAKE_ARGS
+        ${common_cmake_args}
+        -DPORTABLE=ON
+        -DWITH_TESTS=OFF
+        -DWITH_GFLAGS=OFF
+        -DWITH_JEMALLOC=OFF
+        -DWITH_TOOLS=OFF
+        -DCMAKE_CXX_FLAGS:STRING=${ROCKSDB_CXX_FLAGS}
     BUILD_IN_SOURCE 1
-    BUILD_COMMAND make -s -j${ncpu}
-    INSTALL_COMMAND make -s install -j${ncpu}
+    BUILD_COMMAND make -s -j${NCPU} VERBOSE=1
+    INSTALL_COMMAND make -s install -j${NCPU}
     LOG_BUILD 1
     LOG_INSTALL 1
 )
@@ -265,12 +318,13 @@ ExternalProject_Add(
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/double-conversion
     TMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/double-conversion/build-meta
     STAMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/double-conversion/build-meta
-    DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/double-conversion/download
+    DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/download
     SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/double-conversion/source
-    CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+    CMAKE_ARGS
+        ${common_cmake_args}
     BUILD_IN_SOURCE 1
-    BUILD_COMMAND make -s -j${ncpu}
-    INSTALL_COMMAND make -s install -j${ncpu}
+    BUILD_COMMAND make -s -j${NCPU}
+    INSTALL_COMMAND make -s install -j${NCPU}
     LOG_BUILD 1
     LOG_INSTALL 1
 )
@@ -282,12 +336,15 @@ ExternalProject_Add(
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/libevent
     TMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/libevent/build-meta
     STAMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/libevent/build-meta
-    DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/libevent/download
+    DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/download
     SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/libevent/source
-    CONFIGURE_COMMAND ./configure --quiet --prefix=${CMAKE_INSTALL_PREFIX} --disable-shared --enable-static --disable-samples
-    BUILD_COMMAND make -s -j${ncpu}
+    CONFIGURE_COMMAND
+        ${common_configure_envs}
+        ./configure ${common_configure_args}
+                    --disable-shared --enable-static --disable-samples
+    BUILD_COMMAND make -s -j${NCPU}
     BUILD_IN_SOURCE 1
-    INSTALL_COMMAND make -s install -j${ncpu}
+    INSTALL_COMMAND make -s install -j${NCPU}
     LOG_BUILD 1
     LOG_INSTALL 1
 )
@@ -299,9 +356,12 @@ ExternalProject_Add(
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/flex
     TMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/flex/build-meta
     STAMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/flex/build-meta
-    DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/flex/download
+    DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/download
     SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/flex/source
-    CONFIGURE_COMMAND ${CMAKE_CURRENT_BINARY_DIR}/flex/source/configure --quiet --enable-static --disable-shared --prefix=${CMAKE_INSTALL_PREFIX}
+    CONFIGURE_COMMAND
+        ${common_configure_envs}
+        ./configure ${common_configure_args}
+                    --enable-static --disable-shared
     BUILD_COMMAND make -s
     BUILD_IN_SOURCE 1
     INSTALL_COMMAND make -s install
@@ -316,12 +376,15 @@ ExternalProject_Add(
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/gperf
     TMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/gperf/build-meta
     STAMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/gperf/build-meta
-    DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/gperf/download
+    DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/download
     SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/gperf/source
-    CONFIGURE_COMMAND ./configure --quiet --prefix=${CMAKE_INSTALL_PREFIX} --disable-shared --enable-static
-    BUILD_COMMAND make -s -j${ncpu}
+    CONFIGURE_COMMAND
+        ${common_configure_envs}
+        ./configure ${common_configure_args}
+                    --disable-shared --enable-static
+    BUILD_COMMAND make -s -j${NCPU}
     BUILD_IN_SOURCE 1
-    INSTALL_COMMAND make -s install -j${ncpu}
+    INSTALL_COMMAND make -s install -j${NCPU}
     LOG_BUILD 1
     LOG_INSTALL 1
 )
@@ -333,12 +396,15 @@ ExternalProject_Add(
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/gettext
     TMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/gettext/build-meta
     STAMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/gettext/build-meta
-    DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/gettext/download
+    DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/download
     SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/gettext/source
-    CONFIGURE_COMMAND ./configure --quiet --prefix=${CMAKE_INSTALL_PREFIX} --disable-shared --enable-static
-    BUILD_COMMAND make -s -j${ncpu}
+    CONFIGURE_COMMAND
+        ${common_configure_envs}
+        ./configure ${common_configure_args}
+                    --disable-shared --enable-static
+    BUILD_COMMAND make -s -j${NCPU}
     BUILD_IN_SOURCE 1
-    INSTALL_COMMAND make -s install -j${ncpu}
+    INSTALL_COMMAND make -s install -j${NCPU}
     LOG_BUILD 1
     LOG_INSTALL 1
 )
@@ -350,12 +416,15 @@ ExternalProject_Add(
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/bison
     TMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/bison/build-meta
     STAMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/bison/build-meta
-    DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/bison/download
+    DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/download
     SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/bison/source
-    CONFIGURE_COMMAND ${CMAKE_CURRENT_BINARY_DIR}/bison/source/configure --quiet --prefix=${CMAKE_INSTALL_PREFIX}
-    BUILD_COMMAND make -s -j${ncpu}
+    CONFIGURE_COMMAND
+        ${common_configure_envs}
+        ./configure ${common_configure_args}
+                    --quiet
+    BUILD_COMMAND make -s -j${NCPU}
     BUILD_IN_SOURCE 1
-    INSTALL_COMMAND make -s install -j${ncpu}
+    INSTALL_COMMAND make -s install -j${NCPU}
     LOG_BUILD 1
     LOG_INSTALL 1
 )
@@ -367,12 +436,20 @@ ExternalProject_Add(
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/krb5
     TMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/krb5/build-meta
     STAMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/krb5/build-meta
-    DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/krb5/download
+    DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/download
     SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/krb5/source
-    CONFIGURE_COMMAND ${CMAKE_CURRENT_BINARY_DIR}/krb5/source/src/configure --quiet --enable-static --disable-shared --disable-rpath --disable-aesni --disable-thread-support --prefix=${CMAKE_INSTALL_PREFIX}
-    BUILD_COMMAND make -s -j${ncpu}
+    CONFIGURE_COMMAND
+        ${common_configure_envs}
+        src/configure
+            ${common_configure_args}
+            --enable-static
+            --disable-shared
+            --disable-rpath
+            --disable-aesni
+            --disable-thread-support
+    BUILD_COMMAND make -s -j${NCPU}
     BUILD_IN_SOURCE 1
-    INSTALL_COMMAND make -s install -j${ncpu}
+    INSTALL_COMMAND make -s install -j${NCPU}
     LOG_BUILD 1
     LOG_INSTALL 1
 )

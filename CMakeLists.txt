@@ -170,11 +170,11 @@ ExternalProject_Add(
     DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/download
     SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/boost/source
     CONFIGURE_COMMAND ./bootstrap.sh --without-icu --without-libraries=python --prefix=${CMAKE_INSTALL_PREFIX}
-    BUILD_COMMAND ./b2 --prefix=${CMAKE_INSTALL_PREFIX} runtime-link=static install -j${NCPU}
+    BUILD_COMMAND ./b2 -d0 --prefix=${CMAKE_INSTALL_PREFIX} runtime-link=static install -j${NCPU}
     BUILD_IN_SOURCE 1
     INSTALL_COMMAND ""
-    LOG_BUILD 1
-    LOG_INSTALL 1
+    LOG_BUILD 0
+    LOG_INSTALL 0
 )
 
 set(FollyCXXFlags "-Wno-array-bounds -Wno-class-memaccess -fPIC -DPIC -DFOLLY_HAVE_MEMRCHR -Wno-noexcept-type -Wno-error=parentheses -Wno-error=shadow=compatible-local")
@@ -202,6 +202,26 @@ ExternalProject_Add(
     LOG_MERGED_STDOUTERR TRUE
 )
 add_dependencies(folly glog gflags boost double-conversion libevent)
+
+ExternalProject_Add(
+    fatal
+    URL https://github.com/facebook/fatal/archive/v2018.08.20.00.tar.gz
+    URL_HASH MD5=b0887650f53ba8a73924351024f761ad
+    DOWNLOAD_NAME fatal-2018-08-20.tar.gz
+    PREFIX ${CMAKE_CURRENT_BINARY_DIR}/fatal
+    TMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/fatal/build-meta
+    STAMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/fatal/build-meta
+    DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/download
+    SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/fatal/source
+    CONFIGURE_COMMAND ""
+    BUILD_COMMAND install -d ${CMAKE_INSTALL_PREFIX}/include
+    BUILD_IN_SOURCE 1
+    INSTALL_COMMAND cp -r fatal ${CMAKE_INSTALL_PREFIX}/include
+    LOG_CONFIGURE TRUE
+    LOG_BUILD TRUE
+    LOG_INSTALL TRUE
+    LOG_MERGED_STDOUTERR TRUE
+)
 
 ExternalProject_Add(
     wangle
@@ -263,6 +283,31 @@ ExternalProject_Add_Step(proxygen mannual-configure
             --enable-static
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/proxygen/source/proxygen
 )
+
+ExternalProject_Add(
+    fbthrift
+    URL https://github.com/facebook/fbthrift/archive/v2018.08.20.00.tar.gz
+    URL_HASH MD5=346627716bae0a4015f67ab33f255173
+    DOWNLOAD_NAME fbthrift-2018-08-20.tar.gz
+    PREFIX ${CMAKE_CURRENT_BINARY_DIR}/fbthrift
+    TMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/fbthrift/build-meta
+    STAMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/fbthrift/build-meta
+    DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/download
+    SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/fbthrift/source
+    PATCH_COMMAND patch -p1 < ${CMAKE_SOURCE_DIR}/patches/fbthrift-2018-08-20.patch
+    CMAKE_COMMAND env PATH=${CMAKE_INSTALL_PREFIX}/bin:$ENV{PATH} cmake
+    CMAKE_ARGS
+        ${common_cmake_args}
+        -D_OPENSSL_LIBDIR=${CMAKE_INSTALL_PREFIX}/lib64
+    BUILD_COMMAND make -s -j${NCPU}
+    BUILD_IN_SOURCE 1
+    INSTALL_COMMAND make -s -j${NCPU} install
+    LOG_CONFIGURE TRUE
+    LOG_BUILD TRUE
+    LOG_INSTALL TRUE
+    LOG_MERGED_STDOUTERR TRUE
+)
+add_dependencies(fbthrift bison flex mstch wangle folly glog gflags boost double-conversion openssl libevent)
 
 ExternalProject_Add(
     jemalloc
@@ -353,6 +398,7 @@ ExternalProject_Add(
     UPDATE_COMMAND ""
     CMAKE_ARGS
         ${common_cmake_args}
+        -DCMAKE_BUILD_TYPE=Release
         -DSNAPPY_BUILD_TESTS=OFF
     BUILD_IN_SOURCE 1
     BUILD_COMMAND make -s -j${NCPU}

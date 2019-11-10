@@ -177,7 +177,7 @@ ExternalProject_Add(
     LOG_INSTALL 0
 )
 
-set(FollyCXXFlags "-Wno-array-bounds -Wno-class-memaccess -fPIC -DPIC -DFOLLY_HAVE_MEMRCHR -Wno-noexcept-type -Wno-error=parentheses -Wno-error=shadow=compatible-local")
+set(FOLLYCXXFLAGS "-Wno-array-bounds -Wno-class-memaccess -fPIC -DPIC -DFOLLY_HAVE_MEMRCHR -Wno-noexcept-type -Wno-error=parentheses -Wno-error=shadow=compatible-local")
 #set(FollyCXXFlags "-Wno-defaulted-function-deleted")
 ExternalProject_Add(
     folly
@@ -191,7 +191,8 @@ ExternalProject_Add(
     SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/folly/source
     CMAKE_ARGS
         ${common_cmake_args}
-        -DCMAKE_CXX_FLAGS:STRING=${FollyCXXFlags}
+        -DCMAKE_BUILD_TYPE=Release
+        -DFOLLY_CXX_FLAGS=-Wno-error
         -DCMAKE_EXE_LINKER_FLAGS=-latomic
     BUILD_COMMAND make -s -j${NCPU}
     BUILD_IN_SOURCE 1
@@ -408,7 +409,6 @@ ExternalProject_Add(
 )
 
 set(ROCKSDB_CXX_FLAGS "-Wno-pessimizing-move -Wno-redundant-move -Wno-deprecated-copy -Wno-error=shadow -Wno-error=sign-compare")
-#set(ROCKSDB_CXX_FLAGS "-Wno-error=shadow -Wno-error=sign-compare")
 ExternalProject_Add(
     rocksdb
     URL https://github.com/facebook/rocksdb/archive/v5.15.10.tar.gz
@@ -430,8 +430,9 @@ ExternalProject_Add(
         -DWITH_GFLAGS=OFF
         -DWITH_TESTS=OFF
         -DWITH_TOOLS=OFF
+        -DFAIL_ON_WARNINGS=OFF
         -DCMAKE_BUILD_TYPE=Release
-        -DCMAKE_CXX_FLAGS:STRING=${ROCKSDB_CXX_FLAGS}
+#-DCMAKE_CXX_FLAGS:STRING=${ROCKSDB_CXX_FLAGS}
     PATCH_COMMAND patch CMakeLists.txt ${CMAKE_SOURCE_DIR}/patches/rocksdb-5.15.10.patch
     BUILD_IN_SOURCE 1
     BUILD_COMMAND make -s -j${NCPU} VERBOSE=1
@@ -545,8 +546,8 @@ ExternalProject_Add(
 
 ExternalProject_Add(
     bison
-    URL http://ftpmirror.gnu.org/bison/bison-3.4.2.tar.gz
-    URL_HASH MD5=a6f6a617994f8906125abae57d71d5b5
+    URL http://ftp.gnu.org/gnu/bison//bison-3.0.5.tar.gz
+    URL_HASH MD5=41ad57813157b61bfa47e33067a9d6f0
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/bison
     TMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/bison/build-meta
     STAMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/bison/build-meta

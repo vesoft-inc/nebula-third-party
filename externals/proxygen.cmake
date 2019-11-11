@@ -19,13 +19,18 @@ ExternalProject_Add(
     LOG_MERGED_STDOUTERR TRUE
 )
 
+
+set(LIBS "-lssl -lcrypto -ldl -lrt -lglog -lunwind")
+if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+    set(LIBS "${LIBS} -latomic")
+endif()
 ExternalProject_Add_Step(proxygen mannual-configure
     DEPENDEES download update patch configure
     DEPENDERS build install
     COMMAND autoreconf -ivf
     COMMAND
         ${common_configure_envs}
-        "LIBS=-lssl -lcrypto -ldl -lrt -lglog -lunwind"
+        "LIBS=${LIBS}"
         ${CMAKE_CURRENT_BINARY_DIR}/proxygen/source/proxygen/configure
             ${common_configure_args}
             --disable-shared

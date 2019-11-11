@@ -94,7 +94,7 @@ set(ALL_TARGETS
 )
 
 foreach(target ${ALL_TARGETS})
-    include(${target}.cmake)
+    include(externals/${target}.cmake)
 endforeach()
 
 add_dependencies(fbthrift krb5 bison flex mstch zlib zstd wangle folly glog gflags boost double-conversion openssl libevent)

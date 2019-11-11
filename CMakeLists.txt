@@ -84,6 +84,7 @@ set(ALL_TARGETS
     libunwind
     openssl
     libevent
+    keyutils
     krb5
     jemalloc
     bzip2
@@ -112,13 +113,21 @@ add_dependencies(autoconf-archive autoconf)
 add_dependencies(automake autoconf autoconf-archive)
 add_dependencies(libtool automake)
 #add_dependencies(pkgconf libtool)
+
 add_dependencies(glog libtool)
-add_dependencies(fbthrift krb5 bison flex mstch zlib zstd wangle folly glog gflags boost double-conversion openssl libevent)
-add_dependencies(folly glog gflags boost double-conversion openssl libevent)
+add_dependencies(bison libtool)
+add_dependencies(flex libtool)
+add_dependencies(zlib libtool)
+add_dependencies(libevent libtool)
+
 add_dependencies(glog gflags)
-add_dependencies(proxygen wangle folly glog gflags boost double-conversion openssl libevent libunwind gperf)
+
+add_dependencies(krb5 keyutils openssl)
+add_dependencies(folly glog gflags boost double-conversion openssl libevent)
+add_dependencies(wangle folly)
+add_dependencies(fbthrift folly krb5 bison flex mstch zlib zstd wangle fatal)
+add_dependencies(proxygen wangle libunwind gperf)
 add_dependencies(rocksdb snappy zlib zstd)
-add_dependencies(wangle folly glog gflags boost double-conversion openssl libevent)
 #add_dependencies(clean bzip2-clean)
 
 add_custom_command(

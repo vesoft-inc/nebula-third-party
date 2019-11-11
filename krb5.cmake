@@ -6,14 +6,14 @@ ExternalProject_Add(
 #URL https://kerberos.org/dist/krb5/1.16/krb5-1.16.3.tar.gz
 #URL_HASH MD5=65f5f695bd78ba6a64ac786f571047f4
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/krb5
-    TMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/krb5/build-meta
-    STAMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/krb5/build-meta
-    DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/download
+    TMP_DIR ${BUILD_INFO_DIR}
+    STAMP_DIR ${BUILD_INFO_DIR}
+    DOWNLOAD_DIR ${DOWNLOAD_DIR}
     SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/krb5/source
     CONFIGURE_COMMAND ""
-    BUILD_COMMAND make -s -j${NCPU} -C src
+    BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM} -C src
     BUILD_IN_SOURCE 1
-    INSTALL_COMMAND make -s install -j${NCPU} -C src
+    INSTALL_COMMAND make -s install -j${BUILDING_JOBS_NUM} -C src
     LOG_BUILD 1
     LOG_INSTALL 1
 )

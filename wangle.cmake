@@ -4,9 +4,9 @@ ExternalProject_Add(
     URL_HASH MD5=b20856081c1d21c1a033f9ca161398c5
     DOWNLOAD_NAME wangle-2018-08-20.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/wangle
-    TMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/wangle/build-meta
-    STAMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/wangle/build-meta
-    DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/download
+    TMP_DIR ${BUILD_INFO_DIR}
+    STAMP_DIR ${BUILD_INFO_DIR}
+    DOWNLOAD_DIR ${DOWNLOAD_DIR}
     SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/wangle/source
     CMAKE_ARGS
         ${common_cmake_args}
@@ -14,12 +14,11 @@ ExternalProject_Add(
         -DBUILD_TESTS=OFF
         -D_OPENSSL_LIBDIR=${CMAKE_INSTALL_PREFIX}/lib64
         wangle
-    BUILD_COMMAND make -s -j${NCPU}
+    BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     BUILD_IN_SOURCE 1
-    INSTALL_COMMAND make -s -j${NCPU} install
+    INSTALL_COMMAND make -s -j${BUILDING_JOBS_NUM} install
     LOG_CONFIGURE TRUE
     LOG_BUILD TRUE
     LOG_INSTALL TRUE
     LOG_MERGED_STDOUTERR TRUE
 )
-add_dependencies(wangle folly glog gflags boost double-conversion openssl libevent)

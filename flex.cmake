@@ -3,9 +3,9 @@ ExternalProject_Add(
     URL https://github.com/westes/flex/releases/download/v2.6.4/flex-2.6.4.tar.gz
     URL_HASH MD5=2882e3179748cc9f9c23ec593d6adc8d
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/flex
-    TMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/flex/build-meta
-    STAMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/flex/build-meta
-    DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/download
+    TMP_DIR ${BUILD_INFO_DIR}
+    STAMP_DIR ${BUILD_INFO_DIR}
+    DOWNLOAD_DIR ${DOWNLOAD_DIR}
     SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/flex/source
     CONFIGURE_COMMAND
         ${common_configure_envs}

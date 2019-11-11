@@ -3,9 +3,9 @@ ExternalProject_Add(
     URL https://github.com/libevent/libevent/releases/download/release-2.1.11-stable/libevent-2.1.11-stable.tar.gz
     URL_HASH MD5=7f35cfe69b82d879111ec0d7b7b1c531
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/libevent
-    TMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/libevent/build-meta
-    STAMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/libevent/build-meta
-    DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/download
+    TMP_DIR ${BUILD_INFO_DIR}
+    STAMP_DIR ${BUILD_INFO_DIR}
+    DOWNLOAD_DIR ${DOWNLOAD_DIR}
     SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/libevent/source
     CONFIGURE_COMMAND
         ${common_configure_envs}
@@ -14,9 +14,9 @@ ExternalProject_Add(
                     --enable-static
                     --disable-samples
                     --disable-libevent-regress
-    BUILD_COMMAND make -s -j${NCPU}
+    BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     BUILD_IN_SOURCE 1
-    INSTALL_COMMAND make -s install -j${NCPU}
+    INSTALL_COMMAND make -s install -j${BUILDING_JOBS_NUM}
     LOG_BUILD 1
     LOG_INSTALL 1
 )

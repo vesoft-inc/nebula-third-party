@@ -4,10 +4,10 @@ ExternalProject_Add(
     URL_HASH MD5=16877098823401d1bf2ed7891d7dce36
     DOWNLOAD_NAME  googletest-1.8.0.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/googletest
-    TMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/googletest/build-meta
-    STAMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/googletest/build-meta
+    TMP_DIR ${BUILD_INFO_DIR}
+    STAMP_DIR ${BUILD_INFO_DIR}
+    DOWNLOAD_DIR ${DOWNLOAD_DIR}
     SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/googletest/source
-    DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/download
     BUILD_IN_SOURCE 1
     CMAKE_ARGS
         ${common_cmake_args}

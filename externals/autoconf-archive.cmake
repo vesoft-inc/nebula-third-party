@@ -15,3 +15,8 @@ ExternalProject_Add(
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     INSTALL_COMMAND make -s -j${BUILDING_JOBS_NUM} install
 )
+
+add_custom_command(
+    TARGET autoconf-archive POST_BUILD
+    COMMAND install -m 0644 ${CMAKE_SOURCE_DIR}/externals/pkg.m4 ${CMAKE_INSTALL_PREFIX}/share/aclocal
+)

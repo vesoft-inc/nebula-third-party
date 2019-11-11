@@ -1,7 +1,7 @@
 ExternalProject_Add(
     libtool
     URL https://ftp.gnu.org/gnu/libtool/libtool-2.4.6.tar.xz
-#URL_HASH MD5=24cd3501b6ad8cd4d7e2546f07e8b4d4
+    URL_HASH MD5=1bfb9b923f2c1339b4d2ce1807064aa5
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/libtool
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}

@@ -1,3 +1,9 @@
+set(LIBS "-lssl -lcrypto -ldl -lrt -lglog -lunwind")
+if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+    # clang requires explicitly linking to libatomic
+    set(LIBS "${LIBS} -latomic")
+endif()
+
 ExternalProject_Add(
     proxygen
     URL https://github.com/facebook/proxygen/archive/v2018.08.20.00.tar.gz
@@ -19,15 +25,10 @@ ExternalProject_Add(
     LOG_MERGED_STDOUTERR TRUE
 )
 
-
-set(LIBS "-lssl -lcrypto -ldl -lrt -lglog -lunwind")
-if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-    set(LIBS "${LIBS} -latomic")
-endif()
 ExternalProject_Add_Step(proxygen mannual-configure
     DEPENDEES download update patch configure
     DEPENDERS build install
-    COMMAND autoreconf -ivf
+    COMMAND env PATH=${BUILDING_PATH} ACLOCAL_PATH=${ACLOCAL_PATH} autoreconf -if
     COMMAND
         ${common_configure_envs}
         "LIBS=${LIBS}"

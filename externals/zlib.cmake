@@ -9,8 +9,12 @@ ExternalProject_Add(
     DOWNLOAD_DIR ${DOWNLOAD_DIR}
     SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/zlib/source
     CONFIGURE_COMMAND
-        ${common_configure_envs}
-        ./configure ${common_configure_args} --static
+        "env"
+        "CC=${CMAKE_C_COMPILER}"
+        "CFLAGS=${CMAKE_C_FLAGS} -fPIC -O2"
+        "CPPFLAGS=-isystem ${CMAKE_INSTALL_PREFIX}/include"
+        "PATH=${BUILDING_PATH}"
+        ./configure --prefix=${CMAKE_INSTALL_PREFIX} --static
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     BUILD_IN_SOURCE 1
     INSTALL_COMMAND make -s install -j${BUILDING_JOBS_NUM} PREFIX=${CMAKE_INSTALL_PREFIX}

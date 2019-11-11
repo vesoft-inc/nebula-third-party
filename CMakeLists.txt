@@ -33,6 +33,12 @@ endif()
 message(STATUS "Building Nebula Third Party with ${BUILDING_JOBS_NUM} jobs.")
 
 option(WITH_PIC "Whether to build PIC archive" OFF)
+set(DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/downloads)
+set(BUILD_INFO_DIR ${CMAKE_CURRENT_BINARY_DIR}/build-info)
+set(BUILDING_PATH "${CMAKE_INSTALL_PREFIX}/bin:${CMAKE_INSTALL_PREFIX}/sbin:$ENV{PATH}")
+set(ACLOCAL_PATH "${CMAKE_INSTALL_PREFIX}/share/aclocal:${CMAKE_INSTALL_PREFIX}/share/aclocal-1.15")
+
+message(STATUS "PATH while building: ${BUILDING_PATH}")
 
 set(common_cmake_args
     -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
@@ -46,6 +52,7 @@ set(common_cmake_args
 
 set(common_configure_args
     --prefix=${CMAKE_INSTALL_PREFIX}
+    --quiet
 )
 
 set(common_configure_envs
@@ -56,20 +63,20 @@ set(common_configure_envs
     "CXXFLAGS=${CMAKE_CXX_FLAGS} -fPIC -O2"
     "CPPFLAGS=-isystem ${CMAKE_INSTALL_PREFIX}/include"
     "LDFLAGS=-L${CMAKE_INSTALL_PREFIX}/lib -L${CMAKE_INSTALL_PREFIX}/lib64"
+    "PATH=${BUILDING_PATH}"
+    "ACLOCAL_PATH=${ACLOCAL_PATH}"
 )
 
 if (WITH_PIC)
     set(common_cmake_args "${common_cmake_args} -DCMAKE_CXX_FLAGS=-fPIC")
 endif()
 
-set(DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/downloads)
-set(BUILD_INFO_DIR ${CMAKE_CURRENT_BINARY_DIR}/build-info)
-
 set(ALL_TARGETS
     autoconf
     autoconf-archive
     automake
     libtool
+#pkgconf
     bison
     flex
     gperf
@@ -104,6 +111,8 @@ endforeach()
 add_dependencies(autoconf-archive autoconf)
 add_dependencies(automake autoconf autoconf-archive)
 add_dependencies(libtool automake)
+#add_dependencies(pkgconf libtool)
+add_dependencies(glog libtool)
 add_dependencies(fbthrift krb5 bison flex mstch zlib zstd wangle folly glog gflags boost double-conversion openssl libevent)
 add_dependencies(folly glog gflags boost double-conversion openssl libevent)
 add_dependencies(glog gflags)

@@ -9,7 +9,6 @@ ExternalProject_Add(
     DOWNLOAD_DIR ${DOWNLOAD_DIR}
     SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/glog/source
     CONFIGURE_COMMAND
-        autoreconf -ivf &&
         ${common_configure_envs}
         ./configure ${common_configure_args}
                     --disable-shared
@@ -19,4 +18,11 @@ ExternalProject_Add(
     INSTALL_COMMAND make -s -j${BUILDING_JOBS_NUM} install
     LOG_BUILD 1
     LOG_INSTALL 1
+)
+
+ExternalProject_Add_Step(glog pre-configure
+    DEPENDEES download update patch
+    DEPENDERS configure
+    COMMAND env PATH=${BUILDING_PATH} ACLOCAL_PATH=${ACLOCAL_PATH} autoreconf -if
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/glog/source
 )

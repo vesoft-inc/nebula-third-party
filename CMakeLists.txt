@@ -66,6 +66,10 @@ set(DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/downloads)
 set(BUILD_INFO_DIR ${CMAKE_CURRENT_BINARY_DIR}/build-info)
 
 set(ALL_TARGETS
+    autoconf
+    autoconf-archive
+    automake
+    libtool
     bison
     flex
     gperf
@@ -97,6 +101,9 @@ foreach(target ${ALL_TARGETS})
     include(externals/${target}.cmake)
 endforeach()
 
+add_dependencies(autoconf-archive autoconf)
+add_dependencies(automake autoconf autoconf-archive)
+add_dependencies(libtool automake)
 add_dependencies(fbthrift krb5 bison flex mstch zlib zstd wangle folly glog gflags boost double-conversion openssl libevent)
 add_dependencies(folly glog gflags boost double-conversion openssl libevent)
 add_dependencies(glog gflags)

@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.13.0)
+cmake_minimum_required(VERSION 3.10.0)
 
 project("Nebula Third Party" C CXX)
 
@@ -59,8 +59,8 @@ set(common_configure_envs
     "env"
     "CC=${CMAKE_C_COMPILER}"
     "CXX=${CMAKE_CXX_COMPILER}"
-    "CFLAGS=${CMAKE_C_FLAGS} -fPIC -O2"
-    "CXXFLAGS=${CMAKE_CXX_FLAGS} -fPIC -O2"
+    "CFLAGS=${CMAKE_C_FLAGS} -fPIC -O2 -D_DEFAULT_SOURCE -D_GNU_SOURCE"
+    "CXXFLAGS=${CMAKE_CXX_FLAGS} -fPIC -O2 -D_DEFAULT_SOURCE -D_GNU_SOURCE"
     "CPPFLAGS=-isystem ${CMAKE_INSTALL_PREFIX}/include"
     "LDFLAGS=-L${CMAKE_INSTALL_PREFIX}/lib -L${CMAKE_INSTALL_PREFIX}/lib64"
     "PATH=${BUILDING_PATH}"

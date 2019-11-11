@@ -16,9 +16,9 @@ ExternalProject_Add(
     SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/proxygen/source
     PATCH_COMMAND patch -p0 < ${CMAKE_SOURCE_DIR}/patches/proxygen-2018-08-20.patch
     CONFIGURE_COMMAND ""
-    BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM} -C proxygen
+    BUILD_COMMAND env PATH=${BUILDING_PATH} make -s -j${BUILDING_JOBS_NUM} -C proxygen
     BUILD_IN_SOURCE 1
-    INSTALL_COMMAND make -s -j${BUILDING_JOBS_NUM} install -C proxygen
+    INSTALL_COMMAND env PATH=${BUILDING_PATH} make -s -j${BUILDING_JOBS_NUM} install -C proxygen
     LOG_CONFIGURE TRUE
     LOG_BUILD TRUE
     LOG_INSTALL TRUE

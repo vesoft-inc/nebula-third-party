@@ -19,6 +19,18 @@ ExternalProject_Add(
     INSTALL_COMMAND ""
 )
 
+ExternalProject_Add_Step(third-party clean
+    EXCLUDE_FROM_MAIN TRUE
+    DEPENDEES configure
+    COMMAND
+        make clean -j
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/third-party/build/src/third-party-build/
+)
+
+ExternalProject_Add_StepTargets(third-party clean)
+
+add_dependencies(clean third-party-clean)
+
 set(CMAKE_SHARED_LINKER_FLAGS "-Wl,--no-undefined -static-libstdc++ -static-libgcc")
 
 link_directories(

@@ -14,9 +14,12 @@ ExternalProject_Add(
     SOURCE_DIR ${CMAKE_BINARY_DIR}/third-party/source
     STAMP_DIR ${CMAKE_BINARY_DIR}/third-party/build-info
     TMP_DIR ${CMAKE_BINARY_DIR}/third-party/build-info
+    UPDATE_COMMAND ""
     CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/third-party/install
     INSTALL_COMMAND ""
 )
+
+set(CMAKE_SHARED_LINKER_FLAGS "-Wl,--no-undefined -static-libstdc++ -static-libgcc")
 
 link_directories(
     ${CMAKE_BINARY_DIR}/third-party/install/lib
@@ -77,8 +80,12 @@ target_link_libraries(
     z
     zstd
     bz2
+    lzma
     unwind
     -Wl,--no-whole-archive
+    resolv
+    pthread
+    dl
 )
 
 add_dependencies(all-in-one third-party)

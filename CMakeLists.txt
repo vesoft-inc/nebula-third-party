@@ -91,6 +91,7 @@ set(ALL_TARGETS
     zstd
     zlib
     snappy
+    lzma
     mstch
     fatal
     double-conversion
@@ -118,16 +119,21 @@ add_dependencies(glog libtool)
 add_dependencies(bison libtool)
 add_dependencies(flex libtool)
 add_dependencies(zlib libtool)
+add_dependencies(gettext libtool)
+add_dependencies(lzma gettext)
 add_dependencies(libevent libtool)
+add_dependencies(gperf libtool)
+
+add_dependencies(boost zlib bzip2 lzma)
 
 add_dependencies(glog gflags)
 
 add_dependencies(krb5 keyutils openssl)
-add_dependencies(folly glog gflags boost double-conversion openssl libevent)
+add_dependencies(folly glog gflags boost double-conversion openssl libevent lzma)
 add_dependencies(wangle folly)
 add_dependencies(fbthrift folly krb5 bison flex mstch zlib zstd wangle fatal)
 add_dependencies(proxygen wangle libunwind gperf)
-add_dependencies(rocksdb snappy zlib zstd)
+add_dependencies(rocksdb snappy zlib zstd bzip2 lzma)
 #add_dependencies(clean bzip2-clean)
 
 add_custom_command(

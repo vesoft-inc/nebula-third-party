@@ -132,7 +132,7 @@ add_dependencies(boost zlib bzip2 lzma)
 
 add_dependencies(glog gflags)
 
-add_dependencies(krb5 keyutils openssl)
+add_dependencies(krb5 keyutils openssl gettext)
 add_dependencies(folly glog boost double-conversion openssl libevent lzma zstd snappy libunwind libaio)
 add_dependencies(wangle folly)
 add_dependencies(fbthrift folly krb5 bison flex mstch zlib zstd wangle fatal)

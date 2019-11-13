@@ -31,7 +31,7 @@ ExternalProject_Add_Step(${name} mannual-configure
         -DCMAKE_SHARED_LINKER_FLAGS=-latomic
         -D_OPENSSL_LIBDIR=${CMAKE_INSTALL_PREFIX}/lib64
         .
-    WORKING_DIRECTORY ${source_dir}/wangle
+    WORKING_DIRECTORY <SOURCE_DIR>/wangle
 )
 
 ExternalProject_Add_Step(${name} clean
@@ -40,7 +40,7 @@ ExternalProject_Add_Step(${name} clean
     DEPENDEES configure
     COMMAND make clean -j
     COMMAND rm -f ${BUILD_INFO_DIR}/${name}-build
-    WORKING_DIRECTORY ${source_dir}/wangle
+    WORKING_DIRECTORY <SOURCE_DIR>/wangle
 )
 
 ExternalProject_Add_StepTargets(${name} clean)

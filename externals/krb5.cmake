@@ -12,9 +12,13 @@ ExternalProject_Add(
     DOWNLOAD_DIR ${DOWNLOAD_DIR}
     SOURCE_DIR ${source_dir}
     CONFIGURE_COMMAND ""
-    BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM} -C src
+    BUILD_COMMAND
+        env PATH=${BUILDING_PATH}
+        make -s -j${BUILDING_JOBS_NUM} -C src
     BUILD_IN_SOURCE 1
-    INSTALL_COMMAND make -s install -j${BUILDING_JOBS_NUM} -C src
+    INSTALL_COMMAND
+        env PATH=${BUILDING_PATH}
+        make -s install -j${BUILDING_JOBS_NUM} -C src
     LOG_BUILD 1
     LOG_INSTALL 1
 )
@@ -38,7 +42,9 @@ ExternalProject_Add_Step(${name} clean
     EXCLUDE_FROM_MAIN TRUE
     ALWAYS TRUE
     DEPENDEES mannual-configure
-    COMMAND make clean -j -C src
+    COMMAND
+        env PATH=${BUILDING_PATH}
+        make clean -j -C src
     COMMAND rm -f ${BUILD_INFO_DIR}/${name}-build
     WORKING_DIRECTORY ${source_dir}
 )

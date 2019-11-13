@@ -1,13 +1,15 @@
+set(name lzma)
+set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
-    lzma
+    ${name}
     URL https://tukaani.org/xz/xz-5.2.4.tar.xz
     URL_HASH MD5=003e4d0b1b1899fc6e3000b24feddf7c
     DOWNLOAD_NAME lzma-5.2.4.tar.xz
-    PREFIX ${CMAKE_CURRENT_BINARY_DIR}/lzma
+    PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}
     DOWNLOAD_DIR ${DOWNLOAD_DIR}
-    SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/lzma/source
+    SOURCE_DIR ${source_dir}
     CONFIGURE_COMMAND
         ${common_configure_envs}
         ./configure ${common_configure_args}
@@ -18,3 +20,13 @@ ExternalProject_Add(
     LOG_BUILD 1
     LOG_INSTALL 1
 )
+
+ExternalProject_Add_Step(${name} clean
+    EXCLUDE_FROM_MAIN TRUE
+    DEPENDEES configure
+    COMMAND make clean -j
+    COMMAND rm -f ${BUILD_INFO_DIR}/${name}-build
+    WORKING_DIRECTORY ${source_dir}
+)
+
+ExternalProject_Add_StepTargets(${name} clean)

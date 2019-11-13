@@ -1,13 +1,15 @@
+set(name fbthrift)
+set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
-    fbthrift
+    ${name}
     URL https://github.com/facebook/fbthrift/archive/v2018.08.20.00.tar.gz
     URL_HASH MD5=346627716bae0a4015f67ab33f255173
     DOWNLOAD_NAME fbthrift-2018-08-20.tar.gz
-    PREFIX ${CMAKE_CURRENT_BINARY_DIR}/fbthrift
+    PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}
     DOWNLOAD_DIR ${DOWNLOAD_DIR}
-    SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/fbthrift/source
+    SOURCE_DIR ${source_dir}
     PATCH_COMMAND patch -p1 < ${CMAKE_SOURCE_DIR}/patches/fbthrift-2018-08-20.patch
     CMAKE_COMMAND env PATH=${CMAKE_INSTALL_PREFIX}/bin:$ENV{PATH} cmake
     CMAKE_ARGS
@@ -21,3 +23,13 @@ ExternalProject_Add(
     LOG_INSTALL TRUE
     LOG_MERGED_STDOUTERR TRUE
 )
+
+ExternalProject_Add_Step(${name} clean
+    EXCLUDE_FROM_MAIN TRUE
+    DEPENDEES configure
+    COMMAND make clean -j
+    COMMAND rm -f ${BUILD_INFO_DIR}/${name}-build
+    WORKING_DIRECTORY ${source_dir}
+)
+
+ExternalProject_Add_StepTargets(${name} clean)

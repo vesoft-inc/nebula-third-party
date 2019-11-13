@@ -1,13 +1,15 @@
+set(name wangle)
+set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
-    wangle
+    ${name}
     URL https://github.com/facebook/wangle/archive/v2018.08.20.00.tar.gz
     URL_HASH MD5=b20856081c1d21c1a033f9ca161398c5
     DOWNLOAD_NAME wangle-2018-08-20.tar.gz
-    PREFIX ${CMAKE_CURRENT_BINARY_DIR}/wangle
+    PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}
     DOWNLOAD_DIR ${DOWNLOAD_DIR}
-    SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/wangle/source
+    SOURCE_DIR ${source_dir}
     SOURCE_SUBDIR wangle
     CMAKE_ARGS
         ${common_cmake_args}
@@ -24,3 +26,13 @@ ExternalProject_Add(
     LOG_INSTALL TRUE
     LOG_MERGED_STDOUTERR TRUE
 )
+
+ExternalProject_Add_Step(${name} clean
+    EXCLUDE_FROM_MAIN TRUE
+    DEPENDEES configure
+    COMMAND make clean -j
+    COMMAND rm -f ${BUILD_INFO_DIR}/${name}-build
+    WORKING_DIRECTORY ${source_dir}/wangle
+)
+
+ExternalProject_Add_StepTargets(${name} clean)

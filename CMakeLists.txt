@@ -67,6 +67,8 @@ set(common_configure_envs
     "ACLOCAL_PATH=${ACLOCAL_PATH}"
 )
 
+set(TOUCH_COMMAND ${CMAKE_SOURCE_DIR}/helpers/touch-if-exists.sh)
+
 if (WITH_PIC)
     set(common_cmake_args "${common_cmake_args} -DCMAKE_CXX_FLAGS=-fPIC")
 endif()
@@ -109,6 +111,7 @@ set(ALL_TARGETS
 
 foreach(target ${ALL_TARGETS})
     include(externals/${target}.cmake)
+    list(APPEND CLEAN_TARGETS ${target}-clean)
 endforeach()
 
 add_dependencies(autoconf-archive autoconf)
@@ -130,12 +133,11 @@ add_dependencies(boost zlib bzip2 lzma)
 add_dependencies(glog gflags)
 
 add_dependencies(krb5 keyutils openssl)
-add_dependencies(folly glog gflags boost double-conversion openssl libevent lzma zstd snappy libunwind libaio)
+add_dependencies(folly glog boost double-conversion openssl libevent lzma zstd snappy libunwind libaio)
 add_dependencies(wangle folly)
 add_dependencies(fbthrift folly krb5 bison flex mstch zlib zstd wangle fatal)
 add_dependencies(proxygen wangle libunwind gperf)
 add_dependencies(rocksdb snappy zlib zstd bzip2 lzma libunwind)
-#add_dependencies(clean bzip2-clean)
 
 add_custom_command(
     TARGET zstd POST_BUILD
@@ -151,5 +153,5 @@ add_custom_command(
 
 add_custom_target(
     clean-all
-    DEPENDS bzip2-clean
+    DEPENDS ${CLEAN_TARGETS}
 )

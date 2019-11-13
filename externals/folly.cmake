@@ -1,15 +1,15 @@
-set(FOLLYCXXFLAGS "-Wno-array-bounds -Wno-class-memaccess -fPIC -DPIC -DFOLLY_HAVE_MEMRCHR -Wno-noexcept-type -Wno-error=parentheses -Wno-error=shadow=compatible-local")
-#set(FollyCXXFlags "-Wno-defaulted-function-deleted")
+set(name folly)
+set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
-    folly
+    ${name}
     URL https://github.com/facebook/folly/archive/v2018.08.20.00.tar.gz
     URL_HASH MD5=1260231dd088526297ec52e3e12bf0ee
     DOWNLOAD_NAME folly-2018-08-20.tar.gz
-    PREFIX ${CMAKE_CURRENT_BINARY_DIR}/folly
+    PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}
     DOWNLOAD_DIR ${DOWNLOAD_DIR}
-    SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/folly/source
+    SOURCE_DIR ${source_dir}
     CMAKE_ARGS
         ${common_cmake_args}
         -DCMAKE_BUILD_TYPE=Release
@@ -23,3 +23,13 @@ ExternalProject_Add(
     LOG_INSTALL TRUE
     LOG_MERGED_STDOUTERR TRUE
 )
+
+ExternalProject_Add_Step(${name} clean
+    EXCLUDE_FROM_MAIN TRUE
+    DEPENDEES configure
+    COMMAND make clean -j
+    COMMAND rm -f ${BUILD_INFO_DIR}/${name}-build
+    WORKING_DIRECTORY ${source_dir}
+)
+
+ExternalProject_Add_StepTargets(${name} clean)

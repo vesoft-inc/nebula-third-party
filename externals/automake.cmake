@@ -1,12 +1,14 @@
+set(name automake)
+set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
-    automake
+    ${name}
     URL https://ftp.gnu.org/gnu/automake/automake-1.15.1.tar.xz
     URL_HASH MD5=24cd3501b6ad8cd4d7e2546f07e8b4d4
-    PREFIX ${CMAKE_CURRENT_BINARY_DIR}/automake
+    PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}
     DOWNLOAD_DIR ${DOWNLOAD_DIR}
-    SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/automake/source
+    SOURCE_DIR ${source_dir}
     CONFIGURE_COMMAND
         ${common_configure_envs}
         "LIBS=${LIBS}"
@@ -15,3 +17,13 @@ ExternalProject_Add(
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     INSTALL_COMMAND make -s -j${BUILDING_JOBS_NUM} install
 )
+
+ExternalProject_Add_Step(${name} clean
+    EXCLUDE_FROM_MAIN TRUE
+    DEPENDEES configure
+    COMMAND make clean -j
+    COMMAND rm -f ${BUILD_INFO_DIR}/${name}-build
+    WORKING_DIRECTORY ${source_dir}
+)
+
+ExternalProject_Add_StepTargets(${name} clean)

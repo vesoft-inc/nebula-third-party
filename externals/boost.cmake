@@ -1,14 +1,16 @@
+set(name boost)
+set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 get_filename_component(compiler_path ${CMAKE_CXX_COMPILER} DIRECTORY)
 ExternalProject_Add(
-    boost
+    ${name}
     URL https://dl.bintray.com/boostorg/release/1.67.0/source/boost_1_67_0.tar.gz
     URL_HASH MD5=4850fceb3f2222ee011d4f3ea304d2cb
     DOWNLOAD_NAME boost-1.67.0.tar.gz
-    PREFIX ${CMAKE_CURRENT_BINARY_DIR}/boost
+    PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}
     DOWNLOAD_DIR ${DOWNLOAD_DIR}
-    SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/boost/source
+    SOURCE_DIR ${source_dir}
     CONFIGURE_COMMAND ""
     CONFIGURE_COMMAND
         env PATH=${compiler_path}:${BUILDING_PATH}
@@ -34,3 +36,13 @@ ExternalProject_Add(
     LOG_BUILD 0
     LOG_INSTALL 0
 )
+
+ExternalProject_Add_Step(${name} clean
+    EXCLUDE_FROM_MAIN TRUE
+    DEPENDEES configure
+    COMMAND ./b2 clean
+    COMMAND rm -f ${BUILD_INFO_DIR}/${name}-build
+    WORKING_DIRECTORY ${source_dir}
+)
+
+ExternalProject_Add_StepTargets(${name} clean)

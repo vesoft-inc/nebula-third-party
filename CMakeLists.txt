@@ -147,3 +147,8 @@ add_custom_command(
     COMMAND
         rm -rf ${CMAKE_INSTALL_PREFIX}/lib64/librocksdb.so*
 )
+
+add_custom_target(
+    clean-all
+    DEPENDS bzip2-clean
+)

@@ -15,6 +15,14 @@ ExternalProject_Add(
     LOG_INSTALL 1
 )
 
+ExternalProject_Add_Step(bzip2 clean
+    EXCLUDE_FROM_MAIN
+    DEPENDEES configure
+    COMMAND make clean -j
+)
+
+ExternalProject_Add_StepTargets(bzip2 clean)
+
 #add_custom_command(
     #TARGET clean-bzip2
     #COMMAND make clean

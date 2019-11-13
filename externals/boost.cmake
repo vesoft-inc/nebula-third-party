@@ -39,6 +39,7 @@ ExternalProject_Add(
 
 ExternalProject_Add_Step(${name} clean
     EXCLUDE_FROM_MAIN TRUE
+    ALWAYS TRUE
     DEPENDEES configure
     COMMAND ./b2 clean
     COMMAND rm -f ${BUILD_INFO_DIR}/${name}-build

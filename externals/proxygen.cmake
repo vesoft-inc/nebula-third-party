@@ -44,6 +44,7 @@ ExternalProject_Add_Step(proxygen mannual-configure
 
 ExternalProject_Add_Step(${name} clean
     EXCLUDE_FROM_MAIN TRUE
+    ALWAYS TRUE
     DEPENDEES mannual-configure
     COMMAND make clean -j
     COMMAND rm -f ${BUILD_INFO_DIR}/${name}-build

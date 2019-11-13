@@ -29,8 +29,6 @@ ExternalProject_Add_Step(third-party clean
 
 ExternalProject_Add_StepTargets(third-party clean)
 
-add_dependencies(clean third-party-clean)
-
 set(CMAKE_SHARED_LINKER_FLAGS "-Wl,--no-undefined -static-libstdc++ -static-libgcc")
 
 link_directories(
@@ -38,8 +36,8 @@ link_directories(
     ${CMAKE_BINARY_DIR}/third-party/install/lib64
 )
 
-add_library(
-    all-in-one SHARED
+add_executable(
+    all-in-one
     all-in-one.cpp
 )
 
@@ -94,6 +92,7 @@ target_link_libraries(
     bz2
     lzma
     unwind
+    aio
     -Wl,--no-whole-archive
     resolv
     pthread

@@ -29,7 +29,7 @@ ExternalProject_Add_Step(third-party clean
 
 ExternalProject_Add_StepTargets(third-party clean)
 
-set(CMAKE_SHARED_LINKER_FLAGS "-Wl,--no-undefined -static-libstdc++ -static-libgcc")
+set(CMAKE_EXE_LINKER_FLAGS "-Wl,--no-undefined -static-libstdc++ -static-libgcc")
 
 link_directories(
     ${CMAKE_BINARY_DIR}/third-party/install/lib

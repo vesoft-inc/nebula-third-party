@@ -22,9 +22,3 @@ ExternalProject_Add_Step(bzip2 clean
 )
 
 ExternalProject_Add_StepTargets(bzip2 clean)
-
-#add_custom_command(
-    #TARGET clean-bzip2
-    #COMMAND make clean
-    #WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bzip2/source
-#)

@@ -107,6 +107,7 @@ set(ALL_TARGETS
     wangle
     proxygen
     fbthrift
+    capstone
 )
 
 foreach(target ${ALL_TARGETS})

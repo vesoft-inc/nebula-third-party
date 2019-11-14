@@ -94,6 +94,7 @@ target_link_libraries(
     lzma
     unwind
     aio
+    capstone
     -Wl,--no-whole-archive
     resolv
     pthread

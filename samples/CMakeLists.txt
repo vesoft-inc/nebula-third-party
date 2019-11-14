@@ -14,6 +14,7 @@ ExternalProject_Add(
     SOURCE_DIR ${CMAKE_BINARY_DIR}/third-party/source
     STAMP_DIR ${CMAKE_BINARY_DIR}/third-party/build-info
     TMP_DIR ${CMAKE_BINARY_DIR}/third-party/build-info
+    BINARY_DIR ${CMAKE_BINARY_DIR}/third-party/build
     UPDATE_COMMAND ""
     CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/third-party/install
     INSTALL_COMMAND ""
@@ -24,7 +25,7 @@ ExternalProject_Add_Step(third-party clean
     DEPENDEES configure
     COMMAND
         make clean -j
-    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/third-party/build/src/third-party-build/
+    WORKING_DIRECTORY <BINARY_DIR>
 )
 
 ExternalProject_Add_StepTargets(third-party clean)

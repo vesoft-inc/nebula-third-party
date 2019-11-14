@@ -23,7 +23,7 @@ ExternalProject_Add(
 ExternalProject_Add_Step(${name} mannual-configure
     DEPENDEES download update patch
     DEPENDERS build
-    COMMAND cmake
+    COMMAND ${CMAKE_COMMAND}
         ${common_cmake_args}
         -DBoost_NO_SYSTEM_PATHS=OFF
         -DBUILD_TESTS=OFF

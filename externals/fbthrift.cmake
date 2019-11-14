@@ -11,7 +11,7 @@ ExternalProject_Add(
     DOWNLOAD_DIR ${DOWNLOAD_DIR}
     SOURCE_DIR ${source_dir}
     PATCH_COMMAND patch -p1 < ${CMAKE_SOURCE_DIR}/patches/fbthrift-2018-08-20.patch
-    CMAKE_COMMAND env PATH=${CMAKE_INSTALL_PREFIX}/bin:$ENV{PATH} cmake
+    CMAKE_COMMAND env PATH=${CMAKE_INSTALL_PREFIX}/bin:$ENV{PATH} ${CMAKE_COMMAND}
     CMAKE_ARGS
         ${common_cmake_args}
         -D_OPENSSL_LIBDIR=${CMAKE_INSTALL_PREFIX}/lib64

@@ -65,10 +65,54 @@ int main (int argc, char **argv) {
     }
 
     constexpr auto kGenericGroupId = 1;
-    std::unordered_map<uint32_t, std::unordered_set<std::string>> groups;
-    std::unordered_map<uint32_t, std::string> group_names;
+    std::map<uint32_t, std::unordered_set<std::string>> groups;
+    std::unordered_map<uint32_t, std::string> group_names {
+        {kGenericGroupId, "GENERIC"},
+        {128, "VT-x/AMD-V"},
+        {129, "3DNow"},
+        {130, "AES"},
+        {131, "ADX"},
+        {132, "AVX"},
+        {133, "AVX2"},
+        {134, "AVX512"},
+        {135, "BMI"},
+        {136, "BMI2"},
+        {137, "CMOV"},
+        {138, "F16C"},
+        {139, "FMA"},
+        {140, "FMA4"},
+        {141, "FSGSBASE"},
+        {142, "HLE"},
+        {143, "MMX"},
+        {144, "MODE32"},
+        {145, "MODE64"},
+        {146, "RTM"},
+        {147, "SHA"},
+        {148, "SSE1"},
+        {149, "SSE2"},
+        {150, "SSE3"},
+        {151, "SSE41"},
+        {152, "SSE42"},
+        {153, "SSE4A"},
+        {154, "SSSE3"},
+        {155, "PCLMUL"},
+        {156, "XOP"},
+        {157, "CDI"},
+        {158, "ERI"},
+        {159, "TBM"},
+        {160, "16BITMODE"},
+        {161, "NOT64BITMODE"},
+        {162, "SGX"},
+        {163, "DQI"},
+        {164, "BWI"},
+        {165, "PFI"},
+        {166, "VLX"},
+        {167, "SMAP"},
+        {168, "NOVLX"},
+        {169, "FPU"},
+    };
 
-    auto nr_insn = 0UL;
+    auto insn_count = 0UL;
     for (auto &section : code_sections) {
         ::csh handle;
         if (auto err = ::cs_open(CS_ARCH_X86, CS_MODE_64, &handle)) {
@@ -82,7 +126,7 @@ int main (int argc, char **argv) {
         auto size = std::get<2>(section);
         auto *insn = ::cs_malloc(handle);
         while (::cs_disasm_iter(handle, &code, &size, &vma, insn)) {
-            nr_insn++;
+            insn_count++;
             auto *detail = insn->detail;
             if (detail == nullptr) {
                 continue;
@@ -92,13 +136,10 @@ int main (int argc, char **argv) {
             }
             for (auto i = 0u; i < detail->groups_count; i++) {
                 auto group = detail->groups[i];
-                auto *group_name = ::cs_group_name(handle, detail->groups[i]);
                 if (group < 128) {
                     group = kGenericGroupId;
-                    group_name = "generic";
                 }
                 groups[group].emplace(insn->mnemonic);
-                group_names[group] = group_name;
             }
         }
         ::cs_free(insn, 1);
@@ -106,24 +147,35 @@ int main (int argc, char **argv) {
     }
 
     for (auto &pair : groups) {
-        char line[512];
-        auto width = snprintf(line, sizeof(line), "%s(", group_names[pair.first].c_str());
+        char list[4096];
+        auto pos = 0;
+        auto len = snprintf(list, sizeof(list), "%s\n      ", group_names[pair.first].c_str());
+        pos += len;
+        auto current_width = len;
+        auto first = true;
         for (auto &insn : pair.second) {
-            if (width + insn.size() > 80) {
-                width += snprintf(line + width, sizeof(line) - width, "...");
-                break;
-            } else {
-                width += snprintf(line + width, sizeof(line) - width, "%s, ", insn.c_str());
+            if (current_width + insn.size() > 80) {
+                first = true;
+                len = snprintf(list + pos, sizeof(list) - pos, "\n      ");
+                pos += len;
+                current_width = len;
             }
+            if (!first) {
+                len = snprintf(list + pos, sizeof(list) - pos, ", ");
+                current_width += len;
+                pos += len;
+            } else {
+                first = false;
+            }
+            len = snprintf(list + pos, sizeof(list) - pos, "%s", insn.c_str());
+            pos += len;
+            current_width += len;
         }
-        if (line[width - 1] != '.') {
-            width -= 2;
-        }
-        snprintf(line + width, sizeof(line) - width, ")");
-        fprintf(stdout, "%s\n", line);
+        list[pos] = '\0';
+        fprintf(stdout, "%s\n", list);
     }
 
-    fprintf(stdout, "\n%lu instructions processed\n", nr_insn);
+    fprintf(stdout, "\n%lu instructions disassembled\n", insn_count);
 
     return 0;
 }

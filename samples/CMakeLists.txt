@@ -4,21 +4,47 @@ project("SampleProjectToUseNebulaThirdParty" CXX)
 
 include(ExternalProject)
 
-ExternalProject_Add(
-    third-party
-    GIT_REPOSITORY https://github.com/dutor/nebula-third-party.git
-    GIT_TAG master
-    GIT_SHALLOW TRUE
-    GIT_PROGRESS TRUE
-    PREFIX ${CMAKE_BINARY_DIR}/third-party/build
-    SOURCE_DIR ${CMAKE_BINARY_DIR}/third-party/source
-    STAMP_DIR ${CMAKE_BINARY_DIR}/third-party/build-info
-    TMP_DIR ${CMAKE_BINARY_DIR}/third-party/build-info
-    BINARY_DIR ${CMAKE_BINARY_DIR}/third-party/build
-    UPDATE_COMMAND ""
-    CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/third-party/install
-    INSTALL_COMMAND ""
-)
+if(NOT THIRD_PARTY_DOWNLOAD_METHOD)
+    set(THIRD_PARTY_DOWNLOAD_METHOD "URL")
+endif()
+
+if (${THIRD_PARTY_DOWNLOAD_METHOD} STREQUAL "URL")
+    execute_process(
+        COMMAND ${CMAKE_SOURCE_DIR}/helpers/retrieve-latest-release-tar.sh dutor nebula-third-party
+        OUTPUT_VARIABLE TAR_URL
+    )
+
+    ExternalProject_Add(
+        third-party
+        URL ${TAR_URL}
+        URL_HASH MD5=7929660c06effbf66bf04f18ac3dddbd
+        DOWNLOAD_NAME nebula-third-party.tar.gz
+        DOWNLOAD_DIR ${CMAKE_BINARY_DIR}/third-party/downloads
+        PREFIX ${CMAKE_BINARY_DIR}/third-party/build
+        SOURCE_DIR ${CMAKE_BINARY_DIR}/third-party/source
+        STAMP_DIR ${CMAKE_BINARY_DIR}/third-party/build-info
+        TMP_DIR ${CMAKE_BINARY_DIR}/third-party/build-info
+        BINARY_DIR ${CMAKE_BINARY_DIR}/third-party/build
+        CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/third-party/install
+        INSTALL_COMMAND ""
+    )
+elseif(${THIRD_PARTY_DOWNLOAD_METHOD STREQUAL "GIT")
+    ExternalProject_Add(
+        third-party
+        GIT_REPOSITORY https://github.com/dutor/nebula-third-party.git
+        GIT_TAG master
+        GIT_SHALLOW TRUE
+        GIT_PROGRESS TRUE
+        PREFIX ${CMAKE_BINARY_DIR}/third-party/build
+        SOURCE_DIR ${CMAKE_BINARY_DIR}/third-party/source
+        STAMP_DIR ${CMAKE_BINARY_DIR}/third-party/build-info
+        TMP_DIR ${CMAKE_BINARY_DIR}/third-party/build-info
+        BINARY_DIR ${CMAKE_BINARY_DIR}/third-party/build
+        UPDATE_COMMAND ""
+        CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/third-party/install
+        INSTALL_COMMAND ""
+    )
+endif()
 
 ExternalProject_Add_Step(third-party clean
     EXCLUDE_FROM_MAIN TRUE
@@ -102,3 +128,10 @@ target_link_libraries(
 )
 
 add_dependencies(all-in-one third-party)
+
+add_executable(elf-insn elf-insn.cpp)
+target_compile_options(elf-insn PRIVATE -g -O3)
+add_dependencies(elf-insn third-party)
+
+target_include_directories(elf-insn SYSTEM PRIVATE ${CMAKE_BINARY_DIR}/third-party/install/include)
+target_link_libraries(elf-insn capstone pthread dl)

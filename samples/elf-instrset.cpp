@@ -142,6 +142,9 @@ int main (int argc, char **argv) {
                 groups[group].emplace(insn->mnemonic);
             }
         }
+        if (size != 0) {
+            fprintf(stderr, "Warning: Failed to disassemble at 0x%lx, skip this section\n", vma);
+        }
         ::cs_free(insn, 1);
         ::cs_close(&handle);
     }

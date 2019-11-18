@@ -28,7 +28,7 @@ if (${THIRD_PARTY_DOWNLOAD_METHOD} STREQUAL "URL")
         CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/third-party/install
         INSTALL_COMMAND ""
     )
-elseif(${THIRD_PARTY_DOWNLOAD_METHOD STREQUAL "GIT")
+elseif(${THIRD_PARTY_DOWNLOAD_METHOD} STREQUAL "GIT")
     ExternalProject_Add(
         third-party
         GIT_REPOSITORY https://github.com/dutor/nebula-third-party.git

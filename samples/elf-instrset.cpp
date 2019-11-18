@@ -64,10 +64,10 @@ int main (int argc, char **argv) {
         }
     }
 
-    constexpr auto kGenericGroupId = 1;
+    constexpr auto kBaseGroupId = 1;
     std::map<uint32_t, std::unordered_set<std::string>> groups;
     std::unordered_map<uint32_t, std::string> group_names {
-        {kGenericGroupId, "GENERIC"},
+        {kBaseGroupId, "BASE"},
         {128, "VT-x/AMD-V"},
         {129, "3DNow"},
         {130, "AES"},
@@ -137,7 +137,7 @@ int main (int argc, char **argv) {
             for (auto i = 0u; i < detail->groups_count; i++) {
                 auto group = detail->groups[i];
                 if (group < 128) {
-                    group = kGenericGroupId;
+                    group = kBaseGroupId;
                 }
                 groups[group].emplace(insn->mnemonic);
             }

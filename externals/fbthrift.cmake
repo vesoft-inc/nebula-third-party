@@ -14,6 +14,7 @@ ExternalProject_Add(
     CMAKE_COMMAND env PATH=${CMAKE_INSTALL_PREFIX}/bin:$ENV{PATH} ${CMAKE_COMMAND}
     CMAKE_ARGS
         ${common_cmake_args}
+        "-DCMAKE_EXE_LINKER_FLAGS=-static-libstdc++ -static-libgcc"
         -D_OPENSSL_LIBDIR=${CMAKE_INSTALL_PREFIX}/lib64
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     BUILD_IN_SOURCE 1

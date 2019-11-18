@@ -11,6 +11,7 @@ ExternalProject_Add(
     SOURCE_DIR ${source_dir}
     CONFIGURE_COMMAND
         ${common_configure_envs}
+        "LIBS=-static-libstdc++ -static-libgcc"
         ./configure ${common_configure_args}
                     --disable-shared --enable-static
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}

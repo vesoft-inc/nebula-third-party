@@ -10,7 +10,7 @@ endif()
 
 if (${THIRD_PARTY_DOWNLOAD_METHOD} STREQUAL "URL")
     execute_process(
-        COMMAND ${CMAKE_SOURCE_DIR}/helpers/retrieve-latest-release-tar.sh dutor nebula-third-party
+        COMMAND ${CMAKE_SOURCE_DIR}/helpers/retrieve-latest-release-tar.sh vesoft-inc nebula-third-party
         OUTPUT_VARIABLE TAR_URL
     )
 
@@ -31,7 +31,7 @@ if (${THIRD_PARTY_DOWNLOAD_METHOD} STREQUAL "URL")
 elseif(${THIRD_PARTY_DOWNLOAD_METHOD} STREQUAL "GIT")
     ExternalProject_Add(
         third-party
-        GIT_REPOSITORY https://github.com/dutor/nebula-third-party.git
+        GIT_REPOSITORY https://github.com/vesoft-inc/nebula-third-party.git
         GIT_TAG master
         GIT_SHALLOW TRUE
         GIT_PROGRESS TRUE

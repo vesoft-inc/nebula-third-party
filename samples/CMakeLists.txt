@@ -129,9 +129,9 @@ target_link_libraries(
 
 add_dependencies(all-in-one third-party)
 
-add_executable(elf-insn elf-insn.cpp)
-target_compile_options(elf-insn PRIVATE -g -O3)
-add_dependencies(elf-insn third-party)
+add_executable(elf-instrset elf-instrset.cpp)
+target_compile_options(elf-instrset PRIVATE -g -O3)
+add_dependencies(elf-instrset third-party)
 
-target_include_directories(elf-insn SYSTEM PRIVATE ${CMAKE_BINARY_DIR}/third-party/install/include)
-target_link_libraries(elf-insn capstone pthread dl)
+target_include_directories(elf-instrset SYSTEM PRIVATE ${CMAKE_BINARY_DIR}/third-party/install/include)
+target_link_libraries(elf-instrset capstone pthread dl)

@@ -2,7 +2,7 @@ set(name gettext)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL http://ftpmirror.gnu.org/gettext/gettext-0.19.8.1.tar.gz
+    URL http://ftp.gnu.org/gnu/gettext/gettext-0.19.8.1.tar.gz
     URL_HASH MD5=97e034cf8ce5ba73a28ff6c3c0638092
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}

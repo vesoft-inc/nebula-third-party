@@ -11,8 +11,10 @@ include(ExternalProject)
 # Get number of physical CPU cores and megabytes of available memory
 cmake_host_system_information(RESULT num_cores QUERY NUMBER_OF_PHYSICAL_CORES)
 cmake_host_system_information(RESULT available_memory_mb QUERY AVAILABLE_PHYSICAL_MEMORY)
-message(STATUS "Number of online physcial CPU cores: ${num_cores}")
-message(STATUS "Available physical memory: ${available_memory_mb} MB")
+execute_process(
+    COMMAND ${CMAKE_SOURCE_DIR}/helpers/retrieve-glibc-version.sh
+    OUTPUT_VARIABLE GLIBC_VERSION
+)
 
 # Guess the number of building jobs based on the available memories
 set(jobs_by_cpu ${num_cores})
@@ -30,15 +32,21 @@ if (NOT BUILDING_JOBS_NUM OR BUILDING_JOBS_NUM EQUAL 0)
     endif()
 endif()
 
-message(STATUS "Building Nebula Third Party with ${BUILDING_JOBS_NUM} jobs.")
+message(STATUS "Number of online physcial CPU cores: ${num_cores}")
+message(STATUS "Available physical memory: ${available_memory_mb} MB")
+message(STATUS "Building Nebula Third Party with ${BUILDING_JOBS_NUM} jobs")
+message(STATUS "Glibc version: ${GLIBC_VERSION}")
 
-option(WITH_PIC "Whether to build PIC archive" OFF)
 set(DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/downloads)
 set(BUILD_INFO_DIR ${CMAKE_CURRENT_BINARY_DIR}/build-info)
 set(BUILDING_PATH "${CMAKE_INSTALL_PREFIX}/bin:${CMAKE_INSTALL_PREFIX}/sbin:$ENV{PATH}")
 set(ACLOCAL_PATH "${CMAKE_INSTALL_PREFIX}/share/aclocal:${CMAKE_INSTALL_PREFIX}/share/aclocal-1.15")
 
-message(STATUS "PATH while building: ${BUILDING_PATH}")
+set(extra_link_libs "-static-libstdc++ -static-libgcc")
+
+if(GLIBC_VERSION VERSION_LESS 2.17)
+    set(extra_link_libs "${extra_link_libs} -lrt")
+endif()
 
 set(common_cmake_args
     -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
@@ -46,6 +54,8 @@ set(common_cmake_args
     -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
     "-DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS} -fPIC"
     "-DCMAKE_C_FLAGS=${CMAKE_C_FLAGS} -fPIC"
+    "-DCMAKE_EXE_LINKER_FLAGS=${extra_link_libs}"
+    "-DCMAKE_SHARED_LINKER_FLAGS=${extra_link_libs}"
     -DCMAKE_INCLUDE_PATH=${CMAKE_INSTALL_PREFIX}/include
     -DCMAKE_LIBRARY_PATH=${CMAKE_INSTALL_PREFIX}/lib
 )
@@ -68,10 +78,6 @@ set(common_configure_envs
 )
 
 set(TOUCH_COMMAND ${CMAKE_SOURCE_DIR}/helpers/touch-if-exists.sh)
-
-if (WITH_PIC)
-    set(common_cmake_args "${common_cmake_args} -DCMAKE_CXX_FLAGS=-fPIC")
-endif()
 
 set(ALL_TARGETS
     autoconf

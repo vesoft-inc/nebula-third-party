@@ -6,11 +6,14 @@ Project to build third-party dependencies of Nebula Graph
 
 ## Build requirements
 To build this project, you must have:
+  * Access to the Internet
   * make
   * m4
   * perl-Data-Dumper
   * perl-Thread-Queue
+  * wget
   * patch
+  * glibc-common
   * cmake 3.10+
   * GCC 6.0+ or Clang7.0+
 

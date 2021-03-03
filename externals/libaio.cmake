@@ -1,3 +1,8 @@
+# Copyright (c) 2019 vesoft inc. All rights reserved.
+#
+# This source code is licensed under Apache 2.0 License,
+# attached with Common Clause Condition 1.0, found in the LICENSES directory.
+
 set(name libaio)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
@@ -13,8 +18,9 @@ ExternalProject_Add(
     BUILD_COMMAND env CFLAGS=-fPIC make -s -j${BUILDING_JOBS_NUM}
     BUILD_IN_SOURCE 1
     INSTALL_COMMAND make prefix=${CMAKE_INSTALL_PREFIX} -s install -j${BUILDING_JOBS_NUM}
-    LOG_BUILD 1
-    LOG_INSTALL 1
+    LOG_CONFIGURE TRUE
+    LOG_BUILD TRUE
+    LOG_INSTALL TRUE
 )
 
 ExternalProject_Add_Step(${name} clean

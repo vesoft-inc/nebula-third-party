@@ -1,3 +1,8 @@
+# Copyright (c) 2019 vesoft inc. All rights reserved.
+#
+# This source code is licensed under Apache 2.0 License,
+# attached with Common Clause Condition 1.0, found in the LICENSES directory.
+
 set(name krb5)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
@@ -19,8 +24,9 @@ ExternalProject_Add(
     INSTALL_COMMAND
         env PATH=${BUILDING_PATH}
         make -s install -j${BUILDING_JOBS_NUM} -C src
-    LOG_BUILD 1
-    LOG_INSTALL 1
+    LOG_CONFIGURE TRUE
+    LOG_BUILD TRUE
+    LOG_INSTALL TRUE
 )
 
 ExternalProject_Add_Step(krb5 mannual-configure
@@ -35,6 +41,7 @@ ExternalProject_Add_Step(krb5 mannual-configure
             --disable-rpath
             --disable-aesni
             --disable-thread-support
+            --without-system-verto
     WORKING_DIRECTORY ${source_dir}/src
 )
 

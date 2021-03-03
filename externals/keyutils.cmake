@@ -1,3 +1,8 @@
+# Copyright (c) 2019 vesoft inc. All rights reserved.
+#
+# This source code is licensed under Apache 2.0 License,
+# attached with Common Clause Condition 1.0, found in the LICENSES directory.
+
 set(name keyutils)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
@@ -17,8 +22,9 @@ ExternalProject_Add(
                          INCLUDEDIR=/include LIBDIR=/lib
                          CFLAGS=-fPIC NO_SOLIB=1 DESTDIR=${CMAKE_INSTALL_PREFIX}
                          install
-    LOG_BUILD 1
-    LOG_INSTALL 1
+    LOG_CONFIGURE TRUE
+    LOG_BUILD TRUE
+    LOG_INSTALL TRUE
 )
 
 ExternalProject_Add_Step(${name} clean

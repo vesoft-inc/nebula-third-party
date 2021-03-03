@@ -1,3 +1,8 @@
+# Copyright (c) 2019 vesoft inc. All rights reserved.
+#
+# This source code is licensed under Apache 2.0 License,
+# attached with Common Clause Condition 1.0, found in the LICENSES directory.
+
 set(name boost)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 get_filename_component(compiler_path ${CMAKE_CXX_COMPILER} DIRECTORY)
@@ -13,13 +18,11 @@ ExternalProject_Add(
     SOURCE_DIR ${source_dir}
     CONFIGURE_COMMAND ""
     CONFIGURE_COMMAND
-        env PATH=${compiler_path}:${BUILDING_PATH}
         ./bootstrap.sh
             --without-icu
             --without-libraries=python,test,stacktrace,mpi,log,graph,graph_parallel
             --prefix=${CMAKE_INSTALL_PREFIX}
     BUILD_COMMAND
-        env PATH=${compiler_path}:${BUILDING_PATH}
         ./b2 install
             -d0
             -j${BUILDING_JOBS_NUM}
@@ -27,14 +30,24 @@ ExternalProject_Add(
             --disable-icu
             include=${CMAKE_INSTALL_PREFIX}/include
             linkflags=-L${CMAKE_INSTALL_PREFIX}/lib
-            cxxflags="-fPIC"
+            "cxxflags=-fPIC ${extra_cpp_flags}"
             runtime-link=static
             link=static
             variant=release
     BUILD_IN_SOURCE 1
     INSTALL_COMMAND ""
-    LOG_BUILD 0
-    LOG_INSTALL 0
+    LOG_CONFIGURE TRUE
+    LOG_BUILD TRUE
+    LOG_INSTALL TRUE
+)
+
+ExternalProject_Add_Step(${name} setup-compiler
+    DEPENDEES configure
+    DEPENDERS build
+    COMMAND
+        echo "using gcc : : ${CMAKE_CXX_COMPILER} $<SEMICOLON>"
+            > ${source_dir}/tools/build/src/user-config.jam
+    WORKING_DIRECTORY ${source_dir}
 )
 
 ExternalProject_Add_Step(${name} clean

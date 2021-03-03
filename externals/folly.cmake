@@ -1,3 +1,8 @@
+# Copyright (c) 2019 vesoft inc. All rights reserved.
+#
+# This source code is licensed under Apache 2.0 License,
+# attached with Common Clause Condition 1.0, found in the LICENSES directory.
+
 set(name folly)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
@@ -13,16 +18,15 @@ ExternalProject_Add(
     CMAKE_ARGS
         ${common_cmake_args}
         -DCMAKE_BUILD_TYPE=Release
-        "-DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS} -fPIC -DFOLLY_HAVE_CLOCK_GETTIME -D__USE_POSIX199309"
+        "-DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS} -fPIC -DFOLLY_HAVE_CLOCK_GETTIME -D__USE_POSIX199309 ${extra_cpp_flags}"
         -DFOLLY_CXX_FLAGS=-Wno-error
 
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     BUILD_IN_SOURCE 1
-    INSTALL_COMMAND make -s -j${BUILDING_JOBS_NUM} install
+    INSTALL_COMMAND make -s -j${BUILDING_JOBS_NUM} install/strip
     LOG_CONFIGURE TRUE
     LOG_BUILD TRUE
     LOG_INSTALL TRUE
-    LOG_MERGED_STDOUTERR TRUE
 )
 
 ExternalProject_Add_Step(${name} clean

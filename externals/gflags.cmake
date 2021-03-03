@@ -1,3 +1,8 @@
+# Copyright (c) 2019 vesoft inc. All rights reserved.
+#
+# This source code is licensed under Apache 2.0 License,
+# attached with Common Clause Condition 1.0, found in the LICENSES directory.
+
 set(name gflags)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
@@ -14,8 +19,6 @@ ExternalProject_Add(
         ${common_cmake_args}
         -DCMAKE_BUILD_TYPE=Release
     BUILD_IN_SOURCE 1
-    LOG_BUILD 1
-    LOG_INSTALL 1
 )
 
 ExternalProject_Add_Step(${name} clean

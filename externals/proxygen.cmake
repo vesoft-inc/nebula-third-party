@@ -1,10 +1,15 @@
+# Copyright (c) 2019 vesoft inc. All rights reserved.
+#
+# This source code is licensed under Apache 2.0 License,
+# attached with Common Clause Condition 1.0, found in the LICENSES directory.
+
 set(name proxygen)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 
-set(LIBS "-lssl -lcrypto -ldl -lrt -lglog -lunwind")
+set(ProxygenLibs "-lssl -lcrypto -ldl -lglog -lunwind ${extra_link_libs}")
 if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
     # clang requires explicitly linking to libatomic
-    set(LIBS "${LIBS} -latomic")
+    set(ProxygenLibs "${ProxygenLibs} -latomic")
 endif()
 
 ExternalProject_Add(
@@ -25,7 +30,6 @@ ExternalProject_Add(
     LOG_CONFIGURE TRUE
     LOG_BUILD TRUE
     LOG_INSTALL TRUE
-    LOG_MERGED_STDOUTERR TRUE
 )
 
 ExternalProject_Add_Step(proxygen mannual-configure
@@ -34,7 +38,7 @@ ExternalProject_Add_Step(proxygen mannual-configure
     COMMAND env PATH=${BUILDING_PATH} ACLOCAL_PATH=${ACLOCAL_PATH} autoreconf -if
     COMMAND
         ${common_configure_envs}
-        "LIBS=${LIBS}"
+        "LIBS=${ProxygenLibs}"
         ./configure
             ${common_configure_args}
             --disable-shared

@@ -1,3 +1,8 @@
+# Copyright (c) 2019 vesoft inc. All rights reserved.
+#
+# This source code is licensed under Apache 2.0 License,
+# attached with Common Clause Condition 1.0, found in the LICENSES directory.
+
 ExternalProject_Add(
     pkgconf
     URL https://github.com/pkgconf/pkgconf/archive/pkgconf-1.6.1.tar.gz
@@ -11,5 +16,8 @@ ExternalProject_Add(
     BUILD_IN_SOURCE 1
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     INSTALL_COMMAND make -s -j${BUILDING_JOBS_NUM} install
+    LOG_CONFIGURE TRUE
+    LOG_BUILD TRUE
+    LOG_INSTALL TRUE
 )
 

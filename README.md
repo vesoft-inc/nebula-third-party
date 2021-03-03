@@ -12,6 +12,7 @@ To build this project, you must have:
   * perl-Data-Dumper
   * perl-Thread-Queue
   * wget
+  * xz
   * patch
   * glibc-common
   * cmake 3.10+

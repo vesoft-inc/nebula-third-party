@@ -18,6 +18,7 @@ ExternalProject_Add(
     BUILD_IN_SOURCE 1
     CMAKE_ARGS
         ${common_cmake_args}
+        -DCMAKE_BUILD_TYPE=Release
     LOG_CONFIGURE TRUE
     LOG_BUILD TRUE
     LOG_INSTALL TRUE

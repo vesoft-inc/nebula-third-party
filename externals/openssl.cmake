@@ -7,9 +7,9 @@ set(name openssl)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL https://github.com/openssl/openssl/archive/OpenSSL_1_1_1c.tar.gz
-    URL_HASH MD5=e54191af2dbef5f172ca5b7ceea08307
-    DOWNLOAD_NAME openssl-1.1.1c.tar.gz
+    URL https://github.com/openssl/openssl/archive/OpenSSL_1_1_1j.tar.gz
+    URL_HASH MD5=2913df113ecd2a396a171d9234556ea1
+    DOWNLOAD_NAME openssl-1.1.1j.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}

@@ -3,13 +3,13 @@
 # This source code is licensed under Apache 2.0 License,
 # attached with Common Clause Condition 1.0, found in the LICENSES directory.
 
-set(name snappy)
+set(name simdjson)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL https://github.com/google/snappy/archive/1.1.8.tar.gz
-    URL_HASH MD5=70e48cba7fecf289153d009791c9977f
-    DOWNLOAD_NAME snappy-1.1.8.tar.gz
+    URL https://github.com/simdjson/simdjson/archive/v0.8.2.tar.gz
+    URL_HASH MD5=b88e14c5724145561cbe840eb589da98
+    DOWNLOAD_NAME simdjson-0.8.2.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}
@@ -19,7 +19,8 @@ ExternalProject_Add(
     CMAKE_ARGS
         ${common_cmake_args}
         -DCMAKE_BUILD_TYPE=Release
-        -DSNAPPY_BUILD_TESTS=OFF
+        -DSIMDJSON_JUST_LIBRARY=ON
+        -DSIMDJSON_BUILD_STATIC=ON
     BUILD_IN_SOURCE 1
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     INSTALL_COMMAND make -s install -j${BUILDING_JOBS_NUM}

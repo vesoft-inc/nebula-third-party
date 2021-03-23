@@ -7,9 +7,9 @@ set(name lz4)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL https://github.com/lz4/lz4/archive/v1.9.2.tar.gz
-    URL_HASH MD5=3898c56c82fb3d9455aefd48db48eaad
-    DOWNLOAD_NAME lz4-1.9.2.tar.gz
+    URL https://github.com/lz4/lz4/archive/v1.9.3.tar.gz
+    URL_HASH MD5=3a1ab1684e14fc1afc66228ce61b2db3
+    DOWNLOAD_NAME lz4-1.9.3.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}

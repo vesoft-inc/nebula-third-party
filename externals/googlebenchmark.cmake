@@ -3,13 +3,13 @@
 # This source code is licensed under Apache 2.0 License,
 # attached with Common Clause Condition 1.0, found in the LICENSES directory.
 
-set(name snappy)
+set(name googlebenchmark)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL https://github.com/google/snappy/archive/1.1.8.tar.gz
-    URL_HASH MD5=70e48cba7fecf289153d009791c9977f
-    DOWNLOAD_NAME snappy-1.1.8.tar.gz
+    URL https://github.com/google/benchmark/archive/v1.5.2.tar.gz
+    URL_HASH MD5=084b34aceaeac11a6607d35220ca2efa
+    DOWNLOAD_NAME googlebenchmark-1.5.2.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}
@@ -18,8 +18,8 @@ ExternalProject_Add(
     UPDATE_COMMAND ""
     CMAKE_ARGS
         ${common_cmake_args}
+        -DBENCHMARK_ENABLE_GTEST_TESTS=OFF
         -DCMAKE_BUILD_TYPE=Release
-        -DSNAPPY_BUILD_TESTS=OFF
     BUILD_IN_SOURCE 1
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     INSTALL_COMMAND make -s install -j${BUILDING_JOBS_NUM}

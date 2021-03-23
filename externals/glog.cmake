@@ -7,9 +7,9 @@ set(name glog)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL https://github.com/google/glog/archive/v0.3.5.tar.gz
-    URL_HASH MD5=5df6d78b81e51b90ac0ecd7ed932b0d4
-    DOWNLOAD_NAME glog-0.3.5.tar.gz
+    URL https://github.com/google/glog/archive/v0.4.0.tar.gz
+    URL_HASH MD5=0daea8785e6df922d7887755c3d100d0
+    DOWNLOAD_NAME glog-0.4.0.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}

@@ -9,9 +9,9 @@ set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 set(MakeEnvs "env" "CFLAGS=-fPIC")
 ExternalProject_Add(
     ${name}
-    URL https://github.com/facebook/zstd/archive/v1.3.4.tar.gz
-    URL_HASH MD5=10bf0353e3dedd8bae34a188c25d4261
-    DOWNLOAD_NAME zstd-1.3.4.tar.gz
+    URL https://github.com/facebook/zstd/releases/download/v1.4.9/zstd-1.4.9.tar.gz
+    URL_HASH MD5=eb718b8aae0302cabe20f968e500534d
+    DOWNLOAD_NAME zstd-1.4.9.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}

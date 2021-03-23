@@ -121,10 +121,14 @@ set(ALL_TARGETS
     fbthrift
     capstone
     s2geometry
+    fizz
+    fmt
+    sodium
+    googlebenchmark
+    simdjson
 )
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/../cmake)
 
 find_package(Libtool 2.4.2 QUIET)
 if (NOT Libtool_FOUND)
@@ -202,11 +206,14 @@ maybe_add_dependencies(mstch boost)
 
 maybe_add_dependencies(glog gflags)
 
+maybe_add_dependencies(googlebenchmark googletest)
+
 maybe_add_dependencies(s2geometry googletest glog openssl)
 
 maybe_add_dependencies(krb5 keyutils openssl gettext bison)
-maybe_add_dependencies(folly glog boost double-conversion openssl libevent lzma zstd snappy lz4 libunwind libaio)
-maybe_add_dependencies(wangle folly)
+maybe_add_dependencies(folly glog boost double-conversion openssl libevent lzma zstd snappy lz4 libunwind libaio fmt)
+maybe_add_dependencies(fizz folly sodium)
+maybe_add_dependencies(wangle folly fizz)
 maybe_add_dependencies(fbthrift folly krb5 bison flex mstch zlib zstd wangle fatal)
 maybe_add_dependencies(proxygen wangle libunwind gperf)
 maybe_add_dependencies(rocksdb snappy zlib zstd bzip2 lz4 lzma libunwind)

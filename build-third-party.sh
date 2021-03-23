@@ -67,6 +67,7 @@ check_cmake
 check_cxx
 
 # Directories setup
+version=2.0
 cur_dir=`pwd`
 source_dir=$(readlink -f $(dirname $0))
 build_root=$cur_dir/third-party
@@ -74,7 +75,7 @@ build_dir=$build_root/build
 prefix=$1
 install_dir=${prefix:-$build_root/install}
 download_dir=$build_root/downloads
-source_tar_name=nebula-third-party-src-1.0.tgz
+source_tar_name=nebula-third-party-src-$version.tgz
 source_url=https://oss-cdn.nebula-graph.com.cn/third-party/${source_tar_name}
 logfile=$build_root/build.log
 cxx_cmd=${CXX:-g++}
@@ -146,6 +147,44 @@ cd $OLDPWD && rm -rf $build_dir
 # Remove all libtool files
 find $install_dir -name '*.la' | xargs rm -f
 
+# Remove big unneeded binaries
+binaries+=(proxygen_{echo,push,proxy,static,curl})
+binaries+=(openssl zstd kinit kadmin gss-client)
+binaries+=(ksu uuclient ktutil klist kvno sim_client)
+binaries+=(sclient kpasswd kdestroy kswitch lz4)
+binaries+=(xz bunzip2 bzcat bzip2 xzdec)
+binaries+=(compile_et bzmore bzgrep xzless bzdiff)
+binaries+=(xzmore jemalloc-config zstdgrep gflags_completions.sh xzgrep)
+binaries+=(c_rehash xzdiff bzip2recover lzmadec lzmainfo)
+for file in ${binaries[@]}
+do
+    rm -f $install_dir/bin/$file
+done
+
+binaries=()
+binaries+=(krb5-send-pr key.dns_resolver request-key uuserver kprop sserver)
+binaries+=(sim_server gss-server kproplog kpropd kadmin.local kdb5_util kadmind krb5kdc)
+for file in ${binaries[@]}
+do
+    rm -f $install_dir/sbin/$file
+done
+
+# Strip executables
+for file in $install_dir/bin/*
+do
+    file $file | grep ELF >/dev/null &&  strip --strip-unneeded $file
+done
+
+# Remove unneeded static libraries
+libs+=(libcompiler_generators.a libcompiler_base.a libcompiler_ast.a libcompiler_lib.a)
+libs+=(libmstch.a libmustache_lib.a libfizz_test_support.a)
+
+for lib in ${libs[@]}
+do
+    rm -f $install_dir/lib/$lib
+    rm -f $install_dir/lib64/$lib
+done
+
 march=$(uname -m)
 
 # Make krb5 relocatable
@@ -155,6 +194,7 @@ sed -i -r 's#^DEFCKTNAME=.*(/var.*keytab).*#DEFCKTNAME="FILE:$prefix\1"#' $insta
 
 cat > $install_dir/version-info <<EOF
 Package         : Nebula Third Party
+Version         : $version
 glibc           : $libc_version
 Arch            : $march
 Compiler        : GCC $gcc_version
@@ -163,7 +203,7 @@ Vendor          : VEsoft Inc.
 EOF
 
 function make_package {
-    exec_file=$build_root/vesoft-third-party-$march-libc-$libc_version-gcc-$gcc_version-abi-$abi_version.sh
+    exec_file=$build_root/vesoft-third-party-$version-$march-libc-$libc_version-gcc-$gcc_version-abi-$abi_version.sh
 
     echo "Creating self-extractable package $exec_file"
     cat > $exec_file <<EOF
@@ -173,7 +213,7 @@ set -e
 hash xz &> /dev/null || { echo "xz: Command not found"; exit 1; }
 
 [[ \$# -ne 0 ]] && prefix=\$(echo "\$@" | sed 's;.*--prefix=(\S*).*;\1;p' -rn)
-prefix=\${prefix:-/opt/vesoft/third-party}
+prefix=\${prefix:-/opt/vesoft/third-party/$version}
 mkdir -p \$prefix
 
 [[ -w \$prefix ]] || { echo "\$prefix: No permission to write"; exit 1; }

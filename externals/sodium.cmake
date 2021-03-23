@@ -3,26 +3,25 @@
 # This source code is licensed under Apache 2.0 License,
 # attached with Common Clause Condition 1.0, found in the LICENSES directory.
 
-set(name snappy)
+set(name sodium)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL https://github.com/google/snappy/archive/1.1.8.tar.gz
-    URL_HASH MD5=70e48cba7fecf289153d009791c9977f
-    DOWNLOAD_NAME snappy-1.1.8.tar.gz
+    URL https://download.libsodium.org/libsodium/releases/libsodium-1.0.18.tar.gz
+    URL_HASH MD5=3ca9ebc13b6b4735acae0a6a4c4f9a95
+    DOWNLOAD_NAME libsodium-1.0.18.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}
     DOWNLOAD_DIR ${DOWNLOAD_DIR}
     SOURCE_DIR ${source_dir}
-    UPDATE_COMMAND ""
-    CMAKE_ARGS
-        ${common_cmake_args}
-        -DCMAKE_BUILD_TYPE=Release
-        -DSNAPPY_BUILD_TESTS=OFF
+    CONFIGURE_COMMAND
+        ${common_configure_envs}
+        ./configure ${common_configure_args}
+                    --enable-static --disable-shared
+    BUILD_COMMAND make -s
     BUILD_IN_SOURCE 1
-    BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
-    INSTALL_COMMAND make -s install -j${BUILDING_JOBS_NUM}
+    INSTALL_COMMAND make -s install
     LOG_CONFIGURE TRUE
     LOG_BUILD TRUE
     LOG_INSTALL TRUE

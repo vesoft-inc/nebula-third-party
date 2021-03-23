@@ -8,20 +8,20 @@ set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 get_filename_component(compiler_path ${CMAKE_CXX_COMPILER} DIRECTORY)
 ExternalProject_Add(
     ${name}
-    URL https://dl.bintray.com/boostorg/release/1.67.0/source/boost_1_67_0.tar.gz
-    URL_HASH MD5=4850fceb3f2222ee011d4f3ea304d2cb
-    DOWNLOAD_NAME boost-1.67.0.tar.gz
+    URL https://dl.bintray.com/boostorg/release/1.75.0/source/boost_1_75_0.tar.gz
+    URL_HASH MD5=38813f6feb40387dfe90160debd71251
+    DOWNLOAD_NAME boost-1.75.0.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}
     DOWNLOAD_DIR ${DOWNLOAD_DIR}
     SOURCE_DIR ${source_dir}
-    CONFIGURE_COMMAND ""
     CONFIGURE_COMMAND
         ./bootstrap.sh
             --without-icu
-            --without-libraries=python,test,stacktrace,mpi,log,graph,graph_parallel
+            --with-libraries=context,thread,system,filesystem,program_options,regex,iostreams,date_time,python
             --prefix=${CMAKE_INSTALL_PREFIX}
+#--without-libraries=wave,nowide,chrono,atomic,fiber,type_erasure,exception,timer,contract,math,locale,json,test,stacktrace,mpi,log,graph,graph_parallel
     BUILD_COMMAND
         ./b2 install
             -d0
@@ -35,7 +35,7 @@ ExternalProject_Add(
             link=static
             variant=release
     BUILD_IN_SOURCE 1
-    INSTALL_COMMAND ""
+    INSTALL_COMMAND rm -rf ${CMAKE_INSTALL_PREFIX}/lib/cmake
     LOG_CONFIGURE TRUE
     LOG_BUILD TRUE
     LOG_INSTALL TRUE
@@ -47,6 +47,13 @@ ExternalProject_Add_Step(${name} setup-compiler
     COMMAND
         echo "using gcc : : ${CMAKE_CXX_COMPILER} $<SEMICOLON>"
             > ${source_dir}/tools/build/src/user-config.jam
+    WORKING_DIRECTORY ${source_dir}
+)
+
+ExternalProject_Add_Step(${name} trim
+    DEPENDEES install
+    COMMAND
+        rm -rf ${CMAKE_INSTALL_PREFIX}/include/boost/{wave,log,atomic,container,numeric,math,test,typeof,fusion,geometry,gil,graph,phoenix,spirit,preprocessor,beast,asio,compute,hana,polygon,proto,mpl,units,metaparse,qvm,vmd,xpressive}
     WORKING_DIRECTORY ${source_dir}
 )
 

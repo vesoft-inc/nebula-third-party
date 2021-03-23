@@ -3,29 +3,38 @@
 # This source code is licensed under Apache 2.0 License,
 # attached with Common Clause Condition 1.0, found in the LICENSES directory.
 
-set(name snappy)
+set(name fizz)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL https://github.com/google/snappy/archive/1.1.8.tar.gz
-    URL_HASH MD5=70e48cba7fecf289153d009791c9977f
-    DOWNLOAD_NAME snappy-1.1.8.tar.gz
+    URL https://github.com/facebookincubator/fizz/archive/v2021.03.01.00.tar.gz
+    URL_HASH MD5=2956b71505d1102a5da3238fd32d67fd
+    DOWNLOAD_NAME fizz-2021-03-01.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}
     DOWNLOAD_DIR ${DOWNLOAD_DIR}
     SOURCE_DIR ${source_dir}
-    UPDATE_COMMAND ""
-    CMAKE_ARGS
-        ${common_cmake_args}
-        -DCMAKE_BUILD_TYPE=Release
-        -DSNAPPY_BUILD_TESTS=OFF
+    CONFIGURE_COMMAND ""
+    BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM} -C fizz
     BUILD_IN_SOURCE 1
-    BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
-    INSTALL_COMMAND make -s install -j${BUILDING_JOBS_NUM}
+    INSTALL_COMMAND make -s -j${BUILDING_JOBS_NUM} install -C fizz
     LOG_CONFIGURE TRUE
     LOG_BUILD TRUE
     LOG_INSTALL TRUE
+)
+
+ExternalProject_Add_Step(${name} mannual-configure
+    DEPENDEES download update patch
+    DEPENDERS build
+    COMMAND ${CMAKE_COMMAND}
+        ${common_cmake_args}
+        -DBUILD_TESTS=OFF
+        -DBUILD_EXAMPLES=OFF
+        -DCMAKE_BUILD_TYPE=Release
+        -D_OPENSSL_LIBDIR=${CMAKE_INSTALL_PREFIX}/lib64
+        .
+    WORKING_DIRECTORY <SOURCE_DIR>/fizz
 )
 
 ExternalProject_Add_Step(${name} clean
@@ -34,7 +43,7 @@ ExternalProject_Add_Step(${name} clean
     DEPENDEES configure
     COMMAND make clean -j
     COMMAND rm -f ${BUILD_INFO_DIR}/${name}-build
-    WORKING_DIRECTORY ${source_dir}
+    WORKING_DIRECTORY <SOURCE_DIR>/wangle
 )
 
 ExternalProject_Add_StepTargets(${name} clean)

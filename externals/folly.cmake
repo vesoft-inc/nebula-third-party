@@ -18,6 +18,7 @@ ExternalProject_Add(
     CMAKE_ARGS
         ${common_cmake_args}
         -DCMAKE_BUILD_TYPE=Release
+        -DBoost_NO_BOOST_CMAKE=ON
         "-DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS} -fPIC -D__STDC_FORMAT_MACROS=1 -DFOLLY_HAVE_CLOCK_GETTIME -D__USE_POSIX199309 ${extra_cpp_flags}"
         -DFOLLY_CXX_FLAGS=-Wno-error
 

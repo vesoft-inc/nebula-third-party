@@ -19,6 +19,7 @@ ExternalProject_Add(
     CMAKE_ARGS
             ${common_cmake_args}
             -DBUILD_SHARED_LIBS=OFF
+			-DBoost_NO_BOOST_CMAKE=ON
             -DCMAKE_BUILD_TYPE=Release
             -DBUILD_TESTS=OFF
             "-DCMAKE_EXE_LINKER_FLAGS=-static-libstdc++ -static-libgcc -pthread"

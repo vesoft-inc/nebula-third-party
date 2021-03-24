@@ -20,6 +20,7 @@ ExternalProject_Add(
         ${common_cmake_args}
         "-DCMAKE_EXE_LINKER_FLAGS=-static-libstdc++ -static-libgcc"
         -DCMAKE_BUILD_TYPE=Release
+        -DBoost_NO_BOOST_CMAKE=ON
         -Denable_tests=OFF
         -D_OPENSSL_LIBDIR=${CMAKE_INSTALL_PREFIX}/lib64
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}

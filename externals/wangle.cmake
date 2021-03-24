@@ -30,6 +30,7 @@ ExternalProject_Add_Step(${name} mannual-configure
     COMMAND ${CMAKE_COMMAND}
         ${common_cmake_args}
         -DBoost_NO_SYSTEM_PATHS=OFF
+        -DBoost_NO_BOOST_CMAKE=ON
         -DCMAKE_BUILD_TYPE=Release
         -DBUILD_TESTS=OFF
         -DCMAKE_EXE_LINKER_FLAGS=-latomic

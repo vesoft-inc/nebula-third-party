@@ -30,6 +30,7 @@ ExternalProject_Add_Step(${name} mannual-configure
     COMMAND ${CMAKE_COMMAND}
         ${common_cmake_args}
         -DBUILD_TESTS=OFF
+        -DBoost_NO_BOOST_CMAKE=ON
         -DBUILD_EXAMPLES=OFF
         -DCMAKE_BUILD_TYPE=Release
         -D_OPENSSL_LIBDIR=${CMAKE_INSTALL_PREFIX}/lib64

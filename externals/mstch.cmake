@@ -17,6 +17,7 @@ ExternalProject_Add(
     SOURCE_DIR ${source_dir}
     CMAKE_ARGS
         ${common_cmake_args}
+        -DBoost_NO_BOOST_CMAKE=ON
         -DCMAKE_BUILD_TYPE=Release
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     BUILD_IN_SOURCE 1

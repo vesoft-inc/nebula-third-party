@@ -42,7 +42,7 @@ ExternalProject_Add(
             link=static
             variant=release
     BUILD_IN_SOURCE 1
-    INSTALL_COMMAND rm -rf ${CMAKE_INSTALL_PREFIX}/lib/cmake
+    INSTALL_COMMAND rm -rf ${CMAKE_INSTALL_PREFIX}/lib/cmake/boost* ${CMAKE_INSTALL_PREFIX}/lib/cmake/Boost*
     LOG_CONFIGURE TRUE
     LOG_BUILD TRUE
     LOG_INSTALL TRUE

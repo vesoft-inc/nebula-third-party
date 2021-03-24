@@ -5,7 +5,13 @@
 
 set(name boost)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
-get_filename_component(compiler_path ${CMAKE_CXX_COMPILER} DIRECTORY)
+execute_process(
+    COMMAND
+        ${CMAKE_CXX_COMPILER} -print-file-name=libstdc++.so
+    OUTPUT_VARIABLE glibcxx_path
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+get_filename_component(glibcxx_dir ${glibcxx_path} DIRECTORY)
 ExternalProject_Add(
     ${name}
     URL https://dl.bintray.com/boostorg/release/1.75.0/source/boost_1_75_0.tar.gz
@@ -23,6 +29,7 @@ ExternalProject_Add(
             --prefix=${CMAKE_INSTALL_PREFIX}
 #--without-libraries=wave,nowide,chrono,atomic,fiber,type_erasure,exception,timer,contract,math,locale,json,test,stacktrace,mpi,log,graph,graph_parallel
     BUILD_COMMAND
+        LD_LIBRARY_PATH=${glibcxx_dir}
         ./b2 install
             -d0
             -j${BUILDING_JOBS_NUM}

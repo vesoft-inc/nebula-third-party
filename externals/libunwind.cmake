@@ -7,8 +7,9 @@ set(name libunwind)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL https://github.com/libunwind/libunwind/releases/download/v1.2.1/libunwind-1.2.1.tar.gz
-    URL_HASH MD5=06ba9e60d92fd6f55cd9dadb084df19e
+    URL http://download.savannah.nongnu.org/releases/libunwind/libunwind-1.5.0.tar.gz
+    URL_HASH MD5=c6923dda0675f6a4ef21426164dc8b6a
+    DOWNLOAD_NAME libunwind-1.5.0.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}

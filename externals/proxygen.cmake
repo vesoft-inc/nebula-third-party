@@ -21,7 +21,7 @@ ExternalProject_Add(
             -DBUILD_SHARED_LIBS=OFF
             -DCMAKE_BUILD_TYPE=Release
             -DBUILD_TESTS=OFF
-            "-DCMAKE_EXE_LINKER_FLAGS=-static-libstdc++ -static-libgcc -pthread -lunwind"
+            "-DCMAKE_EXE_LINKER_FLAGS=-static-libstdc++ -static-libgcc -pthread"
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     BUILD_IN_SOURCE 1
     INSTALL_COMMAND make -s -j${BUILDING_JOBS_NUM} install

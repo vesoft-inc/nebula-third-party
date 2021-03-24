@@ -105,7 +105,8 @@ then
     checksum=$(md5sum $source_tar_name | cut -d ' ' -f 1)
 fi
 
-if [[ ! $checksum = 375f349b7b5ae1212bd4195bfc30f43a ]]
+# NOTE Please adjust the expected checksum once the source tarball changed
+if [[ ! $checksum = 852fb3ab05bb4d8aae8f46957630aab7 ]]
 then
     hash wget &> /dev/null && download_cmd="wget -c"
     if [[ -z $download_cmd ]]

@@ -16,7 +16,12 @@ ExternalProject_Add(
     STAMP_DIR ${BUILD_INFO_DIR}
     DOWNLOAD_DIR ${DOWNLOAD_DIR}
     SOURCE_DIR ${source_dir}
-    CONFIGURE_COMMAND ""
+    CMAKE_ARGS
+            ${common_cmake_args}
+            -DBUILD_SHARED_LIBS=OFF
+            -DCMAKE_BUILD_TYPE=Release
+            -DBUILD_TESTS=OFF
+            "-DCMAKE_EXE_LINKER_FLAGS=-static-libstdc++ -static-libgcc -pthread -lunwind"
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     BUILD_IN_SOURCE 1
     INSTALL_COMMAND make -s -j${BUILDING_JOBS_NUM} install
@@ -25,24 +30,10 @@ ExternalProject_Add(
     LOG_INSTALL TRUE
 )
 
-ExternalProject_Add_Step(proxygen mannual-configure
-    DEPENDEES download update patch configure
-    DEPENDERS build install
-    COMMAND
-        ${CMAKE_COMMAND}
-            ${common_cmake_args}
-            -DBUILD_SHARED_LIBS=OFF
-            -DCMAKE_BUILD_TYPE=Release
-            -DBUILD_TESTS=OFF
-            "-DCMAKE_EXE_LINKER_FLAGS=-static-libstdc++ -static-libgcc -pthread -lunwind"
-            .
-    WORKING_DIRECTORY ${source_dir}
-)
-
 ExternalProject_Add_Step(${name} clean
     EXCLUDE_FROM_MAIN TRUE
     ALWAYS TRUE
-    DEPENDEES mannual-configure
+    DEPENDEES configure
     COMMAND make clean -j
     COMMAND rm -f ${BUILD_INFO_DIR}/${name}-build
     WORKING_DIRECTORY ${source_dir}

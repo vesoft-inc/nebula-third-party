@@ -29,7 +29,7 @@ ExternalProject_Add(
             --prefix=${CMAKE_INSTALL_PREFIX}
 #--without-libraries=wave,nowide,chrono,atomic,fiber,type_erasure,exception,timer,contract,math,locale,json,test,stacktrace,mpi,log,graph,graph_parallel
     BUILD_COMMAND
-        LD_LIBRARY_PATH=${glibcxx_dir}
+        env LD_LIBRARY_PATH=${glibcxx_dir}
         ./b2 install
             -d0
             -j${BUILDING_JOBS_NUM}
@@ -60,7 +60,7 @@ ExternalProject_Add_Step(${name} setup-compiler
 ExternalProject_Add_Step(${name} trim
     DEPENDEES install
     COMMAND
-        rm -rf ${CMAKE_INSTALL_PREFIX}/include/boost/{wave,log,atomic,container,numeric,math,test,typeof,fusion,geometry,gil,graph,phoenix,spirit,preprocessor,beast,asio,compute,hana,polygon,proto,mpl,units,metaparse,qvm,vmd,xpressive}
+        rm -rf ${CMAKE_INSTALL_PREFIX}/include/boost/{wave,log,atomic,test,typeof,fusion,geometry,gil,graph,phoenix,spirit,beast,asio,compute,hana,polygon,proto,units,metaparse,qvm,vmd,xpressive}
     WORKING_DIRECTORY ${source_dir}
 )
 

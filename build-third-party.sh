@@ -185,6 +185,9 @@ do
     rm -f $install_dir/lib64/$lib
 done
 
+# Remove CMake configs of boost
+rm -rf $install_dir/lib/cmake/[Bb]oost*
+
 march=$(uname -m)
 
 # Make krb5 relocatable

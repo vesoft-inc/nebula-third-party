@@ -7,10 +7,8 @@ set(name krb5)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL https://kerberos.org/dist/krb5/1.16/krb5-1.16.1.tar.gz
-    URL_HASH MD5=848e9b80d6aaaa798e3f3df24b83c407
-#URL https://kerberos.org/dist/krb5/1.16/krb5-1.16.3.tar.gz
-#URL_HASH MD5=65f5f695bd78ba6a64ac786f571047f4
+    URL https://kerberos.org/dist/krb5/1.19/krb5-1.19.1.tar.gz
+    URL_HASH MD5=81257292f8243f735654d4fd5d1fef6a
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}

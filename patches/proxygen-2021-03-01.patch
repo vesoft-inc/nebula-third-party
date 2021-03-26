@@ -1,0 +1,125 @@
+diff -ur a/proxygen/CMakeLists.txt b/proxygen/CMakeLists.txt
+--- a/proxygen/CMakeLists.txt	2021-02-23 16:13:17.000000000 +0800
++++ b/proxygen/CMakeLists.txt	2021-03-26 16:44:07.370973867 +0800
+@@ -8,4 +8,3 @@
+ add_subdirectory(lib)
+ add_subdirectory(httpserver)
+ add_subdirectory(httpclient)
+-add_subdirectory(fuzzers)
+diff -ur a/proxygen/httpclient/samples/curl/CMakeLists.txt b/proxygen/httpclient/samples/curl/CMakeLists.txt
+--- a/proxygen/httpclient/samples/curl/CMakeLists.txt	2021-02-23 16:13:17.000000000 +0800
++++ b/proxygen/httpclient/samples/curl/CMakeLists.txt	2021-03-26 16:44:32.304102542 +0800
+@@ -30,19 +30,3 @@
+     EXPORT proxygen-exports
+     DESTINATION ${LIB_INSTALL_DIR}
+ )
+-
+-add_executable(proxygen_curl CurlClientMain.cpp)
+-target_link_libraries(
+-    proxygen_curl PUBLIC
+-    proxygencurl
+-)
+-target_compile_options(
+-    proxygen_curl PRIVATE
+-    ${_PROXYGEN_COMMON_COMPILE_OPTIONS}
+-)
+-
+-install(
+-    TARGETS proxygen_curl
+-    EXPORT proxygen-exports
+-    DESTINATION bin
+-)
+diff -ur a/proxygen/httpserver/CMakeLists.txt b/proxygen/httpserver/CMakeLists.txt
+--- a/proxygen/httpserver/CMakeLists.txt	2021-02-23 16:13:17.000000000 +0800
++++ b/proxygen/httpserver/CMakeLists.txt	2021-03-26 16:45:01.490253165 +0800
+@@ -34,90 +34,6 @@
+     DESTINATION ${LIB_INSTALL_DIR}
+ )
+ 
+-add_executable(proxygen_push
+-    samples/push/PushServer.cpp
+-    samples/push/PushRequestHandler.cpp
+-)
+-target_compile_options(
+-    proxygen_push
+-    PRIVATE
+-        ${_PROXYGEN_COMMON_COMPILE_OPTIONS}
+-)
+-target_link_libraries(
+-    proxygen_push
+-    PUBLIC
+-        proxygen
+-        proxygenhttpserver
+-)
+-install(
+-    TARGETS proxygen_push
+-    EXPORT proxygen-exports
+-    DESTINATION bin
+-)
+-
+-add_executable(proxygen_proxy
+-    samples/proxy/ProxyServer.cpp
+-    samples/proxy/ProxyHandler.cpp
+-)
+-target_compile_options(
+-    proxygen_proxy
+-    PRIVATE
+-        ${_PROXYGEN_COMMON_COMPILE_OPTIONS}
+-)
+-target_link_libraries(
+-    proxygen_proxy
+-    PUBLIC
+-        proxygen
+-        proxygenhttpserver
+-)
+-install(
+-    TARGETS proxygen_proxy
+-    EXPORT proxygen-exports
+-    DESTINATION bin
+-)
+-
+-add_executable(proxygen_static
+-    samples/static/StaticServer.cpp
+-    samples/static/StaticHandler.cpp
+-)
+-target_compile_options(
+-    proxygen_static
+-    PRIVATE
+-        ${_PROXYGEN_COMMON_COMPILE_OPTIONS}
+-)
+-target_link_libraries(
+-    proxygen_static
+-    PUBLIC
+-        proxygen
+-        proxygenhttpserver
+-)
+-install(
+-    TARGETS proxygen_static
+-    EXPORT proxygen-exports
+-    DESTINATION bin
+-)
+-
+-add_executable(proxygen_echo
+-    samples/echo/EchoServer.cpp
+-    samples/echo/EchoHandler.cpp
+-)
+-target_compile_options(
+-    proxygen_echo
+-    PRIVATE
+-        ${_PROXYGEN_COMMON_COMPILE_OPTIONS}
+-)
+-target_link_libraries(
+-    proxygen_echo
+-    PUBLIC
+-        proxygen
+-        proxygenhttpserver
+-)
+-install(
+-    TARGETS proxygen_echo
+-    EXPORT proxygen-exports
+-    DESTINATION bin
+-)
+-
+ if (BUILD_QUIC)
+   add_executable(hq
+       samples/hq/main.cpp

@@ -15,6 +15,7 @@ ExternalProject_Add(
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}
     DOWNLOAD_DIR ${DOWNLOAD_DIR}
+    PATCH_COMMAND patch -p1 < ${CMAKE_SOURCE_DIR}/patches/${name}-2021-03-01.patch
     SOURCE_DIR ${source_dir}
     CMAKE_ARGS
             ${common_cmake_args}

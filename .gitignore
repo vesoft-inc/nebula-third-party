@@ -34,3 +34,6 @@
 # Building directories
 build
 install
+
+!docker/build
+docker/build/*-packages

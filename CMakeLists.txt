@@ -198,7 +198,7 @@ maybe_add_dependencies(flex libtool)
 maybe_add_dependencies(zlib libtool)
 maybe_add_dependencies(gettext libtool)
 maybe_add_dependencies(lzma gettext)
-maybe_add_dependencies(libevent libtool)
+maybe_add_dependencies(libevent libtool openssl)
 maybe_add_dependencies(gperf libtool)
 
 maybe_add_dependencies(boost zlib bzip2 lzma)

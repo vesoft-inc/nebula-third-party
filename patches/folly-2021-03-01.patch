@@ -1,0 +1,12 @@
+diff -ur a/folly/logging/example/CMakeLists.txt b/folly/logging/example/CMakeLists.txt
+--- a/folly/logging/example/CMakeLists.txt	2021-02-23 20:05:25.000000000 +0800
++++ b/folly/logging/example/CMakeLists.txt	2021-03-27 14:40:17.383060636 +0800
+@@ -12,8 +12,5 @@
+ # See the License for the specific language governing permissions and
+ # limitations under the License.
+ 
+-add_executable(logging_example main.cpp)
+-target_link_libraries(logging_example logging_example_lib folly)
+-
+ add_library(logging_example_lib lib.cpp)
+ target_link_libraries(logging_example_lib folly)

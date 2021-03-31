@@ -1,6 +1,129 @@
+diff -ur a/folly/fibers/Fiber.cpp b/folly/fibers/Fiber.cpp
+--- a/folly/fibers/Fiber.cpp	2021-02-23 20:05:25.000000000 +0800
++++ b/folly/fibers/Fiber.cpp	2021-03-31 18:20:59.767236479 +0800
+@@ -79,7 +79,7 @@
+ void Fiber::init(bool recordStackUsed) {
+ // It is necessary to disable the logic for ASAN because we change
+ // the fiber's stack.
+-#ifndef FOLLY_SANITIZE_ADDRESS
++#ifndef FOLLY_LIBRARY_SANITIZE_ADDRESS
+   recordStackUsed_ = recordStackUsed;
+   if (UNLIKELY(recordStackUsed_ && !stackFilledWithMagic_)) {
+     CHECK_EQ(
+@@ -103,7 +103,7 @@
+ }
+ 
+ Fiber::~Fiber() {
+-#ifdef FOLLY_SANITIZE_ADDRESS
++#ifdef FOLLY_LIBRARY_SANITIZE_ADDRESS
+   if (asanFakeStack_ != nullptr) {
+     fiberManager_.freeFakeStack(asanFakeStack_);
+   }
+@@ -115,7 +115,7 @@
+ void Fiber::recordStackPosition() {
+   // For ASAN builds, functions may run on fake stack.
+   // So we cannot get meaningful stack position.
+-#ifndef FOLLY_SANITIZE_ADDRESS
++#ifndef FOLLY_LIBRARY_SANITIZE_ADDRESS
+   int stackDummy;
+   auto currentPosition = static_cast<size_t>(
+       fiberStackLimit_ + fiberStackSize_ -
+@@ -126,7 +126,7 @@
+ }
+ 
+ [[noreturn]] void Fiber::fiberFunc() {
+-#ifdef FOLLY_SANITIZE_ADDRESS
++#ifdef FOLLY_LIBRARY_SANITIZE_ADDRESS
+   fiberManager_.registerFinishSwitchStackWithAsan(
+       nullptr, &asanMainStackBase_, &asanMainStackSize_);
+ #endif
+diff -ur a/folly/fibers/Fiber.h b/folly/fibers/Fiber.h
+--- a/folly/fibers/Fiber.h	2021-02-23 20:05:25.000000000 +0800
++++ b/folly/fibers/Fiber.h	2021-03-31 18:20:59.766236472 +0800
+@@ -193,7 +193,7 @@
+   folly::IntrusiveListHook globalListHook_; /**< list hook for global list */
+   std::thread::id threadId_{};
+ 
+-#ifdef FOLLY_SANITIZE_ADDRESS
++#ifdef FOLLY_LIBRARY_SANITIZE_ADDRESS
+   void* asanFakeStack_{nullptr};
+   const void* asanMainStackBase_{nullptr};
+   size_t asanMainStackSize_{0};
+diff -ur a/folly/fibers/FiberManager.cpp b/folly/fibers/FiberManager.cpp
+--- a/folly/fibers/FiberManager.cpp	2021-02-23 20:05:25.000000000 +0800
++++ b/folly/fibers/FiberManager.cpp	2021-03-31 18:20:59.769236494 +0800
+@@ -33,7 +33,7 @@
+ #include <folly/portability/Unistd.h>
+ #include <folly/synchronization/SanitizeThread.h>
+ 
+-#ifdef FOLLY_SANITIZE_ADDRESS
++#ifdef FOLLY_LIBRARY_SANITIZE_ADDRESS
+ 
+ #ifndef _WIN32
+ #include <dlfcn.h>
+@@ -219,7 +219,7 @@
+   }
+ }
+ 
+-#ifdef FOLLY_SANITIZE_ADDRESS
++#ifdef FOLLY_LIBRARY_SANITIZE_ADDRESS
+ 
+ void FiberManager::registerStartSwitchStackWithAsan(
+     void** saveFakeStack, const void* stackBottom, size_t stackSize) {
+@@ -334,7 +334,7 @@
+   return nullptr;
+ }
+ 
+-#endif // FOLLY_SANITIZE_ADDRESS
++#endif // FOLLY_LIBRARY_SANITIZE_ADDRESS
+ 
+ // TVOS and WatchOS platforms have SIGSTKSZ but not sigaltstack
+ #if defined(SIGSTKSZ) && !FOLLY_APPLE_TVOS && !FOLLY_APPLE_WATCHOS
+diff -ur a/folly/fibers/FiberManagerInternal.h b/folly/fibers/FiberManagerInternal.h
+--- a/folly/fibers/FiberManagerInternal.h	2021-02-23 20:05:25.000000000 +0800
++++ b/folly/fibers/FiberManagerInternal.h	2021-03-31 18:20:59.768236487 +0800
+@@ -602,7 +602,7 @@
+   void runReadyFiber(Fiber* fiber);
+   void remoteReadyInsert(Fiber* fiber);
+ 
+-#ifdef FOLLY_SANITIZE_ADDRESS
++#ifdef FOLLY_LIBRARY_SANITIZE_ADDRESS
+ 
+   // These methods notify ASAN when a fiber is entered/exited so that ASAN can
+   // find the right stack extents when it needs to poison/unpoison the stack.
+@@ -614,7 +614,7 @@
+   void freeFakeStack(void* fakeStack);
+   void unpoisonFiberStack(const Fiber* fiber);
+ 
+-#endif // FOLLY_SANITIZE_ADDRESS
++#endif // FOLLY_LIBRARY_SANITIZE_ADDRESS
+ 
+   bool alternateSignalStackRegistered_{false};
+ 
+diff -ur a/folly/fibers/FiberManagerInternal-inl.h b/folly/fibers/FiberManagerInternal-inl.h
+--- a/folly/fibers/FiberManagerInternal-inl.h	2021-02-23 20:05:25.000000000 +0800
++++ b/folly/fibers/FiberManagerInternal-inl.h	2021-03-31 18:20:59.765236464 +0800
+@@ -66,7 +66,7 @@
+ inline void FiberManager::activateFiber(Fiber* fiber) {
+   DCHECK_EQ(activeFiber_, (Fiber*)nullptr);
+ 
+-#ifdef FOLLY_SANITIZE_ADDRESS
++#ifdef FOLLY_LIBRARY_SANITIZE_ADDRESS
+   DCHECK(!fiber->asanMainStackBase_);
+   DCHECK(!fiber->asanMainStackSize_);
+   auto stack = fiber->getStack();
+@@ -86,7 +86,7 @@
+ inline void FiberManager::deactivateFiber(Fiber* fiber) {
+   DCHECK_EQ(activeFiber_, fiber);
+ 
+-#ifdef FOLLY_SANITIZE_ADDRESS
++#ifdef FOLLY_LIBRARY_SANITIZE_ADDRESS
+   DCHECK(fiber->asanMainStackBase_);
+   DCHECK(fiber->asanMainStackSize_);
+ 
 diff -ur a/folly/logging/example/CMakeLists.txt b/folly/logging/example/CMakeLists.txt
 --- a/folly/logging/example/CMakeLists.txt	2021-02-23 20:05:25.000000000 +0800
-+++ b/folly/logging/example/CMakeLists.txt	2021-03-27 14:40:17.383060636 +0800
++++ b/folly/logging/example/CMakeLists.txt	2021-03-31 17:53:16.454086020 +0800
 @@ -12,8 +12,5 @@
  # See the License for the specific language governing permissions and
  # limitations under the License.

@@ -13,6 +13,8 @@ function atexit() {
     [[ -n $OSS_ENDPOINT ]] && ${this_dir}/oss-upload.sh third-party/2.0 third-party/vesoft-third-party-*.sh
 }
 
+trap atexit EXIT
+
 set -e
 
 arch=$(uname -m)

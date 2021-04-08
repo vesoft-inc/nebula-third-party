@@ -9,10 +9,10 @@ print:
 
 build-%: $(arch)/%.Dockerfile
 	@echo '******************' Build Nebula Third Party Docker For $*-$(arch) '********************'
-	@docker build --no-cache -t dutor/third-party-build:$*-$(arch) -f $(arch)/$*.Dockerfile .
+	@docker build --no-cache -t vesoft/third-party-build:$*-$(arch) -f $(arch)/$*.Dockerfile .
 
 push-%: build-%
 	@echo '******************' Pushing image $*-$(arch) '********************'
-	@docker push dutor/third-party-build:$*-$(arch)
+	@docker push vesoft/third-party-build:$*-$(arch)
 
 %: push-% ;

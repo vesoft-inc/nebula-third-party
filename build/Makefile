@@ -22,4 +22,4 @@ endif
 
 %:
 	@echo '******************' Build Nebula Third Party For $*-$(arch) '********************'
-	@$(docker_cmd) --rm -it dutor/third-party-build:$*-$(arch) ./run.sh
+	@$(docker_cmd) --rm -it vesoft/third-party-build:$*-$(arch) ./run.sh

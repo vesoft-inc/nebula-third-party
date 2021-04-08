@@ -47,7 +47,7 @@ message(STATUS "Building third party with ${BUILDING_JOBS_NUM} jobs")
 message(STATUS "Glibc version: ${GLIBC_VERSION}")
 
 if (NOT DOWNLOAD_DIR)
-    set(DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/downloads)
+    set(DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/tarballs)
 endif()
 set(BUILD_INFO_DIR ${CMAKE_CURRENT_BINARY_DIR}/build-info)
 set(BUILDING_PATH "${CMAKE_INSTALL_PREFIX}/bin:${CMAKE_INSTALL_PREFIX}/sbin:$ENV{PATH}")
@@ -249,10 +249,10 @@ add_custom_target(
 )
 
 add_custom_target(
-    pack-downloads
+    pack-tarballs
     COMMAND
-        tar czvf nebula-third-party-src-1.0.tgz downloads
+        tar czvf nebula-third-party-src-2.0.tgz tarballs
     COMMAND
-        md5sum nebula-third-party-src-1.0.tgz
+        md5sum nebula-third-party-src-2.0.tgz
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/..
 )

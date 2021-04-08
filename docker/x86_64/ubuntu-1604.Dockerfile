@@ -1,6 +1,6 @@
-FROM ubuntu:20.04
-SHELL ["/bin/bash", "-c"]
+FROM ubuntu:16.04
 ARG DEBIAN_FRONTEND=noninteractive
+SHELL ["/bin/bash", "-c"]
 RUN apt-get update
 RUN apt-get install -y make \
                        git \
@@ -37,8 +37,8 @@ RUN set -o pipefail && curl -s ${NG_URL} | bash
 RUN mkdir -p ${PACKAGE_DIR}
 WORKDIR ${PACKAGE_DIR}
 
-COPY build-third-party.sh ${PACKAGE_DIR}/build-third-party.sh
-RUN chmod +x ${PACKAGE_DIR}/build-third-party.sh
+COPY run.sh ${PACKAGE_DIR}/run.sh
+RUN chmod +x ${PACKAGE_DIR}/run.sh
 
 COPY oss-upload.sh ${PACKAGE_DIR}/oss-upload.sh
 RUN chmod +x ${PACKAGE_DIR}/oss-upload.sh

@@ -31,9 +31,5 @@
 *.out
 *.app
 
-# Building directories
 build
-install
-
-!docker/build
-docker/build/*-packages
+!build/Makefile

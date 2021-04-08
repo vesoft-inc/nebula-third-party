@@ -1,16 +1,18 @@
 #! /usr/bin/env bash
 
 this_dir=$(dirname $(readlink -f $0))
+build_root=$(pwd)
+package_dir=$build_root/packages
 
 function atexit() {
-    compgen -G third-party/vesoft-third-party-*.sh &> /dev/null
+    compgen -G $package_dir/vesoft-third-party-*.sh &> /dev/null
     if [[ $? -ne 0 ]]
     then
         exit 1
     fi
 
-    cp -v third-party/vesoft-third-party-*.sh /data
-    [[ -n $OSS_ENDPOINT ]] && ${this_dir}/oss-upload.sh third-party/2.0 third-party/vesoft-third-party-*.sh
+    cp -v $package_dir/vesoft-third-party-*.sh /data
+    [[ -n $OSS_ENDPOINT ]] && ${this_dir}/oss-upload.sh third-party/2.0 $package_dir/vesoft-third-party-*.sh
 }
 
 trap atexit EXIT
@@ -40,11 +42,11 @@ for v in $(echo $versions | tr ',' ' ')
 do
     source /opt/vesoft/toolset/gcc/$v/enable
     rm -rf /opt/vesoft/third-party
-    build_package=1 disable_cxx11_abi=0 nebula-third-party/build-third-party.sh /opt/vesoft/third-party
+    build_package=1 disable_cxx11_abi=0 nebula-third-party/build.sh /opt/vesoft/third-party
     if [[ $arch = 'x86_64' ]]
     then
         rm -rf /opt/vesoft/third-party
-        build_package=1 disable_cxx11_abi=1 nebula-third-party/build-third-party.sh /opt/vesoft/third-party
+        build_package=1 disable_cxx11_abi=1 nebula-third-party/build.sh /opt/vesoft/third-party
     fi
     source /opt/vesoft/toolset/gcc/$v/disable
 done

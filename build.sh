@@ -55,7 +55,7 @@ function check_cxx {
     [[ -n $CXX ]] && cxx_cmd=$CXX
     [[ -z $cxx_cmd ]] && { echo "No C++ compiler found" 1>&2; exit 1; }
     cxx_version=$($cxx_cmd -dumpfullversion -dumpversion 2>/dev/null)
-    local least_cxx_version=7.0.0
+    local least_cxx_version=7.5.0
     if [[ $(version_cmp $cxx_version $least_cxx_version) -lt 0 ]]
     then
         echo "g++ $least_cxx_version or higher required, but you have $cxx_version" 1>&2
@@ -69,12 +69,13 @@ check_cxx
 # Directories setup
 version=2.0
 cur_dir=`pwd`
-source_dir=$(readlink -f $(dirname $0))
-build_root=$cur_dir/third-party
+source_dir=$this_dir/project
+build_root=$cur_dir
 build_dir=$build_root/build
+package_dir=$build_root/packages
 prefix=$1
 install_dir=${prefix:-$build_root/install}
-download_dir=$build_root/downloads
+download_dir=$build_root/tarballs
 source_tar_name=nebula-third-party-src-$version.tgz
 source_url=https://oss-cdn.nebula-graph.com.cn/third-party/${source_tar_name}
 logfile=$build_root/build.log
@@ -106,7 +107,7 @@ then
 fi
 
 # NOTE Please adjust the expected checksum once the source tarball changed
-if [[ ! $checksum = 10b6f8fa3c71e111a47dc776481f8f15 ]]
+if [[ ! $checksum = b416ccfeeba04dcbcf1d0598107741eb ]]
 then
     hash wget &> /dev/null && download_cmd="wget -c"
     if [[ -z $download_cmd ]]
@@ -127,7 +128,7 @@ else
 fi
 
 # Build and install
-mkdir -p $build_dir $install_dir
+mkdir -p $build_dir $install_dir $package_dir
 cd $build_dir
 
 echo "Starting build"
@@ -199,6 +200,7 @@ sed -i -r 's#^DEFCKTNAME=.*(/var.*keytab).*#DEFCKTNAME="FILE:$prefix\1"#' $insta
 cat > $install_dir/version-info <<EOF
 Package         : Nebula Third Party
 Version         : $version
+Date            : $(date)
 glibc           : $libc_version
 Arch            : $march
 Compiler        : GCC $gcc_version
@@ -207,7 +209,7 @@ Vendor          : VEsoft Inc.
 EOF
 
 function make_package {
-    exec_file=$build_root/vesoft-third-party-$version-$march-libc-$libc_version-gcc-$gcc_version-abi-$abi_version.sh
+    exec_file=$package_dir/vesoft-third-party-$version-$march-libc-$libc_version-gcc-$gcc_version-abi-$abi_version.sh
 
     echo "Creating self-extractable package $exec_file"
     cat > $exec_file <<EOF

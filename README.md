@@ -102,3 +102,38 @@ $ make -C $path/docker
  * All docker images will be pushed to vesoft/third-party-build.
  * You should have logged in DockerHub in advance and have write access to the repository vesoft/third-party-build.
  * Images for different architectures(x86_64, aarch64) need to be built separately one the target machine.
+
+
+# How to Install Pre-built Packages
+
+```bash
+# Check the GCC version
+$ g++ --version
+g++ (GCC) 9.3.1 20200408 (Red Hat 9.3.1-2)
+...
+
+# Check the glibc version
+$ ldd --version
+ldd (GNU libc) 2.29
+...
+
+# Download and install
+$ nebula-third-party/install-third-party.sh
+...
+
+# Check the version info of the installed package
+$ cat /opt/vesoft/third-party/2.0/version-info
+Package         : Nebula Third Party
+Version         : 2.0
+glibc           : 2.27
+Arch            : x86_64
+Compiler        : GCC 8.3.0
+C++ ABI         : 11
+Vendor          : VEsoft Inc.
+
+# Install to customized directory
+$ nebula-third-party/install-third-party.sh --prefix=/path/to/install
+
+# Install with a customized GCC
+$ CXX=/path/to/gcc/bin/g++ nebula-third-party/install-third-party.sh
+```

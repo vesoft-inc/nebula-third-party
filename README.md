@@ -120,6 +120,8 @@ ldd (GNU libc) 2.29
 # Download and install
 $ nebula-third-party/install-third-party.sh
 ...
+$ ls /opt/vesoft/third-party/2.0
+version-info bin/ include/ lib/ lib64 share/
 
 # Check the version info of the installed package
 $ cat /opt/vesoft/third-party/2.0/version-info
@@ -137,3 +139,7 @@ $ nebula-third-party/install-third-party.sh --prefix=/path/to/install
 # Install with a customized GCC
 $ CXX=/path/to/gcc/bin/g++ nebula-third-party/install-third-party.sh
 ```
+
+**NOTE**:
+ * Because `sudo` doesn't pass environment variables by default, you need pass `CXX` with the `-E` option if you are using a non-default compiler setup. Like,
+ `sudo -E CXX=/path/to/g++ install-third-party.sh --prefix=/opt/vesoft/third-party/2.0`

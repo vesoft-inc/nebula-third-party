@@ -149,4 +149,4 @@ $ CXX=/path/to/gcc/bin/g++ nebula-third-party/install-third-party.sh
 **NOTE**:
  * Because `sudo` doesn't pass environment variables by default, you need pass `CXX` with the `-E` option if you are using a non-default compiler setup. Like,
  `sudo -E CXX=/path/to/g++ install-third-party.sh --prefix=/opt/vesoft/third-party/2.0`
- * Nebula Graph requires C++17 support to build. Although GCC 7.x announces to fully support C++17, it does not stablize until GCC 9.x. Please refer to [here](https://gcc.gnu.org/bugzilla/show_bug.cgi?id=99952) to see an example. We suggest to use GCC 9.x or higher to build Nebula Graph. Otherwise, please ensure that you use a compiler which matches the version of GCC used to build the pre-built package.
+ * Nebula Graph requires C++17 support to build. Although GCC 7.x announces to fully support C++17, it does not stablize until GCC 9.x. Please refer to [here](https://gcc.gnu.org/bugzilla/show_bug.cgi?id=99952) as an example. We suggest to use GCC 9.x or higher to build Nebula Graph. Otherwise, please ensure that you use a compiler which matches the version of GCC used to build the pre-built package.

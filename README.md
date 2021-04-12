@@ -67,6 +67,7 @@ $ build_package=1 $path/build.sh /opt/vesoft/third-party/2.0
 ```
 
 ### Docker-based Build
+The docker-based build is for building pre-built packages of third parties. For each target(OS or glibc), it uses different version of GCC to perform the build.
 ```shell
 # Print all targets
 $ make -C $path/build print
@@ -90,6 +91,9 @@ vesoft-third-party-2.0-x86_64-libc-xxx-gcc-xxx-abi-11.sh ...
  * If OSS credential were setup properly in `$HOME/.ossutilconfig`, all built packages will be uploaded to `oss://nebula-graph/third-party/2.0`
  * Invoke with `make -ik` to continue to build the next target even if some target fails.
  * Packages for different architectures(x86_64, aarch64) need to be built separately on the target machine.
+ * It's always a bad idea to run a Docker container whose native kernel is newer than the hosting system's, e.g. Ubuntu 1804 container on Centos 7 host.
+ * Currently, available GCC versions are: 7.5.0, 8.3.0, 9.1.0, 9.2.0, 9.3.0 and 10.1.0.
+ * Currently, available glibc versions are: 2.17(Centos 7), 2.23(Ubuntu 16.04), 2.27(Ubuntu 18.04), 2.31(Ubuntu 20.04) and 2.32(Ubuntu 20.10).
 
 
 ## Build the Docker Images
@@ -105,6 +109,8 @@ $ make -C $path/docker
 
 
 # How to Install Pre-built Packages
+You could invoke the `install-third-party.sh` script to install a pre-built package of third party. It automatically chooses an applicable version for your environment,
+according to the version of GCC and glibc.
 
 ```bash
 # Check the GCC version
@@ -143,3 +149,4 @@ $ CXX=/path/to/gcc/bin/g++ nebula-third-party/install-third-party.sh
 **NOTE**:
  * Because `sudo` doesn't pass environment variables by default, you need pass `CXX` with the `-E` option if you are using a non-default compiler setup. Like,
  `sudo -E CXX=/path/to/g++ install-third-party.sh --prefix=/opt/vesoft/third-party/2.0`
+ * Nebula Graph requires C++17 support to build. Although GCC 7.x announces to fully support C++17, it does not stablize until GCC 9.x. Please refer to [here](https://gcc.gnu.org/bugzilla/show_bug.cgi?id=99952) to see an example. We suggest to use GCC 9.x or higher to build Nebula Graph. Otherwise, please ensure that you use a compiler which matches the version of GCC used to build the pre-built package.

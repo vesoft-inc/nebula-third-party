@@ -105,7 +105,7 @@ $ make -C $path/docker
  * Rules are the same as building the third parties.
  * All docker images will be pushed to vesoft/third-party-build.
  * You should have logged in DockerHub in advance and have write access to the repository vesoft/third-party-build.
- * Images for different architectures(x86_64, aarch64) need to be built separately one the target machine.
+ * Images for different architectures(x86_64, aarch64) need to be built separately on the target machine.
 
 
 # How to Install Pre-built Packages

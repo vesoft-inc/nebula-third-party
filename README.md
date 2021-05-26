@@ -29,7 +29,7 @@
  * capstone
  * flex
  * bison
-
+ * libcurl
 # How to Build
 
 ## Build Requirements

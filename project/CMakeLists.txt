@@ -96,6 +96,7 @@ set(ALL_TARGETS
     libunwind
     openssl
     libevent
+    libcurl
     keyutils
     krb5
     jemalloc
@@ -191,7 +192,7 @@ endmacro()
 maybe_add_dependencies(autoconf-archive autoconf)
 maybe_add_dependencies(automake autoconf autoconf-archive)
 maybe_add_dependencies(libtool automake)
-
+maybe_add_dependencies(libcurl libtool)
 maybe_add_dependencies(glog libtool)
 maybe_add_dependencies(bison libtool)
 maybe_add_dependencies(flex libtool)

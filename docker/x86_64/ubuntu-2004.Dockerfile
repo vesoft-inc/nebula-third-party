@@ -1,6 +1,7 @@
 FROM ubuntu:20.04
 SHELL ["/bin/bash", "-c"]
 ARG DEBIAN_FRONTEND=noninteractive
+RUN apt-get clean
 RUN apt-get update
 RUN apt-get install -y make \
                        git \

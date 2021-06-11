@@ -17,7 +17,7 @@ ExternalProject_Add(
     CONFIGURE_COMMAND
         ${common_configure_envs}
         ./configure ${common_configure_args}
-                    --disable-stats --enable-prof
+                    --enable-stats --enable-prof
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     BUILD_IN_SOURCE 1
     INSTALL_COMMAND make -s install_bin install_include install_lib_static -j${BUILDING_JOBS_NUM}

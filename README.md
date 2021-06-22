@@ -31,7 +31,8 @@
  * bison
  * libcurl
  * ldap
- 
+ * kafka
+
 # How to Build
 
 ## Build Requirements

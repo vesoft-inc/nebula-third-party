@@ -107,6 +107,7 @@ set(ALL_TARGETS
     libcurl
     berkeleydb
     ldap
+    librdkafka
     libunwind
     openssl
     libevent

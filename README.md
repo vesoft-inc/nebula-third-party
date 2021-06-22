@@ -51,7 +51,7 @@ Other dependencies:
 ```shell
 $ git clone https://github.com/vesoft-inc/nebula-third-party.sh
 $ path=$(pwd)/nebula-third-party
-$ mkdir build && cd build
+$ cd build
 ```
 
 ### Native Build

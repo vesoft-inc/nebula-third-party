@@ -49,7 +49,7 @@ Other dependencies:
 
 ### Prepare
 ```shell
-$ git clone https://github.com/vesoft-inc/nebula-third-party.sh
+$ git clone https://github.com/vesoft-inc/nebula-third-party.git
 $ path=$(pwd)/nebula-third-party
 $ mkdir build && cd build
 ```

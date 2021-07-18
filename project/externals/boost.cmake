@@ -11,7 +11,13 @@ execute_process(
     OUTPUT_VARIABLE glibcxx_path
     OUTPUT_STRIP_TRAILING_WHITESPACE
 )
-get_filename_component(glibcxx_dir ${glibcxx_path} DIRECTORY)
+if (NOT ${CMAKE_HOST_SYSTEM_PROCESSOR} MATCHES "mips64")
+    get_filename_component(glibcxx_dir ${glibcxx_path} DIRECTORY)
+    set(BOOST_ENV_COMMAND
+        "env"
+        "LD_LIBRARY_PATH=${glibcxx_dir}"
+    )
+endif()
 ExternalProject_Add(
     ${name}
     URL https://dl.bintray.com/boostorg/release/1.75.0/source/boost_1_75_0.tar.gz
@@ -29,7 +35,7 @@ ExternalProject_Add(
             --prefix=${CMAKE_INSTALL_PREFIX}
 #--without-libraries=wave,nowide,chrono,atomic,fiber,type_erasure,exception,timer,contract,math,locale,json,test,stacktrace,mpi,log,graph,graph_parallel
     BUILD_COMMAND
-        env LD_LIBRARY_PATH=${glibcxx_dir}
+        ${BOOST_ENV_COMMAND}
         ./b2 install
             -d0
             -j${BUILDING_JOBS_NUM}

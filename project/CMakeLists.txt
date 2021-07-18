@@ -53,9 +53,12 @@ set(BUILD_INFO_DIR ${CMAKE_CURRENT_BINARY_DIR}/build-info)
 set(BUILDING_PATH "${CMAKE_INSTALL_PREFIX}/bin:${CMAKE_INSTALL_PREFIX}/sbin:$ENV{PATH}")
 set(ACLOCAL_PATH "${CMAKE_INSTALL_PREFIX}/share/aclocal:${CMAKE_INSTALL_PREFIX}/share/aclocal-1.15")
 
+# the GCC of NeoKylin V5 on mips64 is provided by NeoKylin and needs to use the binutils of the GCC tool too
 if (${CMAKE_HOST_SYSTEM_PROCESSOR} STREQUAL "mips64")
-    set(MIPS_LINK_FLAGS, "-fuse-ld=bfd")
+    set(MIPS_LINK_FLAGS "-fuse-ld=bfd")
 endif()
+
+message(STATUS "MIPS_LINK_FLAGS: ${MIPS_LINK_FLAGS}")
 
 set(extra_link_libs "${MIPS_LINK_FLAGS} -static-libstdc++ -static-libgcc -pthread -ldl")
 if (${DISABLE_CXX11_ABI})

@@ -17,14 +17,9 @@ ExternalProject_Add(
     CONFIGURE_COMMAND
         ${common_configure_envs}
         "LIBS=${LIBS}"
-        ./build_unix/../dist/configure ${common_configure_args} --prefix=${CMAKE_BERKELEYDB_INSTALL_PREFIX}
-
-    #message(STATUS "source_dir: ${source_dir}")
-    #message(STATUS "CMAKE_CURRENT_SOURCE_DIR: ${CMAKE_CURRENT_SOURCE_DIR}")
-    #message(STATUS "CMAKE_CURRENT_BINARY_DIR: ${CMAKE_CURRENT_BINARY_DIR}")
-    #message(STATUS "CMAKE_MODULE_PATH: ${CMAKE_MODULE_PATH}")
-    #message(FATAL_ERROR)
-
+        ./build_unix/../dist/configure ${common_configure_args}
+            --libdir=${CMAKE_BERKELEYDB_LIB_INSTALL_PREFIX}
+            --includedir=${CMAKE_BERKELEYDB_INCLUDE_INSTALL_PREFIX}
     BUILD_IN_SOURCE 1
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     INSTALL_COMMAND  make -s -j${BUILDING_JOBS_NUM} install
@@ -33,11 +28,12 @@ ExternalProject_Add(
     LOG_INSTALL TRUE
 )
 
+#update for ldap
 ExternalProject_Add_Step(${name} setup-compiler
     DEPENDEES configure
     DEPENDERS build
     COMMAND
-        echo "${CMAKE_BERKELEYDB_INSTALL_PREFIX}/lib/"
+        echo "${CMAKE_BERKELEYDB_LIB_INSTALL_PREFIX}"
             >> /etc/ld.so.conf
     COMMAND ldconfig -v
     WORKING_DIRECTORY ${source_dir}

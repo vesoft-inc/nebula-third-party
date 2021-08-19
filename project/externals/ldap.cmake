@@ -17,8 +17,8 @@ ExternalProject_Add(
     CONFIGURE_COMMAND
         ${common_configure_envs}
         "LIBS=${LIBS}"
-        "CPPFLAGS=-isystem ${CMAKE_BERKELEYDB_INSTALL_PREFIX}/include -I ${CMAKE_INSTALL_PREFIX}/include ${extra_cpp_flags}"
-        "LDFLAGS=-L${CMAKE_BERKELEYDB_INSTALL_PREFIX}/lib -L${CMAKE_INSTALL_PREFIX}/lib -L${CMAKE_INSTALL_PREFIX}/lib64 ${extra_link_libs}"
+        "CPPFLAGS=-isystem ${CMAKE_BERKELEYDB_INCLUDE_INSTALL_PREFIX} -I ${CMAKE_INSTALL_PREFIX}/include ${extra_cpp_flags}"
+        "LDFLAGS=-L${CMAKE_BERKELEYDB_LIB_INSTALL_PREFIX} -L${CMAKE_INSTALL_PREFIX}/lib -L${CMAKE_INSTALL_PREFIX}/lib64 ${extra_link_libs}"
         ./configure ${common_configure_args}
                     --enable-syslog
                     --enable-modules

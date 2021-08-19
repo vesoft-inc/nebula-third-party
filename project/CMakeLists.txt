@@ -41,7 +41,9 @@ if (NOT BUILDING_JOBS_NUM OR BUILDING_JOBS_NUM EQUAL 0)
     endif()
 endif()
 
-set(CMAKE_BERKELEYDB_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX}/berkeleydb-5.1.29)
+# Set for ldap
+set(CMAKE_BERKELEYDB_LIB_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX}/lib/berkeleydb-5.1.29)
+set(CMAKE_BERKELEYDB_INCLUDE_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX}/include/berkeleydb-5.1.29)
 
 message(STATUS "Number of online physcial CPU cores: ${num_cores}")
 message(STATUS "Available physical memory: ${available_memory_mb} MB")

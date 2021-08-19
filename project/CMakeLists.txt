@@ -126,6 +126,7 @@ set(ALL_TARGETS
     sodium
     googlebenchmark
     simdjson
+    breakpad
 )
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
@@ -234,6 +235,12 @@ add_custom_command(
         rm -rf ${CMAKE_INSTALL_PREFIX}/lib64/librocksdb.so*
     COMMAND
         rm -rf ${CMAKE_INSTALL_PREFIX}/lib/librocksdb.so*
+)
+
+add_custom_command(
+    TARGET breakpad POST_BUILD
+    COMMAND
+        rm -rf ${CMAKE_INSTALL_PREFIX}/bin/dump_syms_mac
 )
 
 add_custom_target(

@@ -31,6 +31,17 @@ ExternalProject_Add(
     LOG_INSTALL TRUE
 )
 
+#update before configure
+ExternalProject_Add_Step(${name} updateldconfig
+    DEPENDEES download
+    DEPENDERS configure
+    COMMAND
+        echo "${CMAKE_BERKELEYDB_LIB_INSTALL_PREFIX}"
+            >> /etc/ld.so.conf
+    COMMAND ldconfig -v
+    WORKING_DIRECTORY ${source_dir}
+)
+
 ExternalProject_Add_Step(${name} clean
     EXCLUDE_FROM_MAIN TRUE
     ALWAYS TRUE

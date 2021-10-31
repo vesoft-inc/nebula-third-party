@@ -1,14 +1,14 @@
-# Copyright (c) 2019 vesoft inc. All rights reserved.
+# Copyright (c) 2021 vesoft inc. All rights reserved.
 #
 # This source code is licensed under Apache 2.0 License,
 # attached with Common Clause Condition 1.0, found in the LICENSES directory.
 
-set(name libtool)
+set(name ldap)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL https://ftp.gnu.org/gnu/libtool/libtool-2.4.6.tar.xz
-    URL_HASH MD5=1bfb9b923f2c1339b4d2ce1807064aa5
+    URL https://www.openldap.org/software/download/OpenLDAP/openldap-release/openldap-2.4.49.tgz
+    URL_HASH MD5=2a47a6bb4319357ea7b032c45283e79e
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}
@@ -17,14 +17,29 @@ ExternalProject_Add(
     CONFIGURE_COMMAND
         ${common_configure_envs}
         "LIBS=${LIBS}"
+        "CPPFLAGS=-isystem ${CMAKE_BERKELEYDB_INCLUDE_INSTALL_PREFIX} -I ${CMAKE_INSTALL_PREFIX}/include ${extra_cpp_flags}"
+        "LDFLAGS=-L${CMAKE_BERKELEYDB_LIB_INSTALL_PREFIX} -L${CMAKE_INSTALL_PREFIX}/lib -L${CMAKE_INSTALL_PREFIX}/lib64 ${extra_link_libs}"
         ./configure ${common_configure_args}
-                    --enable-ltdl-install
+                    --enable-syslog
+                    --enable-modules
+                    --with-tls
     BUILD_IN_SOURCE 1
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     INSTALL_COMMAND make -s -j${BUILDING_JOBS_NUM} install
     LOG_CONFIGURE TRUE
     LOG_BUILD TRUE
     LOG_INSTALL TRUE
+)
+
+#update before configure
+ExternalProject_Add_Step(${name} updateldconfig
+    DEPENDEES download
+    DEPENDERS configure
+    COMMAND
+        echo "${CMAKE_BERKELEYDB_LIB_INSTALL_PREFIX}"
+            >> /etc/ld.so.conf
+    COMMAND ldconfig -v
+    WORKING_DIRECTORY ${source_dir}
 )
 
 ExternalProject_Add_Step(${name} clean
@@ -37,3 +52,4 @@ ExternalProject_Add_Step(${name} clean
 )
 
 ExternalProject_Add_StepTargets(${name} clean)
+

@@ -11,7 +11,7 @@ include(ExternalProject)
 # Get number of physical CPU cores and megabytes of available memory
 if ("${CMAKE_HOST_SYSTEM_PROCESSOR}" STREQUAL "x86_64")
     cmake_host_system_information(RESULT num_cores QUERY NUMBER_OF_PHYSICAL_CORES)
-elseif ("${CMAKE_HOST_SYSTEM_PROCESSOR}" STREQUAL "aarch64")
+elseif ("${CMAKE_HOST_SYSTEM_PROCESSOR}" STREQUAL "aarch64" OR "${CMAKE_HOST_SYSTEM_PROCESSOR}" STREQUAL "mips64")
     cmake_host_system_information(RESULT num_cores QUERY NUMBER_OF_LOGICAL_CORES)
 endif()
 cmake_host_system_information(RESULT available_memory_mb QUERY AVAILABLE_PHYSICAL_MEMORY)
@@ -41,6 +41,10 @@ if (NOT BUILDING_JOBS_NUM OR BUILDING_JOBS_NUM EQUAL 0)
     endif()
 endif()
 
+# Set for ldap
+set(CMAKE_BERKELEYDB_LIB_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX}/lib/berkeleydb-5.1.29)
+set(CMAKE_BERKELEYDB_INCLUDE_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX}/include/berkeleydb-5.1.29)
+
 message(STATUS "Number of online physcial CPU cores: ${num_cores}")
 message(STATUS "Available physical memory: ${available_memory_mb} MB")
 message(STATUS "Building third party with ${BUILDING_JOBS_NUM} jobs")
@@ -53,7 +57,14 @@ set(BUILD_INFO_DIR ${CMAKE_CURRENT_BINARY_DIR}/build-info)
 set(BUILDING_PATH "${CMAKE_INSTALL_PREFIX}/bin:${CMAKE_INSTALL_PREFIX}/sbin:$ENV{PATH}")
 set(ACLOCAL_PATH "${CMAKE_INSTALL_PREFIX}/share/aclocal:${CMAKE_INSTALL_PREFIX}/share/aclocal-1.15")
 
-set(extra_link_libs "-static-libstdc++ -static-libgcc -pthread -ldl")
+# the GCC of NeoKylin V5 on mips64 is provided by NeoKylin and needs to use the binutils of the GCC tool too
+if (${CMAKE_HOST_SYSTEM_PROCESSOR} STREQUAL "mips64")
+    set(MIPS_LINK_FLAGS "-fuse-ld=bfd")
+endif()
+
+message(STATUS "MIPS_LINK_FLAGS: ${MIPS_LINK_FLAGS}")
+
+set(extra_link_libs "${MIPS_LINK_FLAGS} -static-libstdc++ -static-libgcc -pthread -ldl")
 if (${DISABLE_CXX11_ABI})
     set(extra_cpp_flags "-D_GLIBCXX_USE_CXX11_ABI=0")
 else()
@@ -94,6 +105,8 @@ set(common_configure_envs
 
 set(ALL_TARGETS
     libcurl
+    berkeleydb
+    ldap
     libunwind
     openssl
     libevent
@@ -127,6 +140,8 @@ set(ALL_TARGETS
     sodium
     googlebenchmark
     simdjson
+    breakpad
+    libtool
 )
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
@@ -201,6 +216,7 @@ maybe_add_dependencies(gettext libtool)
 maybe_add_dependencies(lzma gettext)
 maybe_add_dependencies(libevent libtool openssl)
 maybe_add_dependencies(gperf libtool)
+maybe_add_dependencies(ldap berkeleydb libtool openssl)
 
 maybe_add_dependencies(boost zlib bzip2 lzma)
 maybe_add_dependencies(mstch boost)
@@ -235,6 +251,12 @@ add_custom_command(
         rm -rf ${CMAKE_INSTALL_PREFIX}/lib64/librocksdb.so*
     COMMAND
         rm -rf ${CMAKE_INSTALL_PREFIX}/lib/librocksdb.so*
+)
+
+add_custom_command(
+    TARGET breakpad POST_BUILD
+    COMMAND
+        rm -rf ${CMAKE_INSTALL_PREFIX}/bin/dump_syms_mac
 )
 
 add_custom_target(

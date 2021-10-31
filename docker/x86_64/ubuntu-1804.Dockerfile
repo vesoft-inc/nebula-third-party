@@ -1,6 +1,7 @@
 FROM ubuntu:18.04
 ARG DEBIAN_FRONTEND=noninteractive
 SHELL ["/bin/bash", "-c"]
+RUN apt-get clean
 RUN apt-get update
 RUN apt-get install -y make \
                        git \

@@ -1,5 +1,6 @@
 FROM arm64v8/ubuntu:18.04
 SHELL ["/bin/bash", "-c"]
+RUN apt-get clean
 RUN apt-get update
 RUN apt-get install -y make \
                        git \

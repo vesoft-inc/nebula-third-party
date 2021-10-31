@@ -104,6 +104,7 @@ set(common_configure_envs
 )
 
 set(ALL_TARGETS
+    libcurl
     berkeleydb
     ldap
     libunwind

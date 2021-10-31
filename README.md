@@ -29,8 +29,9 @@
  * capstone
  * flex
  * bison
+ * libcurl
  * ldap
-
+ 
 # How to Build
 
 ## Build Requirements

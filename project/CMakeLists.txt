@@ -41,6 +41,10 @@ if (NOT BUILDING_JOBS_NUM OR BUILDING_JOBS_NUM EQUAL 0)
     endif()
 endif()
 
+# Set for ldap
+set(CMAKE_BERKELEYDB_LIB_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX}/lib/berkeleydb-5.1.29)
+set(CMAKE_BERKELEYDB_INCLUDE_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX}/include/berkeleydb-5.1.29)
+
 message(STATUS "Number of online physcial CPU cores: ${num_cores}")
 message(STATUS "Available physical memory: ${available_memory_mb} MB")
 message(STATUS "Building third party with ${BUILDING_JOBS_NUM} jobs")
@@ -100,6 +104,8 @@ set(common_configure_envs
 )
 
 set(ALL_TARGETS
+    berkeleydb
+    ldap
     libunwind
     openssl
     libevent
@@ -134,6 +140,7 @@ set(ALL_TARGETS
     googlebenchmark
     simdjson
     breakpad
+    libtool
 )
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
@@ -208,6 +215,7 @@ maybe_add_dependencies(gettext libtool)
 maybe_add_dependencies(lzma gettext)
 maybe_add_dependencies(libevent libtool openssl)
 maybe_add_dependencies(gperf libtool)
+maybe_add_dependencies(ldap berkeleydb libtool openssl)
 
 maybe_add_dependencies(boost zlib bzip2 lzma)
 maybe_add_dependencies(mstch boost)

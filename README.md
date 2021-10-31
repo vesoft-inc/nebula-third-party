@@ -29,6 +29,7 @@
  * capstone
  * flex
  * bison
+ * ldap
 
 # How to Build
 

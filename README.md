@@ -44,6 +44,8 @@
 Other dependencies:
  * Python 3+
 
+**NOTE**:
+ * If you run `ls /usr/include/ | grep python`, output `python3.*m` instead of `python3.*`. And if build failed because of `fatal error: pyconfig.h: No such file or directory`, You can `cd /usr/include` and `ln -s python3.*m python3.*` (replace with your version).
 
 ## Build Third Party
 

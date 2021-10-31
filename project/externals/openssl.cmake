@@ -5,6 +5,15 @@
 
 set(name openssl)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
+
+if (${CMAKE_HOST_SYSTEM_PROCESSOR} STREQUAL "mips64")
+    set(openssl_config_command
+        "./Configure"
+        "linux64-mips64"
+    )
+else()
+    set(openssl_config_command "./config")
+endif()
 ExternalProject_Add(
     ${name}
     URL https://github.com/openssl/openssl/archive/OpenSSL_1_1_1j.tar.gz
@@ -17,7 +26,7 @@ ExternalProject_Add(
     SOURCE_DIR ${source_dir}
     CONFIGURE_COMMAND
         ${common_configure_envs}
-        ./config no-shared threads --prefix=${CMAKE_INSTALL_PREFIX}
+        ${openssl_config_command} no-shared threads --prefix=${CMAKE_INSTALL_PREFIX}
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     BUILD_IN_SOURCE 1
     INSTALL_COMMAND make -s install_sw -j${BUILDING_JOBS_NUM}

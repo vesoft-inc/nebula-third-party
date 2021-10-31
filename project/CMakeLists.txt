@@ -11,7 +11,7 @@ include(ExternalProject)
 # Get number of physical CPU cores and megabytes of available memory
 if ("${CMAKE_HOST_SYSTEM_PROCESSOR}" STREQUAL "x86_64")
     cmake_host_system_information(RESULT num_cores QUERY NUMBER_OF_PHYSICAL_CORES)
-elseif ("${CMAKE_HOST_SYSTEM_PROCESSOR}" STREQUAL "aarch64")
+elseif ("${CMAKE_HOST_SYSTEM_PROCESSOR}" STREQUAL "aarch64" OR "${CMAKE_HOST_SYSTEM_PROCESSOR}" STREQUAL "mips64")
     cmake_host_system_information(RESULT num_cores QUERY NUMBER_OF_LOGICAL_CORES)
 endif()
 cmake_host_system_information(RESULT available_memory_mb QUERY AVAILABLE_PHYSICAL_MEMORY)
@@ -53,7 +53,14 @@ set(BUILD_INFO_DIR ${CMAKE_CURRENT_BINARY_DIR}/build-info)
 set(BUILDING_PATH "${CMAKE_INSTALL_PREFIX}/bin:${CMAKE_INSTALL_PREFIX}/sbin:$ENV{PATH}")
 set(ACLOCAL_PATH "${CMAKE_INSTALL_PREFIX}/share/aclocal:${CMAKE_INSTALL_PREFIX}/share/aclocal-1.15")
 
-set(extra_link_libs "-static-libstdc++ -static-libgcc -pthread -ldl")
+# the GCC of NeoKylin V5 on mips64 is provided by NeoKylin and needs to use the binutils of the GCC tool too
+if (${CMAKE_HOST_SYSTEM_PROCESSOR} STREQUAL "mips64")
+    set(MIPS_LINK_FLAGS "-fuse-ld=bfd")
+endif()
+
+message(STATUS "MIPS_LINK_FLAGS: ${MIPS_LINK_FLAGS}")
+
+set(extra_link_libs "${MIPS_LINK_FLAGS} -static-libstdc++ -static-libgcc -pthread -ldl")
 if (${DISABLE_CXX11_ABI})
     set(extra_cpp_flags "-D_GLIBCXX_USE_CXX11_ABI=0")
 else()

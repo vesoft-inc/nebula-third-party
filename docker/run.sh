@@ -17,7 +17,7 @@ function atexit() {
 
 trap atexit EXIT
 
-set -e
+set -ex
 
 arch=$(uname -m)
 

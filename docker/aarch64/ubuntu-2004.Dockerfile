@@ -38,11 +38,9 @@ RUN set -o pipefail && curl -s ${NG_URL} | bash
 RUN mkdir -p ${PACKAGE_DIR}
 WORKDIR ${PACKAGE_DIR}
 
-COPY run.sh ${PACKAGE_DIR}/run.sh
-RUN chmod +x ${PACKAGE_DIR}/run.sh
+COPY . ${PACKAGE_DIR}
 
-COPY oss-upload.sh ${PACKAGE_DIR}/oss-upload.sh
-RUN chmod +x ${PACKAGE_DIR}/oss-upload.sh
+RUN chmod +x ${PACKAGE_DIR}/docker/oss-upload.sh
 
 RUN wget -q -O /usr/bin/ossutil64 ${OSS_UTIL_URL}
 RUN chmod +x /usr/bin/ossutil64

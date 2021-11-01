@@ -30,7 +30,7 @@ RUN yum install -y make \
                    gperf \
                    gettext
 
-ENV NG_URL=https://raw.githubusercontent.com/dutor/nebula-gears/master/install
+ENV NG_URL=https://raw.githubusercontent.com/vesoft-inc/nebula-gears/master/install
 ENV OSS_UTIL_URL=http://gosspublic.alicdn.com/ossutil/1.6.10/ossutil64
 ENV PACKAGE_DIR=/usr/src/third-party
 RUN curl -s ${NG_URL} | bash

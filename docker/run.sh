@@ -12,7 +12,7 @@ function atexit() {
     fi
 
     cp -v $package_dir/vesoft-third-party-*.sh /data
-    [[ -n $OSS_ENDPOINT ]] && ${this_dir}/oss-upload.sh third-party/2.0 $package_dir/vesoft-third-party-*.sh
+    ${this_dir}/oss-upload.sh third-party/2.0 $package_dir/vesoft-third-party-*.sh
 }
 
 trap atexit EXIT

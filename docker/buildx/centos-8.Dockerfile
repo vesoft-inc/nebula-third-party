@@ -1,4 +1,7 @@
 FROM centos:8
+
+ARG USE_GCC_VERSIONS=""
+
 SHELL ["/bin/bash", "-c"]
 RUN yum update -y
 RUN yum install -y epel-release yum-utils

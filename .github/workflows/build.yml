@@ -23,6 +23,16 @@ jobs:
           - ubuntu-1804
           - ubuntu-2004
           - ubuntu-2010
+        arch:
+          - linux/amd64
+          - linux/arm64
+        gcc:
+          - 7.5.0
+          - 8.3.0
+          - 9.1.0
+          - 9.2.0
+          - 9.3.0
+          - 10.1.0
     steps:
       - uses: actions/checkout@v1
       - uses: docker/setup-qemu-action@v1
@@ -35,8 +45,10 @@ jobs:
         with:
           context: ./docker
           file: ./docker/buildx/${{ matrix.os }}.Dockerfile
-          platforms: linux/amd64,linux/arm64
+          platforms: ${{ matrix.arch }}
           tags: vesoft/third-party-build:${{ matrix.os }}
           push: false
+          build-args: |
+            USE_GCC_VERSIONS=${{ matrix.gcc }}
           secrets: |
             "ossutilconfig=${{ secrets.OSS_UTIL_CONFIG }}"

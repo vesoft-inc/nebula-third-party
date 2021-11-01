@@ -1,5 +1,8 @@
 FROM ubuntu:16.04
+
+ARG USE_GCC_VERSIONS=""
 ARG DEBIAN_FRONTEND=noninteractive
+
 SHELL ["/bin/bash", "-c"]
 RUN apt-get clean
 RUN apt-get update

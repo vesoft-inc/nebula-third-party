@@ -1,5 +1,8 @@
 FROM ubuntu:20.10
+
+ARG USE_GCC_VERSIONS=""
 ARG DEBIAN_FRONTEND=noninteractive
+
 SHELL ["/bin/bash", "-c"]
 RUN apt-get clean
 RUN apt-get update

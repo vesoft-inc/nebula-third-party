@@ -1,4 +1,7 @@
 FROM centos:7
+
+ARG USE_GCC_VERSIONS=""
+
 SHELL ["/bin/bash", "-c"]
 RUN yum update -y
 RUN yum install -y make \

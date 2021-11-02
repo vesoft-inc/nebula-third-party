@@ -17,5 +17,6 @@ shift
 
 for file in $@
 do
+    echo "Uploading $file"
     ${CMD} -f cp ${file} ${OSS_BASE}/${OSS_SUBDIR}/$(basename ${file})
 done

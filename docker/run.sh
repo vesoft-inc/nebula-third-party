@@ -11,7 +11,7 @@ function atexit() {
         exit 1
     fi
 
-    cp -v $package_dir/vesoft-third-party-*.sh /data
+    # cp -v $package_dir/vesoft-third-party-*.sh /data
     ${this_dir}/oss-upload.sh third-party/2.0 $package_dir/vesoft-third-party-*.sh
 }
 

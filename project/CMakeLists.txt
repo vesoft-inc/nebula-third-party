@@ -104,9 +104,9 @@ set(common_configure_envs
 )
 
 set(ALL_TARGETS
-    # libcurl
-    # berkeleydb
-    # ldap
+    libcurl
+    berkeleydb
+    ldap
     libunwind
     openssl
     libevent

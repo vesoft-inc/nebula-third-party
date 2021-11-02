@@ -5,8 +5,8 @@
 CMD=""
 if [[ ! -z "${OSS_ENDPOINT}" ]] && [[ ! -z "${OSS_ID}" ]] && [[ ! -z "${OSS_SECRET}" ]]; then
     CMD="ossutil64 -e ${OSS_ENDPOINT} -i ${OSS_ID} -k ${OSS_SECRET}"
-elif [[ -f /run/secrets/ossutilconfig ]]; then
-    CMD="ossutil64 -c /run/secrets/ossutilconfig"
+elif [[ -f $HOME/.ossutilconfig ]]; then
+    CMD="ossutil64"
 else
     exit 1
 fi

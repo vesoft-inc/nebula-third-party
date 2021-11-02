@@ -7,7 +7,7 @@ set(name berkeleydb)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source/)
 ExternalProject_Add(
     ${name}
-    URL http://download.oracle.com/berkeley-db/db-5.1.29.tar.gz
+    URL https://oss-cdn.nebula-graph.com.cn/third-party/external/db-5.1.29.tar.gz
     URL_HASH MD5=a94ea755ab695bc04f82b94d2e24a1ef
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}/
     TMP_DIR ${BUILD_INFO_DIR}
@@ -38,4 +38,3 @@ ExternalProject_Add_Step(${name} clean
 )
 
 ExternalProject_Add_StepTargets(${name} clean)
-

@@ -49,4 +49,4 @@ RUN chmod +x ${PACKAGE_DIR}/docker/oss-upload.sh
 RUN wget -q -O /usr/bin/ossutil64 ${OSS_UTIL_URL}
 RUN chmod +x /usr/bin/ossutil64
 
-RUN --mount=type=secret,id=ossutilconfig bash ${PACKAGE_DIR}/docker/run.sh
+RUN --mount=type=secret,id=ossutilconfig,target=$HOME/.ossutilconfig bash ${PACKAGE_DIR}/docker/run.sh

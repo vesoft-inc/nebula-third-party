@@ -18,7 +18,7 @@ then
     exit $?
 fi
 
-this_dir=$(dirname $(readlink -f $0))
+this_dir="$(cd "$(dirname "$0")" && pwd)"
 
 # CMake and GCC version checking
 function version_cmp {
@@ -193,7 +193,7 @@ rm -rf $install_dir/lib/cmake/[Bb]oost*
 march=$(uname -m)
 
 # Make krb5 relocatable
-sed -i 's/^prefix=.*$/prefix=$(dirname $(dirname $(readlink -f $0)))/' $install_dir/bin/krb5-config
+sed -i 's/^prefix=.*$/prefix=$(dirname $this_dir)/' $install_dir/bin/krb5-config
 sed -i 's#^LDFLAGS=.*$#LDFLAGS="-L$prefix/lib -L$prefix/lib64"#' $install_dir/bin/krb5-config
 sed -i -r 's#^DEFCKTNAME=.*(/var.*keytab).*#DEFCKTNAME="FILE:$prefix\1"#' $install_dir/bin/krb5-config
 

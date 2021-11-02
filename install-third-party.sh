@@ -22,7 +22,7 @@ fi
 
 [[ -z $version ]] && version=2.0
 url_base=https://oss-cdn.nebula-graph.com.cn/third-party/$version
-this_dir=$(dirname $(readlink -f $0))
+this_dir="$(cd "$(dirname "$0")" && pwd)"
 cxx_cmd=${CXX:-g++}
 
 # We consider two derivatives: Red Hat and Debian

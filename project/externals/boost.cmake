@@ -5,13 +5,14 @@
 
 set(name boost)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
+string(SUBSTRING "${CMAKE_HOST_SYSTEM_PROCESSOR}" 0 4 processor_prefix)
 execute_process(
     COMMAND
         ${CMAKE_CXX_COMPILER} -print-file-name=libstdc++.so
     OUTPUT_VARIABLE glibcxx_path
     OUTPUT_STRIP_TRAILING_WHITESPACE
 )
-if (NOT ${CMAKE_HOST_SYSTEM_PROCESSOR} MATCHES "mips64")
+if (NOT ${processor_prefix} MATCHES "mips")
     get_filename_component(glibcxx_dir ${glibcxx_path} DIRECTORY)
     set(BOOST_ENV_COMMAND
         "env"

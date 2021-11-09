@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5.0)
+cmake_minimum_required(VERSION 3.13.0)
 
 project("Nebula Third Party" C CXX)
 
@@ -9,9 +9,10 @@ set(CXX_STANDARD_REQUIRED ON)
 include(ExternalProject)
 
 # Get number of physical CPU cores and megabytes of available memory
+string(SUBSTRING "${CMAKE_HOST_SYSTEM_PROCESSOR}" 0 4 processor_prefix)
 if ("${CMAKE_HOST_SYSTEM_PROCESSOR}" STREQUAL "x86_64")
     cmake_host_system_information(RESULT num_cores QUERY NUMBER_OF_PHYSICAL_CORES)
-elseif ("${CMAKE_HOST_SYSTEM_PROCESSOR}" STREQUAL "aarch64" OR "${CMAKE_HOST_SYSTEM_PROCESSOR}" STREQUAL "mips64")
+elseif ("${CMAKE_HOST_SYSTEM_PROCESSOR}" STREQUAL "aarch64" OR "${processor_prefix}" STREQUAL "mips")
     cmake_host_system_information(RESULT num_cores QUERY NUMBER_OF_LOGICAL_CORES)
 endif()
 cmake_host_system_information(RESULT available_memory_mb QUERY AVAILABLE_PHYSICAL_MEMORY)
@@ -58,7 +59,7 @@ set(BUILDING_PATH "${CMAKE_INSTALL_PREFIX}/bin:${CMAKE_INSTALL_PREFIX}/sbin:$ENV
 set(ACLOCAL_PATH "${CMAKE_INSTALL_PREFIX}/share/aclocal:${CMAKE_INSTALL_PREFIX}/share/aclocal-1.15")
 
 # the GCC of NeoKylin V5 on mips64 is provided by NeoKylin and needs to use the binutils of the GCC tool too
-if (${CMAKE_HOST_SYSTEM_PROCESSOR} STREQUAL "mips64")
+if (${processor_prefix} STREQUAL "mips")
     set(MIPS_LINK_FLAGS "-fuse-ld=bfd")
 endif()
 

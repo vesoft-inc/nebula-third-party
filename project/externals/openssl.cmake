@@ -5,8 +5,9 @@
 
 set(name openssl)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
+string(SUBSTRING "${CMAKE_HOST_SYSTEM_PROCESSOR}" 0 4 processor_prefix)
 
-if (${CMAKE_HOST_SYSTEM_PROCESSOR} STREQUAL "mips64")
+if (${processor_prefix} STREQUAL "mips")
     set(openssl_config_command
         "./Configure"
         "linux64-mips64"

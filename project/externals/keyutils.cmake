@@ -7,8 +7,8 @@ set(name keyutils)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL https://people.redhat.com/dhowells/keyutils/keyutils-1.6.tar.bz2
-    URL_HASH MD5=191987b0ab46bb5b50efd70a6e6ce808
+    URL https://people.redhat.com/dhowells/keyutils/keyutils-1.6.1.tar.bz2
+    URL_HASH MD5=919af7f33576816b423d537f8a8692e8
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}

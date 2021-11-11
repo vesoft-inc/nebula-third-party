@@ -18,11 +18,12 @@ if (NOT ${CMAKE_HOST_SYSTEM_PROCESSOR} MATCHES "mips64")
         "LD_LIBRARY_PATH=${glibcxx_dir}"
     )
 endif()
+
 ExternalProject_Add(
     ${name}
-    URL https://dl.bintray.com/boostorg/release/1.75.0/source/boost_1_75_0.tar.gz
-    URL_HASH MD5=38813f6feb40387dfe90160debd71251
-    DOWNLOAD_NAME boost-1.75.0.tar.gz
+    URL https://boostorg.jfrog.io/artifactory/main/release/1.76.0/source/boost_1_76_0.tar.gz
+    URL_HASH MD5=e425bf1f1d8c36a3cd464884e74f007a
+    DOWNLOAD_NAME boost-1.76.0.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}

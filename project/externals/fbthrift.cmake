@@ -7,9 +7,9 @@ set(name fbthrift)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL https://github.com/facebook/fbthrift/archive/v2021.03.01.00.tar.gz
-    URL_HASH MD5=bfdfb6e65d57d34ec015f536d5da4d07
-    DOWNLOAD_NAME fbthrift-2021-03-01.tar.gz
+    URL https://github.com/facebook/fbthrift/archive/refs/tags/v2021.11.08.00.tar.gz
+    URL_HASH MD5=a4278f7b5981bb908feb4cbe103aed68
+    DOWNLOAD_NAME fbthrift-2021-11-08.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}

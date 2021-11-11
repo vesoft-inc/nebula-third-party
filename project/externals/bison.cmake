@@ -7,8 +7,8 @@ set(name bison)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL http://ftp.gnu.org/gnu/bison//bison-3.0.5.tar.gz
-    URL_HASH MD5=41ad57813157b61bfa47e33067a9d6f0
+    URL http://ftp.gnu.org/gnu/bison//bison-3.8.2.tar.gz
+    URL_HASH MD5=1e541a097cda9eca675d29dd2832921f
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}

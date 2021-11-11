@@ -5,8 +5,8 @@
 
 ExternalProject_Add(
     pkgconf
-    URL https://github.com/pkgconf/pkgconf/archive/pkgconf-1.6.1.tar.gz
-    URL_HASH MD5=ba6bda0fca2010a05de3ccda3fcd5b50
+    URL https://github.com/pkgconf/pkgconf/archive/refs/tags/pkgconf-1.8.0.tar.gz
+    URL_HASH MD5=56ceb011a12ae5f28cda0b92d8890619
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/pkgconf
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}

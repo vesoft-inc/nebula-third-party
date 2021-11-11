@@ -7,8 +7,8 @@ set(name automake)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL https://ftp.gnu.org/gnu/automake/automake-1.15.1.tar.xz
-    URL_HASH MD5=24cd3501b6ad8cd4d7e2546f07e8b4d4
+    URL https://ftp.gnu.org/gnu/automake/automake-1.16.5.tar.xz
+    URL_HASH MD5=4017e96f89fca45ca946f1c5db6be714
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}

@@ -14,11 +14,12 @@ if (${CMAKE_HOST_SYSTEM_PROCESSOR} STREQUAL "mips64")
 else()
     set(openssl_config_command "./config")
 endif()
+
 ExternalProject_Add(
     ${name}
-    URL https://github.com/openssl/openssl/archive/OpenSSL_1_1_1j.tar.gz
-    URL_HASH MD5=2913df113ecd2a396a171d9234556ea1
-    DOWNLOAD_NAME openssl-1.1.1j.tar.gz
+    URL https://github.com/openssl/openssl/archive/refs/tags/OpenSSL_1_1_1l.tar.gz
+    URL_HASH MD5=2ff02cd10f96671162df3efd60470cfe
+    DOWNLOAD_NAME openssl-1.1.1l.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}

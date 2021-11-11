@@ -67,7 +67,7 @@ check_cmake
 check_cxx
 
 # Directories setup
-version=2.0
+version=3.0
 cur_dir=`pwd`
 source_dir=$this_dir/project
 build_root=$cur_dir
@@ -84,10 +84,11 @@ gcc_version=$(${CXX:-g++} -dumpfullversion -dumpversion)
 abi_version=$($this_dir/cxx-compiler-abi-version.sh)
 libc_version=$(ldd --version | head -1 | cut -d ' ' -f4 | cut -d '-' -f1)
 
+export PATH=$install_dir/bin:$PATH
+
 # Exit on any failure here after
 set -e
 set -o pipefail
-
 
 trap '[[ $? -ne 0 ]] && echo "Building failed, see $logfile for more details." 1>&2' EXIT
 
@@ -135,6 +136,7 @@ echo "Starting build"
 
 cmake -DDOWNLOAD_DIR=$download_dir              \
       -DCMAKE_INSTALL_PREFIX=$install_dir       \
+      -DSOURCE_PREFIX=$source_dir               \
       ${C_COMPILER_ARG} ${CXX_COMPILER_ARG}     \
       ${DISABLE_CXX11_ABI}                      \
       $source_dir |& tee $logfile
@@ -150,25 +152,45 @@ cd $OLDPWD && rm -rf $build_dir
 find $install_dir -name '*.la' | xargs rm -f
 
 # Remove big unneeded binaries
+binaries+=(k{rb5-onfig,init,admin,su,tutil,list,vno,passwd})
+binaries+=(k{destroy,switch,5srvutil,eyctl})
+binaries+=(openssl gss-client dump_syms_mac)
+binaries+=(uuclient sim_client)
+binaries+=(sclient compile_et)
+binaries+=(c_rehash gflags_completions.sh)
+binaries+=(curl curl-config)
+
 binaries+=(proxygen_{echo,push,proxy,static,curl})
-binaries+=(openssl zstd kinit kadmin gss-client)
-binaries+=(ksu uuclient ktutil klist kvno sim_client)
-binaries+=(sclient kpasswd kdestroy kswitch lz4)
-binaries+=(xz bunzip2 bzcat bzip2 xzdec)
-binaries+=(compile_et bzmore bzgrep xzless bzdiff)
-binaries+=(xzmore jemalloc-config zstdgrep gflags_completions.sh xzgrep)
-binaries+=(c_rehash xzdiff bzip2recover lzmadec lzmainfo)
+
+binaries+=(db_{archive,checkpoint,deadlock,dump,hotbackup,load})
+binaries+=(db_{log_verify,printlog,recover,replicate,stat,upgrade,verify})
+
+binaries+=(bzip2 bunzip2 bzip2recover bz{cat,cmp,diff,less,more,grep,egrep,fgrep})
+binaries+=(lz4 lz4c lz4cat unlz4 lz{cat,cmp,diff,less,more,grep,egrep,fgrep})
+binaries+=(lzma unlzma lzma{dec,info})
+binaries+=(zstd zstdgrep)
+binaries+=(xz unxz xz{cat,cmp,dec,diff,less,more,grep,egrep,fgrep})
+
 for file in ${binaries[@]}
 do
     rm -f $install_dir/bin/$file
 done
 
 binaries=()
-binaries+=(krb5-send-pr key.dns_resolver request-key uuserver kprop sserver)
-binaries+=(sim_server gss-server kproplog kpropd kadmin.local kdb5_util kadmind krb5kdc)
+binaries+=(kdb5_util krb5{-send-pr,kdc})
+binaries+=(key.dns_resolver request-key k{prop,proplog,propd,admin.local,admind})
+binaries+=(request-key uuserver sserver sim_server gss-server)
+binaries+=(slap{acl,add,auth,cat,dn,index,passwd,schema,test})
 for file in ${binaries[@]}
 do
     rm -f $install_dir/sbin/$file
+done
+
+binaries=()
+binaries+=(slapd)
+for file in ${binaries[@]}
+do
+    rm -f $install_dir/libexec/$file
 done
 
 # Strip executables

@@ -1,8 +1,9 @@
 cmake_minimum_required(VERSION 3.5.0)
+cmake_policy(SET CMP0114 OLD)
 
 project("Nebula Third Party" C CXX)
 
-set(CXX_STANDARD 14)
+set(CXX_STANDARD 17)
 set(CXX_STANDARD_REQUIRED ON)
 
 # Required CMake modules
@@ -41,9 +42,9 @@ if (NOT BUILDING_JOBS_NUM OR BUILDING_JOBS_NUM EQUAL 0)
     endif()
 endif()
 
-# Set for ldap
-set(CMAKE_BERKELEYDB_LIB_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX}/lib/berkeleydb-5.1.29)
-set(CMAKE_BERKELEYDB_INCLUDE_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX}/include/berkeleydb-5.1.29)
+# BerkeleyDB dirs
+set(BERKELEYDB_LIB_DIR ${CMAKE_INSTALL_PREFIX}/lib/berkeleydb-5.1.29)
+set(BERKELEYDB_INCLUDE_DIR ${CMAKE_INSTALL_PREFIX}/include/berkeleydb-5.1.29)
 
 message(STATUS "Number of online physcial CPU cores: ${num_cores}")
 message(STATUS "Available physical memory: ${available_memory_mb} MB")
@@ -55,7 +56,7 @@ if (NOT DOWNLOAD_DIR)
 endif()
 set(BUILD_INFO_DIR ${CMAKE_CURRENT_BINARY_DIR}/build-info)
 set(BUILDING_PATH "${CMAKE_INSTALL_PREFIX}/bin:${CMAKE_INSTALL_PREFIX}/sbin:$ENV{PATH}")
-set(ACLOCAL_PATH "${CMAKE_INSTALL_PREFIX}/share/aclocal:${CMAKE_INSTALL_PREFIX}/share/aclocal-1.15")
+set(ACLOCAL_PATH "${CMAKE_INSTALL_PREFIX}/share/aclocal")
 
 # the GCC of NeoKylin V5 on mips64 is provided by NeoKylin and needs to use the binutils of the GCC tool too
 if (${CMAKE_HOST_SYSTEM_PROCESSOR} STREQUAL "mips64")
@@ -85,6 +86,7 @@ set(common_cmake_args
     "-DCMAKE_SHARED_LINKER_FLAGS=${extra_link_libs}"
     -DCMAKE_INCLUDE_PATH=${CMAKE_INSTALL_PREFIX}/include
     -DCMAKE_LIBRARY_PATH=${CMAKE_INSTALL_PREFIX}/lib
+    -DBUILD_SHARED_LIBS=OFF
 )
 
 set(common_configure_args
@@ -104,44 +106,43 @@ set(common_configure_envs
 )
 
 set(ALL_TARGETS
-    libcurl
     berkeleydb
-    ldap
-    libunwind
-    openssl
-    libevent
-    keyutils
-    krb5
-    jemalloc
-    bzip2
-    zstd
-    zlib
-    snappy
-    lzma
-    lz4
-    libaio
-    mstch
-    gperf
-    fatal
-    double-conversion
-    gflags
-    googletest
-    glog
     boost
-    rocksdb
-    folly
-    wangle
-    proxygen
-    fbthrift
+    breakpad
+    bzip2
     capstone
-    s2geometry
+    double-conversion
+    fatal
+    fbthrift
     fizz
     fmt
-    sodium
+    folly
+    gflags
+    glog
     googlebenchmark
+    googletest
+    gperf
+    jemalloc
+    keyutils
+    krb5
+    ldap
+    libaio
+    libcurl
+    libevent
+    libunwind
+    lz4
+    lzma
+    mstch
+    openssl
+    proxygen
+    rocksdb
+    s2geometry
     simdjson
-    breakpad
-    libtool
+    snappy
+    sodium
+    wangle
+    zlib
+    zstd
 )
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
@@ -192,6 +193,13 @@ endif()
 foreach(target ${ALL_TARGETS})
     include(externals/${target}.cmake)
     list(APPEND CLEAN_TARGETS ${target}-clean)
+# Verify there is no shared library installed by the individual project
+    ExternalProject_Add_Step(${target} verify
+        DEPENDEES install
+        ALWAYS false
+        COMMAND ${SOURCE_PREFIX}/check-so-libs.sh ${CMAKE_INSTALL_PREFIX}
+        WORKING_DIRECTORY ${CMAKE_INSTALL_PREFIX}
+)
 endforeach()
 
 macro(maybe_add_dependencies depender)
@@ -239,30 +247,12 @@ maybe_add_dependencies(rocksdb snappy zlib zstd bzip2 lz4 lzma libunwind)
 # Here we build gtest after rocksdb intentionally
 maybe_add_dependencies(googletest rocksdb gflags)
 
-add_custom_command(
-    TARGET zstd POST_BUILD
-    COMMAND
-        rm -rf ${CMAKE_INSTALL_PREFIX}/lib/libzstd.so*
-)
-
-add_custom_command(
-    TARGET rocksdb POST_BUILD
-    COMMAND
-        rm -rf ${CMAKE_INSTALL_PREFIX}/lib64/librocksdb.so*
-    COMMAND
-        rm -rf ${CMAKE_INSTALL_PREFIX}/lib/librocksdb.so*
-)
-
-add_custom_command(
-    TARGET breakpad POST_BUILD
-    COMMAND
-        rm -rf ${CMAKE_INSTALL_PREFIX}/bin/dump_syms_mac
-)
-
 add_custom_target(
     strip-archives ALL
     COMMAND
         strip --strip-unneeded ${CMAKE_INSTALL_PREFIX}/lib/*.a
+    COMMAND
+        strip --strip-unneeded ${CMAKE_INSTALL_PREFIX}/lib64/*.a
     DEPENDS ${ALL_TARGETS}
 )
 
@@ -274,8 +264,8 @@ add_custom_target(
 add_custom_target(
     pack-tarballs
     COMMAND
-        tar czvf nebula-third-party-src-2.0.tgz tarballs
+        tar czvf nebula-third-party-src-3.0.tgz tarballs
     COMMAND
-        md5sum nebula-third-party-src-2.0.tgz
+        md5sum nebula-third-party-src-3.0.tgz
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/..
 )

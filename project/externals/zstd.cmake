@@ -9,9 +9,9 @@ set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 set(MakeEnvs "env" "CFLAGS=-fPIC")
 ExternalProject_Add(
     ${name}
-    URL https://github.com/facebook/zstd/releases/download/v1.4.9/zstd-1.4.9.tar.gz
-    URL_HASH MD5=eb718b8aae0302cabe20f968e500534d
-    DOWNLOAD_NAME zstd-1.4.9.tar.gz
+    URL https://github.com/facebook/zstd/archive/refs/tags/v1.5.0.tar.gz
+    URL_HASH MD5=d5ac89d5df9e81243ce40d0c6a66691d
+    DOWNLOAD_NAME zstd-1.5.0.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}
@@ -22,7 +22,11 @@ ExternalProject_Add(
         "${MakeEnvs}"
         make -e -s -j${BUILDING_JOBS_NUM}
     BUILD_IN_SOURCE 1
-    INSTALL_COMMAND make -s install -j${BUILDING_JOBS_NUM} PREFIX=${CMAKE_INSTALL_PREFIX}
+    INSTALL_COMMAND
+      make -C lib
+           -s install-pc install-static install-includes
+           -j${BUILDING_JOBS_NUM}
+           PREFIX=${CMAKE_INSTALL_PREFIX}
     LOG_CONFIGURE TRUE
     LOG_BUILD TRUE
     LOG_INSTALL TRUE

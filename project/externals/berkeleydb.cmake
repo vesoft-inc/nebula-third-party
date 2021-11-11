@@ -17,9 +17,11 @@ ExternalProject_Add(
     CONFIGURE_COMMAND
         ${common_configure_envs}
         "LIBS=${LIBS}"
-        ./build_unix/../dist/configure ${common_configure_args}
-            --libdir=${CMAKE_BERKELEYDB_LIB_INSTALL_PREFIX}
-            --includedir=${CMAKE_BERKELEYDB_INCLUDE_INSTALL_PREFIX}
+        ./build_unix/../dist/configure
+            ${common_configure_args}
+            --enable-shared=no
+            --libdir=${BERKELEYDB_LIB_DIR}
+            --includedir=${BERKELEYDB_INCLUDE_DIR}
     BUILD_IN_SOURCE 1
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     INSTALL_COMMAND  make -s -j${BUILDING_JOBS_NUM} install

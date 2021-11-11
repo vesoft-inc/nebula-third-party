@@ -15,12 +15,28 @@ ExternalProject_Add(
     DOWNLOAD_DIR ${DOWNLOAD_DIR}
     SOURCE_DIR ${source_dir}
     CONFIGURE_COMMAND ""
-    BUILD_COMMAND env CFLAGS=-fPIC make -s -j${BUILDING_JOBS_NUM}
+    BUILD_COMMAND
+        env CFLAGS=-fPIC make -s -j${BUILDING_JOBS_NUM}
     BUILD_IN_SOURCE 1
-    INSTALL_COMMAND make prefix=${CMAKE_INSTALL_PREFIX} -s install -j${BUILDING_JOBS_NUM}
+    INSTALL_COMMAND ""
     LOG_CONFIGURE TRUE
     LOG_BUILD TRUE
     LOG_INSTALL TRUE
+)
+
+ExternalProject_Add_Step(${name} install-static
+    DEPENDEES build
+    DEPENDERS install
+    ALWAYS false
+    COMMAND
+        make prefix=${CMAKE_INSTALL_PREFIX}
+            -s install
+            -j${BUILDING_JOBS_NUM}
+    COMMAND
+        rm -f ${CMAKE_INSTALL_PREFIX}/lib/libaio.so
+    COMMAND
+        find ${CMAKE_INSTALL_PREFIX}/lib -name "libaio\\.so.*" -delete
+    WORKING_DIRECTORY ${source_dir}
 )
 
 ExternalProject_Add_Step(${name} clean
@@ -33,9 +49,3 @@ ExternalProject_Add_Step(${name} clean
 )
 
 ExternalProject_Add_StepTargets(${name} clean)
-
-add_custom_command(
-    TARGET libaio POST_BUILD
-    COMMAND
-        rm -f ${CMAKE_INSTALL_PREFIX}/lib/libaio.so*
-)

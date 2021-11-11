@@ -32,7 +32,6 @@
 *.app
 
 build
-!build/Makefile
 build.log
 tarballs
 install

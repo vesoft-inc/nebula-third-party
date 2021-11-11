@@ -7,8 +7,8 @@ set(name autoconf-archive)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL https://ftp.gnu.org/gnu/autoconf-archive/autoconf-archive-2019.01.06.tar.xz
-    URL_HASH MD5=d46413c8b00a125b1529bae385bbec55
+    URL https://ftp.gnu.org/gnu/autoconf-archive/autoconf-archive-2021.02.19.tar.xz
+    URL_HASH MD5=4f06adfbe3f1a2dada06066cf460e5ab
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}

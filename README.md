@@ -1,37 +1,44 @@
 # Provides
- * folly
- * fbthrift
- * proxygen
- * wangle
- * fizz
- * fatal
- * sodium
- * RocksDB
- * jemalloc
- * double-conversion
- * fmt
- * glog
- * gflags
- * googletest
- * googlebenchmark
- * snappy
- * s2geometry
+ * berkeleydb
+ * bison
+ * boost
+ * breakpad
  * bzip2
- * zstd
- * lz4
- * lzma
- * zlib
- * openssl
+ * capstone
+ * double-conversion
+ * fatal
+ * fbthrift
+ * fizz
+ * flex
+ * fmt
+ * folly
+ * gflags
+ * glog
+ * googlebenchmark
+ * googletest
+ * gperf
+ * jemalloc
+ * keyutils
+ * krb5
+ * ldap
+ * libaio
+ * libcurl
  * libevent
  * libunwind
- * boost
+ * lz4
+ * lzma
+ * mstch
+ * openssl
+ * proxygen
+ * rocksdb
+ * s2geometry
  * simdjson
- * capstone
- * flex
- * bison
- * libcurl
- * ldap
- 
+ * snappy
+ * sodium
+ * wangle
+ * zlib
+ * zstd
+
 # How to Build
 
 ## Build Requirements
@@ -62,12 +69,12 @@ $ mkdir build && cd build
 ```shell
 $ build_package=1 $path/build.sh
 $ ls
-install/ tarballs/  packages/ nebula-third-party-src-2.0.tgz
+install/ tarballs/  packages/ nebula-third-party-src-3.0.tgz
 $ ls packages
-vesoft-third-party-2.0-x86_64-libc-xxx-gcc-xxx-abi-11.sh
+vesoft-third-party-3.0-x86_64-libc-xxx-gcc-xxx-abi-11.sh
 
 # You could also specify an install prefix
-$ build_package=1 $path/build.sh /opt/vesoft/third-party/2.0
+$ build_package=1 $path/build.sh /opt/vesoft/third-party/3.0
 ```
 
 ### Docker-based Build
@@ -88,11 +95,11 @@ $ USE_GCC_VERSIONS=7.5.0,10.1.0 make -C $path/build
 
 # All built packages resides in packages/
 $ ls packages
-vesoft-third-party-2.0-x86_64-libc-xxx-gcc-xxx-abi-11.sh ...
+vesoft-third-party-3.0-x86_64-libc-xxx-gcc-xxx-abi-11.sh ...
 ```
 
 **NOTE**:
- * If OSS credential were setup properly in `$HOME/.ossutilconfig`, all built packages will be uploaded to `oss://nebula-graph/third-party/2.0`
+ * If OSS credential were setup properly in `$HOME/.ossutilconfig`, all built packages will be uploaded to `oss://nebula-graph/third-party/3.0`
  * Invoke with `make -ik` to continue to build the next target even if some target fails.
  * Packages for different architectures(x86_64, aarch64) need to be built separately on the target machine.
  * It's always a bad idea to run a Docker container whose native kernel is newer than the hosting system's, e.g. Ubuntu 1804 container on Centos 7 host.
@@ -130,13 +137,13 @@ ldd (GNU libc) 2.29
 # Download and install
 $ nebula-third-party/install-third-party.sh
 ...
-$ ls /opt/vesoft/third-party/2.0
+$ ls /opt/vesoft/third-party/3.0
 version-info bin/ include/ lib/ lib64 share/
 
 # Check the version info of the installed package
-$ cat /opt/vesoft/third-party/2.0/version-info
+$ cat /opt/vesoft/third-party/3.0/version-info
 Package         : Nebula Third Party
-Version         : 2.0
+Version         : 3.0
 glibc           : 2.27
 Arch            : x86_64
 Compiler        : GCC 8.3.0
@@ -152,7 +159,7 @@ $ CXX=/path/to/gcc/bin/g++ nebula-third-party/install-third-party.sh
 
 **NOTE**:
  * Because `sudo` doesn't pass environment variables by default, you need pass `CXX` with the `-E` option if you are using a non-default compiler setup. Like,
- `sudo -E CXX=/path/to/g++ install-third-party.sh --prefix=/opt/vesoft/third-party/2.0`
+ `sudo -E CXX=/path/to/g++ install-third-party.sh --prefix=/opt/vesoft/third-party/3.0`
  * Nebula Graph requires C++17 support to build. Although GCC 7.x announces to fully support C++17, it does not stablize until GCC 9.x. Please refer to [here](https://gcc.gnu.org/bugzilla/show_bug.cgi?id=99952) as an example. We suggest to use GCC 9.x or higher to build Nebula Graph. Otherwise, please ensure that you use a compiler which matches the one used to build the pre-built package.
  * the deps of the NeoKylin on mips64el
     - glibc-static.mips64el

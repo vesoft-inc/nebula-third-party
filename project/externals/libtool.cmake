@@ -19,6 +19,8 @@ ExternalProject_Add(
         "LIBS=${LIBS}"
         ./configure ${common_configure_args}
                     --enable-ltdl-install
+                    --enable-shared=no
+                    --enable-static=yes
     BUILD_IN_SOURCE 1
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     INSTALL_COMMAND make -s -j${BUILDING_JOBS_NUM} install

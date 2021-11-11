@@ -16,12 +16,12 @@ ExternalProject_Add(
     SOURCE_DIR ${source_dir}
     CONFIGURE_COMMAND
         ${common_configure_envs}
-        "LIBS=${LIBS}"
-        "CPPFLAGS=-isystem ${CMAKE_BERKELEYDB_INCLUDE_INSTALL_PREFIX} -I ${CMAKE_INSTALL_PREFIX}/include ${extra_cpp_flags}"
-        "LDFLAGS=-L${CMAKE_BERKELEYDB_LIB_INSTALL_PREFIX} -L${CMAKE_INSTALL_PREFIX}/lib -L${CMAKE_INSTALL_PREFIX}/lib64 ${extra_link_libs}"
+        "CPPFLAGS=-I${BERKELEYDB_INCLUDE_DIR} -I${CMAKE_INSTALL_PREFIX}/include ${extra_cpp_flags}"
+        "LDFLAGS=-L${BERKELEYDB_LIB_DIR} -L${CMAKE_INSTALL_PREFIX}/lib -L${CMAKE_INSTALL_PREFIX}/lib64 ${extra_link_libs}"
         ./configure ${common_configure_args}
                     --enable-syslog
                     --enable-modules
+                    --enable-shared=no
                     --with-tls
     BUILD_IN_SOURCE 1
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
@@ -32,15 +32,15 @@ ExternalProject_Add(
 )
 
 #update before configure
-ExternalProject_Add_Step(${name} updateldconfig
-    DEPENDEES download
-    DEPENDERS configure
-    COMMAND
-        echo "${CMAKE_BERKELEYDB_LIB_INSTALL_PREFIX}"
-            >> /etc/ld.so.conf
-    COMMAND ldconfig -v
-    WORKING_DIRECTORY ${source_dir}
-)
+#ExternalProject_Add_Step(${name} updateldconfig
+#    DEPENDEES download
+#    DEPENDERS configure
+#    COMMAND
+#        echo "${BERKELEYDB_LIB_DIR}"
+#            >> /etc/ld.so.conf
+#    COMMAND ldconfig -v
+#    WORKING_DIRECTORY ${source_dir}
+#)
 
 ExternalProject_Add_Step(${name} clean
     EXCLUDE_FROM_MAIN TRUE

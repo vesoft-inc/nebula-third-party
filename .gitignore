@@ -33,3 +33,8 @@
 
 build
 !build/Makefile
+build.log
+tarballs
+install
+nebula-third-party-src-*
+

@@ -146,7 +146,10 @@ make |& \
         { grep --line-buffered 'Creating\|^Scanning\|Performing\|Completed\|CMakeFiles.*Error' || true; }
 end_time=$(date +%s)
 
-cd $OLDPWD && rm -rf $build_dir
+# We are going to keep the build files so that next time it does not have to
+# re-build everything. If you want to rebuild everything, simply remove the
+# build directory
+#cd $OLDPWD && rm -rf $build_dir
 
 # Remove all libtool files
 find $install_dir -name '*.la' | xargs rm -f
@@ -200,14 +203,12 @@ do
 done
 
 # Remove unneeded static libraries
-libs+=(libcompiler_generators.a libcompiler_base.a libcompiler_ast.a libcompiler_lib.a)
-libs+=(libmstch.a libmustache_lib.a libfizz_test_support.a)
-
-for lib in ${libs[@]}
-do
-    rm -f $install_dir/lib/$lib
-    rm -f $install_dir/lib64/$lib
-done
+#libs+=(libmstch.a libmustache_lib.a)
+#for lib in ${libs[@]}
+#do
+#    rm -f $install_dir/lib/$lib
+#    rm -f $install_dir/lib64/$lib
+#done
 
 # Remove CMake configs of boost
 rm -rf $install_dir/lib/cmake/[Bb]oost*

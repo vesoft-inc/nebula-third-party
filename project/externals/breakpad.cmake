@@ -28,24 +28,23 @@ ExternalProject_Add(
     LOG_INSTALL TRUE
 )
 
-ExternalProject_Add_Step(${name} pre-patch
-    DEPENDEES download update
-    DEPENDERS patch
-    COMMAND
-        git checkout -- src/client/linux/handler/exception_handler.cc
-    WORKING_DIRECTORY ${source_dir}
-)
-
-ExternalProject_Add_Step(${name} pre-build
-    DEPENDEES configure
-    DEPENDERS build
-    COMMAND
-        rm -fr ${source_dir}/src/third_party/lss
+ExternalProject_Add_Step(${name} post-download
+    DEPENDEES download
+    DEPENDERS update
+    ALWAYS FALSE
     COMMAND
         git clone
             --depth 1
             https://chromium.googlesource.com/linux-syscall-support
             ${source_dir}/src/third_party/lss
+    WORKING_DIRECTORY ${source_dir}
+)
+
+ExternalProject_Add_Step(${name} pre-patch
+    DEPENDEES update
+    DEPENDERS patch
+    COMMAND
+        git checkout -- src/client/linux/handler/exception_handler.cc
     WORKING_DIRECTORY ${source_dir}
 )
 

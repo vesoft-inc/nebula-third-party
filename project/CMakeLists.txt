@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5.0)
+cmake_minimum_required(VERSION 3.8.0)
 cmake_policy(SET CMP0114 OLD)
 
 project("Nebula Third Party" C CXX)
@@ -107,14 +107,17 @@ set(common_configure_envs
 
 set(ALL_TARGETS
     berkeleydb
+    bison
     boost
     breakpad
     bzip2
+    cachelib
     capstone
     double-conversion
     fatal
     fbthrift
     fizz
+    flex
     fmt
     folly
     gflags
@@ -140,6 +143,7 @@ set(ALL_TARGETS
     simdjson
     snappy
     sodium
+    sparsemap
     wangle
     zlib
     zstd
@@ -165,24 +169,6 @@ endif()
 find_package(Automake 1.13.4 QUIET)
 if (NOT Automake_FOUND)
     list(APPEND ALL_TARGETS automake)
-endif()
-
-if ("$ENV{build_package}" STREQUAL "1")
-    list(APPEND ALL_TARGETS bison)
-else()
-    find_package(BISON 3.0.5 QUIET)
-    if (NOT BISON_FOUND)
-        list(APPEND ALL_TARGETS bison)
-    endif()
-endif()
-
-if ("$ENV{build_package}" STREQUAL "1")
-    list(APPEND ALL_TARGETS flex)
-else()
-    find_package(FLEX 2.6.0 QUIET)
-    if (NOT FLEX_FOUND)
-        list(APPEND ALL_TARGETS flex)
-    endif()
 endif()
 
 find_package(Gettext QUIET)
@@ -242,6 +228,7 @@ maybe_add_dependencies(wangle folly fizz)
 maybe_add_dependencies(fbthrift folly krb5 bison flex mstch zlib zstd wangle fatal)
 maybe_add_dependencies(proxygen wangle libunwind gperf)
 maybe_add_dependencies(rocksdb snappy zlib zstd bzip2 lz4 lzma libunwind)
+maybe_add_dependencies(cachelib fbthrift sparsemap fizz googletest)
 
 # RocksDB has its own copy of gtest, which may conflict with ours
 # Here we build gtest after rocksdb intentionally

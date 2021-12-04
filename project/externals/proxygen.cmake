@@ -8,9 +8,9 @@ set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 
 ExternalProject_Add(
     ${name}
-    URL https://github.com/facebook/proxygen/archive/refs/tags/v2021.11.08.00.tar.gz
-    URL_HASH MD5=8feeb8b9319dcfdadbe346276caf0bdd
-    DOWNLOAD_NAME proxygen-2021-11-08.tar.gz
+    URL https://github.com/facebook/proxygen/archive/refs/tags/v2021.11.29.00.tar.gz
+    URL_HASH MD5=cfcc495376ea4e966c3492344e5b906e
+    DOWNLOAD_NAME proxygen-2021-11-29.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}

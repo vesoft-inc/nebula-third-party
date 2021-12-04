@@ -7,9 +7,9 @@ set(name fatal)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL https://github.com/facebook/fatal/releases/download/v2021.03.01.00/fatal-v2021.03.01.00.tar.gz
-    URL_HASH MD5=56885403879a7e0bf107c4746f052b7a
-    DOWNLOAD_NAME fatal-2021-03-01.tar.gz
+    URL https://github.com/facebook/fatal/archive/refs/tags/v2021.11.08.00.tar.gz
+    URL_HASH MD5=f90ce2b58333d7b594547230a774984b
+    DOWNLOAD_NAME fatal-2021-11-08.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}

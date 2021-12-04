@@ -7,16 +7,14 @@ set(name breakpad)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL https://github.com/vesoft-inc/breakpad/archive/refs/tags/v20210819.tar.gz
-    URL_HASH MD5=773f7ec5cfc648ee3269676e6a7b2285
-    DOWNLOAD_NAME breakpad-v20210819.tar.gz
+    GIT_REPOSITORY https://github.com/google/breakpad.git
+    GIT_TAG 38ee0be4d1118c9d86c0ffab25c6c521ff99fdee  # As of 2021/11/11
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}
     DOWNLOAD_DIR ${DOWNLOAD_DIR}
     SOURCE_DIR ${source_dir}
-    PATCH_COMMAND
-        git clone https://chromium.googlesource.com/linux-syscall-support ${source_dir}/src/third_party/lss
+    PATCH_COMMAND patch -p1 < ${CMAKE_SOURCE_DIR}/patches/${name}-2021-11-11.patch
     CONFIGURE_COMMAND
         ${common_configure_envs}
         ./configure ${common_configure_args}
@@ -30,6 +28,27 @@ ExternalProject_Add(
     LOG_INSTALL TRUE
 )
 
+ExternalProject_Add_Step(${name} pre-patch
+    DEPENDEES download update
+    DEPENDERS patch
+    COMMAND
+        git checkout -- src/client/linux/handler/exception_handler.cc
+    WORKING_DIRECTORY ${source_dir}
+)
+
+ExternalProject_Add_Step(${name} pre-build
+    DEPENDEES configure
+    DEPENDERS build
+    COMMAND
+        rm -fr ${source_dir}/src/third_party/lss
+    COMMAND
+        git clone
+            --depth 1
+            https://chromium.googlesource.com/linux-syscall-support
+            ${source_dir}/src/third_party/lss
+    WORKING_DIRECTORY ${source_dir}
+)
+
 ExternalProject_Add_Step(${name} clean
     EXCLUDE_FROM_MAIN TRUE
     ALWAYS TRUE
@@ -40,3 +59,4 @@ ExternalProject_Add_Step(${name} clean
 )
 
 ExternalProject_Add_StepTargets(${name} clean)
+

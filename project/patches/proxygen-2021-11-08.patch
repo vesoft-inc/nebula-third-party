@@ -1,0 +1,32 @@
+diff -ur a/proxygen/CMakeLists.txt b/proxygen/CMakeLists.txt
+--- a/proxygen/CMakeLists.txt	2021-11-07 17:35:17.000000000 +0800
++++ b/proxygen/CMakeLists.txt	2021-11-11 15:04:07.370973867 +0800
+@@ -12,4 +12,3 @@
+ add_subdirectory(lib)
+ add_subdirectory(httpserver)
+ add_subdirectory(httpclient)
+-add_subdirectory(fuzzers)
+diff -ur a/proxygen/httpclient/samples/curl/CMakeLists.txt b/proxygen/httpclient/samples/curl/CMakeLists.txt
+--- a/proxygen/httpclient/samples/curl/CMakeLists.txt	2021-11-07 17:35:17.000000000 +0800
++++ b/proxygen/httpclient/samples/curl/CMakeLists.txt	2021-11-11 15:04:32.304102542 +0800
+@@ -30,20 +30,4 @@
+     EXPORT proxygen-exports
+     ARCHIVE DESTINATION ${LIB_INSTALL_DIR}
+     LIBRARY DESTINATION ${LIB_INSTALL_DIR}
+ )
+-
+-add_executable(proxygen_curl CurlClientMain.cpp)
+-target_link_libraries(
+-    proxygen_curl PUBLIC
+-    proxygencurl
+-)
+-target_compile_options(
+-    proxygen_curl PRIVATE
+-    ${_PROXYGEN_COMMON_COMPILE_OPTIONS}
+-)
+-
+-install(
+-    TARGETS proxygen_curl
+-    EXPORT proxygen-exports
+-    DESTINATION bin
+-)

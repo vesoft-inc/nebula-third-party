@@ -7,8 +7,8 @@ set(name bzip2)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL https://nchc.dl.sourceforge.net/project/bzip2/bzip2-1.0.6.tar.gz
-    URL_HASH MD5=00b516f4704d4a7cb50a1d97e6e8e15b
+    URL https://sourceware.org/pub/bzip2/bzip2-1.0.8.tar.gz
+    URL_HASH MD5=67e051268d0c475ea773822f7500d0e5
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}

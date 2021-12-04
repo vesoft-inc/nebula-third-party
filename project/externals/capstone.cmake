@@ -7,9 +7,9 @@ set(name capstone)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL https://github.com/aquynh/capstone/archive/4.0.1.tar.gz
-    URL_HASH MD5=1b0a9a0d50d9515dcf7684ce0a2270a4
-    DOWNLOAD_NAME capstone-4.0.1.tar.gz
+    URL https://github.com/aquynh/capstone/archive/4.0.2.tar.gz
+    URL_HASH MD5=8894344c966a948f1248e66c91b53e2c
+    DOWNLOAD_NAME capstone-4.0.2.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}

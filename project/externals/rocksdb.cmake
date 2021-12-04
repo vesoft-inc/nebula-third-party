@@ -7,9 +7,9 @@ set(name rocksdb)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL https://github.com/facebook/rocksdb/archive/v6.15.5.tar.gz
-    URL_HASH MD5=9bd64f1b7b74342ba4c045e9a6dd2bd2
-    DOWNLOAD_NAME rocksdb-6.15.5.tar.gz
+    URL https://github.com/facebook/rocksdb/archive/refs/tags/v6.26.0.tar.gz
+    URL_HASH MD5=7c2ee41eb40f4f61a551d20841c9dd76
+    DOWNLOAD_NAME rocksdb-6.26.0.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}
@@ -27,6 +27,7 @@ ExternalProject_Add(
         -DWITH_JEMALLOC=OFF
         -DWITH_GFLAGS=OFF
         -DWITH_TESTS=OFF
+        -DWITH_BENCHMARK_TOOLS=OFF
         -DWITH_TOOLS=OFF
         -DUSE_RTTI=ON
         -DFAIL_ON_WARNINGS=OFF
@@ -34,10 +35,23 @@ ExternalProject_Add(
         "-DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS} -D NPERF_CONTEXT"
     BUILD_IN_SOURCE 1
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
-    INSTALL_COMMAND make -s install -j${BUILDING_JOBS_NUM}
+    INSTALL_COMMAND ""
     LOG_CONFIGURE TRUE
     LOG_BUILD TRUE
     LOG_INSTALL TRUE
+)
+
+ExternalProject_Add_Step(${name} install-static
+    DEPENDEES build
+    DEPENDERS install
+    ALWAYS false
+    COMMAND
+        make -s install -j${BUILDING_JOBS_NUM}
+    COMMAND
+        rm -f ${CMAKE_INSTALL_PREFIX}/lib64/librocksdb.so
+    COMMAND
+        find ${CMAKE_INSTALL_PREFIX}/lib64 -name "librocksdb\\.so.*" -delete
+    WORKING_DIRECTORY ${source_dir}
 )
 
 ExternalProject_Add_Step(${name} clean

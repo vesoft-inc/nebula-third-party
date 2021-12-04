@@ -7,9 +7,9 @@ set(name fmt)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL https://github.com/fmtlib/fmt/archive/7.1.3.tar.gz
-    URL_HASH MD5=2522ec65070c0bda0ca288677ded2831
-    DOWNLOAD_NAME fmt-7.1.3.tar.gz
+    URL https://github.com/fmtlib/fmt/archive/refs/tags/8.0.1.tar.gz
+    URL_HASH MD5=7d5af964c6633ef90cd6a47be3afe6a0
+    DOWNLOAD_NAME fmt-8.0.1.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}

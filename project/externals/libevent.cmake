@@ -21,6 +21,7 @@ ExternalProject_Add(
                     --enable-static
                     --disable-samples
                     --disable-libevent-regress
+		    --disable-openssl
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     BUILD_IN_SOURCE 1
     INSTALL_COMMAND make -s install -j${BUILDING_JOBS_NUM}

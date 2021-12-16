@@ -1,5 +1,12 @@
-cmake_minimum_required(VERSION 3.8.0)
-cmake_policy(SET CMP0114 OLD)
+cmake_minimum_required(VERSION 3.14.0)
+if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.19")
+  cmake_policy(SET CMP0114 OLD)
+endif()
+
+# Not to pull submodules when an empty string is given
+if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.16")
+    cmake_policy(SET CMP0097 NEW)
+endif()
 
 project("Nebula Third Party" C CXX)
 
@@ -8,6 +15,7 @@ set(CXX_STANDARD_REQUIRED ON)
 
 # Required CMake modules
 include(ExternalProject)
+include(CheckIncludeFileCXX)
 
 # Get number of physical CPU cores and megabytes of available memory
 if ("${CMAKE_HOST_SYSTEM_PROCESSOR}" STREQUAL "x86_64")
@@ -93,14 +101,33 @@ set(common_configure_args
     --prefix=${CMAKE_INSTALL_PREFIX}
 )
 
+set(ld_flags
+    "-L${CMAKE_INSTALL_PREFIX}/lib"
+    "-L${CMAKE_INSTALL_PREFIX}/lib64"
+    "-L${BERKELEYDB_LIB_DIR}"
+    "${extra_link_libs}"
+)
+if (EXISTS "/usr/lib/${CMAKE_LIBRARY_ARCHITECTURE}")
+    set(ld_flags
+        "-L/usr/lib/${CMAKE_LIBRARY_ARCHITECTURE}"
+        "${ld_flags}"
+    )
+endif()
+if (EXISTS "/usr/lib64/${CMAKE_LIBRARY_ARCHITECTURE}")
+    set(ld_flags
+        "-L/usr/lib64/${CMAKE_LIBRARY_ARCHITECTURE}"
+        "${ld_flags}"
+    )
+endif()
+string(JOIN " " ld_flags ${ld_flags})
 set(common_configure_envs
     "env"
     "CC=${CMAKE_C_COMPILER}"
     "CXX=${CMAKE_CXX_COMPILER}"
     "CFLAGS=${CMAKE_C_FLAGS} -fcommon -fno-omit-frame-pointer -fPIC -O2 -D_DEFAULT_SOURCE -D_GNU_SOURCE ${extra_cpp_flags}"
     "CXXFLAGS=${CMAKE_CXX_FLAGS} -fcommon -fno-omit-frame-pointer -fPIC -O2 -D_DEFAULT_SOURCE -D_GNU_SOURCE ${extra_cpp_flags}"
-    "CPPFLAGS=-isystem ${CMAKE_INSTALL_PREFIX}/include ${extra_cpp_flags}"
-    "LDFLAGS=-L${CMAKE_INSTALL_PREFIX}/lib -L${CMAKE_INSTALL_PREFIX}/lib64 ${extra_link_libs}"
+    "CPPFLAGS=-isystem ${CMAKE_INSTALL_PREFIX}/include -I${BERKELEYDB_INCLUDE_DIR} ${extra_cpp_flags}"
+    "LDFLAGS=${ld_flags}"
     "PATH=${BUILDING_PATH}"
     "ACLOCAL_PATH=${ACLOCAL_PATH}"
 )
@@ -150,6 +177,16 @@ set(ALL_TARGETS
 )
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
+
+CHECK_INCLUDE_FILE_CXX(elf.h ELF_INCLUDE_FOUND)
+if (NOT ELF_INCLUDE_FOUND)
+	message(FATAL_ERROR "Cannot find elf.h. Make sure you have it installed")
+endif()
+
+find_package(LibDwarf QUIET)
+if (NOT LIBDWARF_FOUND)
+	message(FATAL_ERROR "Cannot find libdwarf. Make sure you have it installed")
+endif()
 
 find_package(Libtool 2.4.2 QUIET)
 if (NOT Libtool_FOUND)
@@ -234,14 +271,23 @@ maybe_add_dependencies(cachelib fbthrift sparsemap fizz googletest)
 # Here we build gtest after rocksdb intentionally
 maybe_add_dependencies(googletest rocksdb gflags)
 
-add_custom_target(
-    strip-archives ALL
-    COMMAND
-        strip --strip-unneeded ${CMAKE_INSTALL_PREFIX}/lib/*.a
-    COMMAND
-        strip --strip-unneeded ${CMAKE_INSTALL_PREFIX}/lib64/*.a
-    DEPENDS ${ALL_TARGETS}
-)
+if (EXISTS ${CMAKE_INSTALL_PREFIX}/lib64)
+    add_custom_target(
+        strip-archives ALL
+        COMMAND
+            strip --strip-unneeded ${CMAKE_INSTALL_PREFIX}/lib/*.a
+        COMMAND
+            strip --strip-unneeded ${CMAKE_INSTALL_PREFIX}/lib64/*.a
+        DEPENDS ${ALL_TARGETS}
+    )
+else()
+    add_custom_target(
+        strip-archives ALL
+        COMMAND
+            strip --strip-unneeded ${CMAKE_INSTALL_PREFIX}/lib/*.a
+        DEPENDS ${ALL_TARGETS}
+    )
+endif()
 
 add_custom_target(
     clean-all

@@ -11,8 +11,12 @@ if (( $# < 1 )); then
 fi
 
 install_dir=$1
-so_in_lib=`find $install_dir/lib -name *.so`
-so_in_lib64=`find $install_dir/lib64 -name *.so`
+if [ -e $install_dir/lib ]; then
+  so_in_lib=`find $install_dir/lib -name *.so`
+fi
+if [ -e $install_dir/lib64 ]; then
+  so_in_lib64=`find $install_dir/lib64 -name *.so`
+fi
 
 if [[ -n $so_in_lib ]]; then
   echo "==> ERROR: found shared libraries in $install_dir/lib"

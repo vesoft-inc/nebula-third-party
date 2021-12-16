@@ -35,8 +35,8 @@ ExternalProject_Add_Step(${name} mannual-configure
         -DBUILD_TESTS=OFF
         -DCMAKE_EXE_LINKER_FLAGS=-latomic
         -DCMAKE_SHARED_LINKER_FLAGS=-latomic
-	-D_OPENSSL_LIBDIR=${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}
-	.
+        -D_OPENSSL_LIBDIR=${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}
+        .
     WORKING_DIRECTORY <SOURCE_DIR>/wangle
 )
 

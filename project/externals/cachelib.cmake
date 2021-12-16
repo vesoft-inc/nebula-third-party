@@ -9,6 +9,7 @@ ExternalProject_Add(
     ${name}
     GIT_REPOSITORY https://github.com/facebook/CacheLib.git
     GIT_TAG 12822a2eddd04bb3e252f458b36ee0675a2d4643  # As of 2021/12/02
+    GIT_SUBMODULES ""
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}

@@ -48,9 +48,7 @@ ExternalProject_Add_Step(${name} install-static
     COMMAND
         make -s install -j${BUILDING_JOBS_NUM}
     COMMAND
-        rm -f ${CMAKE_INSTALL_PREFIX}/lib64/librocksdb.so
-    COMMAND
-        find ${CMAKE_INSTALL_PREFIX}/lib64 -name "librocksdb\\.so.*" -delete
+        find ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR} -name "librocksdb.so*" -delete
     WORKING_DIRECTORY ${source_dir}
 )
 

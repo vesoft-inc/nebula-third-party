@@ -16,11 +16,9 @@ ExternalProject_Add(
     SOURCE_DIR ${source_dir}
     CONFIGURE_COMMAND
         ${common_configure_envs}
-        "CPPFLAGS=-I${BERKELEYDB_INCLUDE_DIR} -I${CMAKE_INSTALL_PREFIX}/include ${extra_cpp_flags}"
-        "LDFLAGS=-L${BERKELEYDB_LIB_DIR} -L${CMAKE_INSTALL_PREFIX}/lib -L${CMAKE_INSTALL_PREFIX}/lib64 ${extra_link_libs}"
         ./configure ${common_configure_args}
                     --enable-syslog
-                    --enable-modules
+                    --enable-modules=no
                     --enable-shared=no
                     --with-tls
     BUILD_IN_SOURCE 1

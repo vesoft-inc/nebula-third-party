@@ -183,11 +183,6 @@ if (NOT ELF_INCLUDE_FOUND)
 	message(FATAL_ERROR "Cannot find elf.h. Make sure you have it installed")
 endif()
 
-find_package(LibDwarf QUIET)
-if (NOT LIBDWARF_FOUND)
-	message(FATAL_ERROR "Cannot find libdwarf. Make sure you have it installed")
-endif()
-
 find_package(Libtool 2.4.2 QUIET)
 if (NOT Libtool_FOUND)
     list(APPEND ALL_TARGETS libtool)

@@ -14,6 +14,7 @@ ExternalProject_Add(
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}
     DOWNLOAD_DIR ${DOWNLOAD_DIR}
+    PATCH_COMMAND patch -p1 < ${CMAKE_SOURCE_DIR}/patches/${name}-2021-12-02.patch
     SOURCE_DIR ${source_dir}
     SOURCE_SUBDIR cachelib
     CMAKE_ARGS
@@ -28,6 +29,20 @@ ExternalProject_Add(
     LOG_CONFIGURE TRUE
     LOG_BUILD TRUE
     LOG_INSTALL TRUE
+)
+
+ExternalProject_Add_Step(${name} pre-patch
+    DEPENDEES update
+    DEPENDERS patch
+    COMMAND
+        git checkout -- cachelib/CMakeLists.txt
+    COMMAND
+        git checkout -- cachelib/common/CMakeLists.txt
+    COMMAND
+        git checkout -- cachelib/common/Utils.cpp
+    COMMAND
+        git checkout -- cachelib/shm/ShmCommon.h
+    WORKING_DIRECTORY ${source_dir}
 )
 
 ExternalProject_Add_Step(${name} clean

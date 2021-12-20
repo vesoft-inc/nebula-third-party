@@ -28,15 +28,15 @@ ExternalProject_Add(
     LOG_INSTALL TRUE
 )
 
+# The original repo for lss is https://chromium.googlesource.com/linux-syscall-support
+# For the well-known reason, you cannot download it successfully every time. Because
+# the code is not changing frequently, we pack it so that we don't have to download.
 ExternalProject_Add_Step(${name} post-download
     DEPENDEES download
     DEPENDERS update
     ALWAYS FALSE
     COMMAND
-        git clone
-            --depth 1
-            https://chromium.googlesource.com/linux-syscall-support
-            ${source_dir}/src/third_party/lss
+        tar -C src/third_party/. -zxf ${CMAKE_SOURCE_DIR}/patches/lss-2021-12-20.tgz
     WORKING_DIRECTORY ${source_dir}
 )
 

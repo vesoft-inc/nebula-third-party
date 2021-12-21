@@ -133,6 +133,24 @@ diff -ur a/folly/logging/example/CMakeLists.txt b/folly/logging/example/CMakeLis
 -
  add_library(logging_example_lib lib.cpp)
  target_link_libraries(logging_example_lib folly)
+diff -ur a/folly/experimental/exception_tracer/ExceptionTracerLib.cpp b/folly/experimental/exception_tracer/ExceptionTracerLib.cpp
+--- a/folly/experimental/exception_tracer/ExceptionTracerLib.cpp      2021-11-07 17:31:23.000000000 -0800
++++ b/folly/experimental/exception_tracer/ExceptionTracerLib.cpp      2021-11-13 15:33:48.210905548 -0800
+@@ -96,6 +96,7 @@
+ #define __builtin_unreachable()
+ #endif
+
++#if 0
+ namespace __cxxabiv1 {
+
+ void __cxa_throw(
+@@ -154,5 +155,6 @@
+ }
+
+ } // namespace std
++#endif  // 0
+
+ #endif // defined(__GLIBCXX__)
 diff -ur a/CMake/folly-deps.cmake b/CMake/folly-deps.cmake
 --- a/CMake/folly-deps.cmake	2021-11-29 12:20:59.000000000 +0800
 +++ b/CMake/folly-deps.cmake	2021-12-19 10:51:58.749016148 +0800

@@ -167,3 +167,24 @@ diff -ur a/CMake/folly-deps.cmake b/CMake/folly-deps.cmake
 
  find_package(Libiberty)
  list(APPEND FOLLY_LINK_LIBRARIES ${LIBIBERTY_LIBRARIES})
+diff -ur a/folly/Demangle.cpp b/folly/Demangle.cpp
+--- a/folly/Demangle.cpp	2021-11-29 12:20:59.000000000 +0800
++++ b/folly/Demangle.cpp	2021-12-24 16:32:28.191515416 +0800
+@@ -29,7 +29,7 @@
+ //  symbol basename. Unfortunately, the declarations are different. So including
+ //  both headers in the same translation unit fails due to the two conflicting
+ //  declarations. Since <demangle.h> includes <libiberty.h> we must be careful.
+-#if __has_include(<demangle.h>)
++#if 0
+ #pragma push_macro("HAVE_DECL_BASENAME")
+ #define HAVE_DECL_BASENAME 1
+ #include <demangle.h> // @manual
+@@ -58,7 +58,7 @@
+ //
+ //  in contrast with cxxabi, where there are certainly other referenced symbols
+
+-#if __has_include(<demangle.h>)
++#if 0
+
+ static constexpr auto liberty_demangle = cplus_demangle_v3_callback;
+

@@ -134,7 +134,6 @@ set(common_configure_envs
 
 set(ALL_TARGETS
     berkeleydb
-    bison
     boost
     breakpad
     bzip2
@@ -144,19 +143,13 @@ set(ALL_TARGETS
     fatal
     fbthrift
     fizz
-    flex
     fmt
     folly
     gflags
     glog
     googlebenchmark
     googletest
-    gperf
     jemalloc
-    keyutils
-    krb5
-    cyrus-sasl
-    ldap
     libaio
     libcurl
     libevent
@@ -179,30 +172,6 @@ set(ALL_TARGETS
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
 
-CHECK_INCLUDE_FILE_CXX(elf.h ELF_INCLUDE_FOUND)
-if (NOT ELF_INCLUDE_FOUND)
-	message(FATAL_ERROR "Cannot find elf.h. Make sure you have it installed")
-endif()
-
-find_package(Libtool 2.4.2 QUIET)
-if (NOT Libtool_FOUND)
-    list(APPEND ALL_TARGETS libtool)
-endif()
-
-find_package(Autoconf 2.69 QUIET)
-if (NOT Autoconf_FOUND)
-    list(APPEND ALL_TARGETS autoconf)
-endif()
-
-find_package(AutoconfArchive QUIET)
-if (NOT AutoconfArchive_FOUND)
-    list(APPEND ALL_TARGETS autoconf-archive)
-endif()
-
-find_package(Automake 1.13.4 QUIET)
-if (NOT Automake_FOUND)
-    list(APPEND ALL_TARGETS automake)
-endif()
 
 find_package(Gettext QUIET)
 if (NOT Gettext_FOUND)
@@ -231,19 +200,9 @@ macro(maybe_add_dependencies depender)
     endif()
 endmacro()
 
-maybe_add_dependencies(autoconf-archive autoconf)
-maybe_add_dependencies(automake autoconf autoconf-archive)
-maybe_add_dependencies(libtool automake)
 
-maybe_add_dependencies(glog libtool)
-maybe_add_dependencies(bison libtool)
-maybe_add_dependencies(flex libtool)
-maybe_add_dependencies(zlib libtool)
-maybe_add_dependencies(gettext libtool)
 maybe_add_dependencies(lzma gettext)
-maybe_add_dependencies(libevent libtool openssl)
-maybe_add_dependencies(gperf libtool)
-maybe_add_dependencies(ldap berkeleydb libtool openssl cyrus-sasl)
+maybe_add_dependencies(libevent openssl)
 
 maybe_add_dependencies(boost zlib bzip2 lzma)
 maybe_add_dependencies(mstch boost)
@@ -254,12 +213,11 @@ maybe_add_dependencies(googlebenchmark googletest)
 
 maybe_add_dependencies(s2geometry googletest glog openssl)
 
-maybe_add_dependencies(krb5 keyutils openssl gettext bison)
 maybe_add_dependencies(folly glog boost double-conversion openssl libevent lzma zstd snappy lz4 libunwind libaio fmt sodium)
 maybe_add_dependencies(fizz folly)
 maybe_add_dependencies(wangle folly fizz)
-maybe_add_dependencies(fbthrift folly krb5 bison flex mstch zlib zstd wangle fatal)
-maybe_add_dependencies(proxygen wangle libunwind gperf)
+maybe_add_dependencies(fbthrift folly mstch zlib zstd wangle fatal)
+maybe_add_dependencies(proxygen wangle libunwind)
 maybe_add_dependencies(rocksdb snappy zlib zstd bzip2 lz4 lzma libunwind)
 maybe_add_dependencies(cachelib fbthrift sparsemap fizz googletest)
 

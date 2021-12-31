@@ -8,7 +8,7 @@ set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
     URL https://github.com/cyrusimap/cyrus-sasl/releases/download/cyrus-sasl-2.1.27/cyrus-sasl-2.1.27.tar.gz
-    URL_HASH MD5=271b299bf4059f8ec99c63fa43a0d1a7
+    URL_HASH MD5=a33820c66e0622222c5aefafa1581083
     DOWNLOAD_NAME cyrus-sasl-2.1.27.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
@@ -17,7 +17,8 @@ ExternalProject_Add(
     SOURCE_DIR ${source_dir}
     CONFIGURE_COMMAND
         ${common_configure_envs}
-        ./autogen.sh ${common_configure_args}
+        "LDFLAGS=-L${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR} ${ld_flags}"
+        ./configure ${common_configure_args}
                     --disable-shared
                     --enable-static
                     --disable-scram

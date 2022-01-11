@@ -174,16 +174,12 @@ else
     cmake_cmd=`which cmake`
 fi
 echo "Will use this cmake: '$cmake_cmd'"
-exit 0
-
-
-
 
 # Build and install
 mkdir -p $build_dir $install_dir $package_dir
-@cd $build_dir
+cd $build_dir
 
-echo "Starting build"
+echo "Starting building third-party libraries"
 
 $cmake_cmd  -DDOWNLOAD_DIR=$download_dir              \
             -DCMAKE_INSTALL_PREFIX=$install_dir       \

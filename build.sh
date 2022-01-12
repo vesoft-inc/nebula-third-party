@@ -37,14 +37,15 @@ function version_cmp {
 }
 
 function check_cmake {
-    hash cmake &> /dev/null || { echo "No cmake found." 1>&2; exit 1; }
+    hash cmake &> /dev/null || { echo "No cmake found." 1>&2 ; return 1; }
     local cmake_version=$(cmake --version | head -1 | cut -d ' ' -f 3)
-    local least_cmake_version=3.5.0
+    local least_cmake_version=3.14.0
     if [[ $(version_cmp $cmake_version $least_cmake_version) -lt 0 ]]
     then
-        echo "cmake $least_cmake_version or higher required" 1>&2
-        exit 1
+        echo "cmake $least_cmake_version or higher required, but only found $cmake_version" 1>&2
+        return 1
     fi
+    return 0
 }
 
 function check_cxx {
@@ -62,7 +63,6 @@ function check_cxx {
     fi
 }
 
-check_cmake
 check_cxx
 
 # Directories setup
@@ -108,7 +108,7 @@ then
 fi
 
 # NOTE Please adjust the expected checksum once the source tarball changed
-if [[ ! $checksum = a94165e0ba71e6da62421037770fa40e ]]
+if [[ ! $checksum = 3cd3d5ca04611eb0cb6942b6a89ea787 ]]
 then
     hash wget &> /dev/null && download_cmd="wget -c"
     if [[ -z $download_cmd ]]
@@ -128,18 +128,65 @@ else
     tar -xzf $source_tar_name
 fi
 
+# Check cmake
+if ! check_cmake; then
+    echo "Need to build cmake"
+    cmake_source_tar=$build_root/tarballs/cmake-v3.21.4.tar.gz
+    # Check the downloaded source tarball
+    if [[ -f $cmake_source_tar ]]; then
+        cmake_checksum=$(md5sum $cmake_source_tar | cut -d ' ' -f 1)
+    fi
+    if [[ ! $cmake_checksum = 3747c1a51d4a7ad61f08862481437264 ]]; then
+        # Try to download cmake tar ball
+        hash wget &> /dev/null && download_cmd="wget -c"
+        cmake_source_url="https://gitlab.kitware.com/cmake/cmake/-/archive/v3.21.4/cmake-v3.21.4.tar.gz"
+        mkdir -p $build_root/tarballs
+        cd $build_root/tarballs
+        if [[ -z $download_cmd ]]; then
+            echo "'wget' not found for downloading" 1>&2
+            exit 1
+        elif ! bash -c "$download_cmd $cmake_source_url"; then
+            echo "Download from $cmake_source_url failed." 1>&2
+            exit 1
+        fi
+        echo "cmake source code was downloaded to $build_root/tarballs" 1>&2
+    fi
+
+    # Extracting the cmake source file
+    echo -n "Extracting cmake source into $build_root/build/cmake/source..." 1>&2
+    mkdir -p $build_root/build/cmake
+    cd $build_root/build/cmake
+    if ! tar -xzf $cmake_source_tar --one-top-level=source --strip-components=1; then
+        echo "corrupted" 1>&2
+        exit 1
+    fi
+    echo "done" 1>&2
+
+    # Building the cmake
+    echo "Building cmake from the source code..." 1>&2
+    cd source
+    if ! bash -c "./bootstrap --prefix=$install_dir -- -DCMAKE_USE_OPENSSL=OFF && make -j install"; then
+        echo "Failed to build cmake"
+        exit 1
+    fi
+    cmake_cmd="$install_dir/bin/cmake"
+else
+    cmake_cmd=`which cmake`
+fi
+echo "Will use this cmake: '$cmake_cmd'"
+
 # Build and install
 mkdir -p $build_dir $install_dir $package_dir
 cd $build_dir
 
-echo "Starting build"
+echo "Starting building third-party libraries"
 
-cmake -DDOWNLOAD_DIR=$download_dir              \
-      -DCMAKE_INSTALL_PREFIX=$install_dir       \
-      -DSOURCE_PREFIX=$source_dir               \
-      ${C_COMPILER_ARG} ${CXX_COMPILER_ARG}     \
-      ${DISABLE_CXX11_ABI}                      \
-      $source_dir |& tee $logfile
+$cmake_cmd  -DDOWNLOAD_DIR=$download_dir              \
+            -DCMAKE_INSTALL_PREFIX=$install_dir       \
+            -DSOURCE_PREFIX=$source_dir               \
+            ${C_COMPILER_ARG} ${CXX_COMPILER_ARG}     \
+            ${DISABLE_CXX11_ABI}                      \
+            $source_dir |& tee $logfile
 
 make |& \
          tee -a $logfile | \

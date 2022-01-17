@@ -105,20 +105,23 @@ set(ld_flags
     "-L${CMAKE_INSTALL_PREFIX}/lib"
     "-L${CMAKE_INSTALL_PREFIX}/lib64"
     "-L${BERKELEYDB_LIB_DIR}"
-    "${extra_link_libs}"
 )
 if (EXISTS "/usr/lib/${CMAKE_LIBRARY_ARCHITECTURE}")
     set(ld_flags
-        "-L/usr/lib/${CMAKE_LIBRARY_ARCHITECTURE}"
         "${ld_flags}"
+        "-L/usr/lib/${CMAKE_LIBRARY_ARCHITECTURE}"
     )
 endif()
 if (EXISTS "/usr/lib64/${CMAKE_LIBRARY_ARCHITECTURE}")
     set(ld_flags
-        "-L/usr/lib64/${CMAKE_LIBRARY_ARCHITECTURE}"
         "${ld_flags}"
+        "-L/usr/lib64/${CMAKE_LIBRARY_ARCHITECTURE}"
     )
 endif()
+set(ld_flags
+    "${ld_flags}"
+    "${extra_link_libs}"
+)
 string(JOIN " " ld_flags ${ld_flags})
 set(common_configure_envs
     "env"
@@ -243,7 +246,7 @@ maybe_add_dependencies(gettext libtool)
 maybe_add_dependencies(lzma gettext)
 maybe_add_dependencies(libevent libtool openssl)
 maybe_add_dependencies(gperf libtool)
-maybe_add_dependencies(cyrus-sasl openssl)
+maybe_add_dependencies(cyrus-sasl openssl berkeleydb)
 maybe_add_dependencies(ldap berkeleydb libtool openssl cyrus-sasl)
 
 maybe_add_dependencies(boost zlib bzip2 lzma)

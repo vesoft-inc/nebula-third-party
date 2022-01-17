@@ -131,6 +131,8 @@ fi
 # Check cmake
 if ! check_cmake; then
     echo "Need to build cmake"
+    mkdir -p $build_dir/build-info
+    cmake_log_file=$build_dir/build-info/cmake-build.log
     cmake_source_tar=$build_root/tarballs/cmake-v3.21.4.tar.gz
     # Check the downloaded source tarball
     if [[ -f $cmake_source_tar ]]; then
@@ -165,8 +167,9 @@ if ! check_cmake; then
     # Building the cmake
     echo "Building cmake from the source code..." 1>&2
     cd source
-    if ! bash -c "./bootstrap --prefix=$install_dir -- -DCMAKE_USE_OPENSSL=OFF && make -j install"; then
+    if ! bash -c "./bootstrap --prefix=$install_dir -- -DCMAKE_USE_OPENSSL=OFF && make -j install" 2&> $cmake_log_file; then
         echo "Failed to build cmake"
+        echo "  -- Please check $cmake_log_file for detail"
         exit 1
     fi
     cmake_cmd="$install_dir/bin/cmake"

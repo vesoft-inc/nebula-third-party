@@ -246,7 +246,7 @@ maybe_add_dependencies(gettext libtool)
 maybe_add_dependencies(lzma gettext)
 maybe_add_dependencies(libevent libtool openssl)
 maybe_add_dependencies(gperf libtool)
-maybe_add_dependencies(cyrus-sasl openssl berkeleydb)
+maybe_add_dependencies(cyrus-sasl openssl berkeleydb automake libtool)
 maybe_add_dependencies(ldap berkeleydb libtool openssl cyrus-sasl)
 
 maybe_add_dependencies(boost zlib bzip2 lzma)

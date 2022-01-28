@@ -22,6 +22,7 @@ ExternalProject_Add(
                     --enable-static
                     --disable-scram
                     --disable-digest
+                    --disable-sample
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     BUILD_IN_SOURCE 1
     INSTALL_COMMAND make -s install -j${BUILDING_JOBS_NUM}

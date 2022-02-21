@@ -4,6 +4,10 @@
 
 set(name berkeleydb)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source/)
+execute_process(
+    COMMAND ${CMAKE_SOURCE_DIR}/externals/config_guess.sh
+    OUTPUT_VARIABLE sys_info
+)
 ExternalProject_Add(
     ${name}
     URL http://download.oracle.com/berkeley-db/db-5.1.29.tar.gz
@@ -21,6 +25,7 @@ ExternalProject_Add(
             --enable-shared=no
             --libdir=${BERKELEYDB_LIB_DIR}
             --includedir=${BERKELEYDB_INCLUDE_DIR}
+            --build=${sys_info}
     BUILD_IN_SOURCE 1
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     INSTALL_COMMAND  make -s -j${BUILDING_JOBS_NUM} install
@@ -39,4 +44,3 @@ ExternalProject_Add_Step(${name} clean
 )
 
 ExternalProject_Add_StepTargets(${name} clean)
-

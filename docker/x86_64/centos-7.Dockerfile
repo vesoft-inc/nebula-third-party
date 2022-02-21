@@ -27,6 +27,7 @@ RUN yum install -y make \
                    automake \
                    bison \
                    flex \
+                   which \
                    gperf \
                    gettext
 

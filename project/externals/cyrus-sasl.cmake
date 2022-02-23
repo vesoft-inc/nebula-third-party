@@ -15,9 +15,10 @@ ExternalProject_Add(
     DOWNLOAD_DIR ${DOWNLOAD_DIR}
     SOURCE_DIR ${source_dir}
     CONFIGURE_COMMAND
+        ./autogen.sh &&
         ${common_configure_envs}
         "LDFLAGS=${ld_flags} -ldb-5.1"
-        ./autogen.sh ${common_configure_args}
+        ./configure ${common_configure_args}
                     --disable-shared
                     --enable-static
                     --disable-scram

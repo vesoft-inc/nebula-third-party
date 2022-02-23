@@ -18,7 +18,6 @@ ExternalProject_Add(
         ${common_configure_envs}
         ./configure ${common_configure_args}
                     --quiet
-                    --prefix=${CMAKE_INSTALL_PREFIX}
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     BUILD_IN_SOURCE 1
     INSTALL_COMMAND make -s install -j${BUILDING_JOBS_NUM}
@@ -57,4 +56,3 @@ ExternalProject_Add_Step(${name} clean
 )
 
 ExternalProject_Add_StepTargets(${name} clean)
-

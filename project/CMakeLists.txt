@@ -140,7 +140,6 @@ set(ALL_TARGETS
     bison
     boost
     bzip2
-    cachelib
     capstone
     double-conversion
     fatal
@@ -180,7 +179,7 @@ set(ALL_TARGETS
 )
 
 if (CMAKE_HOST_SYSTEM_PROCESSOR MATCHES "x86_64")
-  list(APPEND ALL_TARGETS breakpad)
+  list(APPEND ALL_TARGETS breakpad cachelib)
 endif()
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)

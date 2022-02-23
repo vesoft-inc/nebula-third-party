@@ -16,7 +16,6 @@ ExternalProject_Add(
     SOURCE_DIR ${source_dir}
     CONFIGURE_COMMAND
         ${common_configure_envs}
-        "LDFLAGS=${ld_flags} -ldb-5.1"
         ./autogen.sh ${common_configure_args}
                     --disable-shared
                     --enable-static
@@ -24,6 +23,8 @@ ExternalProject_Add(
                     --disable-digest
                     --disable-sample
                     --with-openssl=${CMAKE_INSTALL_PREFIX}
+                    --with-bdb-incdir=${BERKELEYDB_INCLUDE_DIR}
+                    --with-bdb-libdir=${BERKELEYDB_LIB_DIR}
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     BUILD_IN_SOURCE 1
     INSTALL_COMMAND make -s install -j${BUILDING_JOBS_NUM}

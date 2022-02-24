@@ -139,9 +139,7 @@ set(ALL_TARGETS
     berkeleydb
     bison
     boost
-    breakpad
     bzip2
-    cachelib
     capstone
     double-conversion
     fatal
@@ -179,6 +177,10 @@ set(ALL_TARGETS
     zlib
     zstd
 )
+
+if (CMAKE_HOST_SYSTEM_PROCESSOR MATCHES "x86_64")
+  list(APPEND ALL_TARGETS breakpad cachelib)
+endif()
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
 

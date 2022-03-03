@@ -1,25 +1,115 @@
-diff -ur a/cachelib/common/CMakeLists.txt b/cachelib/common/CMakeLists.txt
---- a/cachelib/common/CMakeLists.txt	2021-12-19 09:08:21.110016148 +0800
-+++ b/cachelib/common/CMakeLists.txt	2021-12-19 09:10:11.634016148 +0800
-@@ -40,9 +40,9 @@
+diff --git a/cachelib/CMakeLists.txt b/cachelib/CMakeLists.txt
+index 3ff0b01..7708a25 100644
+--- a/cachelib/CMakeLists.txt
++++ b/cachelib/CMakeLists.txt
+@@ -278,8 +278,8 @@ add_subdirectory (navy)
+ add_subdirectory (allocator)
+ add_subdirectory (datatype)
+ add_subdirectory (compact_cache)
+-add_subdirectory (benchmarks)
+-add_subdirectory (cachebench)
++# add_subdirectory (benchmarks)
++# add_subdirectory (cachebench)
+ 
+ # Install the source header files
+ install(
+@@ -294,8 +294,8 @@ install(
+   FILES_MATCHING PATTERN "*.h"
+   PATTERN "external" EXCLUDE
+   PATTERN "tests" EXCLUDE
+-  PATTERN "benchmarks" EXCLUDE
+-  PATTERN "cachebench" EXCLUDE
++  # PATTERN "benchmarks" EXCLUDE
++  # PATTERN "cachebench" EXCLUDE
+   PATTERN "scripts" EXCLUDE
+   PATTERN "cmake" EXCLUDE
+ )
+@@ -331,10 +331,10 @@ install(
+   DESTINATION ${CMAKE_INSTALL_DIR}
+ )
+ 
+-install(
+-  DIRECTORY ${CACHELIB_HOME}/cachebench/test_configs/
+-  DESTINATION ${CONFIGS_INSTALL_DIR}
+-)
++# install(
++#  DIRECTORY ${CACHELIB_HOME}/cachebench/test_configs/
++#  DESTINATION ${CONFIGS_INSTALL_DIR}
++# )
+ 
+ add_library(cachelib INTERFACE)
+ target_link_libraries(cachelib INTERFACE
+diff --git a/cachelib/allocator/CacheStats.cpp b/cachelib/allocator/CacheStats.cpp
+index 8d25aa8..396837c 100644
+--- a/cachelib/allocator/CacheStats.cpp
++++ b/cachelib/allocator/CacheStats.cpp
+@@ -48,8 +48,8 @@ template <int>
+ struct SizeVerify {};
+ 
+ void Stats::populateGlobalCacheStats(GlobalCacheStats& ret) const {
+-  SizeVerify<sizeof(Stats)> a = SizeVerify<15968>{};
+-  std::ignore = a;
++  // SizeVerify<sizeof(Stats)> a = SizeVerify<15968>{};
++  // std::ignore = a;
+   ret.numCacheGets = numCacheGets.get();
+   ret.numCacheGetMiss = numCacheGetMiss.get();
+   ret.numCacheGetExpiries = numCacheGetExpiries.get();
+diff --git a/cachelib/cachebench/CMakeLists.txt b/cachelib/cachebench/CMakeLists.txt
+index 018129a..89ffca2 100644
+--- a/cachelib/cachebench/CMakeLists.txt
++++ b/cachelib/cachebench/CMakeLists.txt
+@@ -39,6 +39,12 @@ target_link_libraries(cachelib_cachebench PUBLIC
+   gflags
+ )
+ 
++if ((CMAKE_SYSTEM_NAME STREQUAL Linux) AND
++    (CMAKE_SYSTEM_PROCESSOR STREQUAL x86_64))
++else()
++  target_compile_definitions(cachelib_cachebench PRIVATE SKIP_OPTION_SIZE_VERIFY)
++endif()
++
+ add_executable (cachebench main.cpp)
+ target_link_libraries(cachebench cachelib_cachebench)
+ 
+diff --git a/cachelib/cachebench/util/JSONConfig.h b/cachelib/cachebench/util/JSONConfig.h
+index f392d9f..08c07d6 100644
+--- a/cachelib/cachebench/util/JSONConfig.h
++++ b/cachelib/cachebench/util/JSONConfig.h
+@@ -115,8 +115,10 @@ struct Options {};
+ 
+ template <typename Type, size_t size>
+ constexpr void checkCorrectSize() {
++#ifndef SKIP_OPTION_SIZE_VERIFY
+   Options<sizeof(Type)> var = Options<size>{};
+   (void)var;
++#endif
+ }
+ } // namespace cachebench
+ } // namespace cachelib
+diff --git a/cachelib/common/CMakeLists.txt b/cachelib/common/CMakeLists.txt
+index a6c86a8..b2226a8 100644
+--- a/cachelib/common/CMakeLists.txt
++++ b/cachelib/common/CMakeLists.txt
+@@ -40,9 +40,9 @@ target_link_libraries(cachelib_common PUBLIC
    FBThrift::thriftprotocol
    Folly::folly
    Folly::follybenchmark
 -  Folly::folly_exception_tracer
 -  Folly::folly_exception_tracer_base
 -  Folly::folly_exception_counter
-+#  Folly::folly_exception_tracer
-+#  Folly::folly_exception_tracer_base
-+#  Folly::folly_exception_counter
++  # Folly::folly_exception_tracer
++  # Folly::folly_exception_tracer_base
++  # Folly::folly_exception_counter
  )
-
+ 
  install(TARGETS cachelib_common
-diff -ur a/cachelib/common/Utils.cpp b/cachelib/common/Utils.cpp
---- a/cachelib/common/Utils.cpp	2021-12-19 09:18:02.464016148 +0800
-+++ b/cachelib/common/Utils.cpp	2021-12-19 09:17:51.454016148 +0800
-@@ -420,10 +420,12 @@
+diff --git a/cachelib/common/Utils.cpp b/cachelib/common/Utils.cpp
+index df3b462..e53975b 100644
+--- a/cachelib/common/Utils.cpp
++++ b/cachelib/common/Utils.cpp
+@@ -420,10 +420,12 @@ size_t getMemAvailable() {
  }
-
+ 
  void printExceptionStackTraces() {
 +#if 0
    auto exceptions = folly::exception_tracer::getCurrentExceptions();
@@ -28,59 +118,20 @@ diff -ur a/cachelib/common/Utils.cpp b/cachelib/common/Utils.cpp
    }
 +#endif
  }
-
+ 
  } // namespace util
-diff -ur a/cachelib/shm/ShmCommon.h b/cachelib/shm/ShmCommon.h
---- a/cachelib/shm/ShmCommon.h	2021-12-19 11:04:24.392016148 +0800
-+++ b/cachelib/shm/ShmCommon.h	2021-12-19 11:15:59.080016148 +0800
+diff --git a/cachelib/shm/ShmCommon.h b/cachelib/shm/ShmCommon.h
+index ebccbf6..8d5414c 100644
+--- a/cachelib/shm/ShmCommon.h
++++ b/cachelib/shm/ShmCommon.h
 @@ -25,6 +25,10 @@
  #include <folly/Range.h>
  #pragma GCC diagnostic pop
-
+ 
 +#ifndef MAP_HUGE_SHIFT
 +#define MAP_HUGE_SHIFT 26
 +#endif
 +
  namespace facebook {
  namespace cachelib {
-
-diff -ur a/cachelib/CMakeLists.txt b/cachelib/CMakeLists.txt
---- a/cachelib/CMakeLists.txt	2021-12-19 13:20:54.920016148 +0800
-+++ b/cachelib/CMakeLists.txt	2021-12-19 13:19:15.527016148 +0800
-@@ -278,8 +278,8 @@
- add_subdirectory (allocator)
- add_subdirectory (datatype)
- add_subdirectory (compact_cache)
--add_subdirectory (benchmarks)
--add_subdirectory (cachebench)
-+#add_subdirectory (benchmarks)
-+#add_subdirectory (cachebench)
-
- # Install the source header files
- install(
-@@ -294,8 +294,8 @@
-   FILES_MATCHING PATTERN "*.h"
-   PATTERN "external" EXCLUDE
-   PATTERN "tests" EXCLUDE
--  PATTERN "benchmarks" EXCLUDE
--  PATTERN "cachebench" EXCLUDE
-+#  PATTERN "benchmarks" EXCLUDE
-+#  PATTERN "cachebench" EXCLUDE
-   PATTERN "scripts" EXCLUDE
-   PATTERN "cmake" EXCLUDE
- )
-@@ -331,10 +331,10 @@
-   DESTINATION ${CMAKE_INSTALL_DIR}
- )
-
--install(
--  DIRECTORY ${CACHELIB_HOME}/cachebench/test_configs/
--  DESTINATION ${CONFIGS_INSTALL_DIR}
--)
-+#install(
-+#  DIRECTORY ${CACHELIB_HOME}/cachebench/test_configs/
-+#  DESTINATION ${CONFIGS_INSTALL_DIR}
-+#)
-
- add_library(cachelib INTERFACE)
- target_link_libraries(cachelib INTERFACE
+ 

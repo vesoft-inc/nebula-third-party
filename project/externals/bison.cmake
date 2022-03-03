@@ -6,7 +6,7 @@ set(name bison)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL http://ftp.gnu.org/gnu/bison//bison-3.7.6.tar.gz
+    URL http://ftp.gnu.org/gnu/bison/bison-3.7.6.tar.gz
     URL_HASH MD5=da2df6cf3ed0a7b33fdc09e829c74b4b
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
@@ -16,6 +16,7 @@ ExternalProject_Add(
     CONFIGURE_COMMAND
         ${common_configure_envs}
         ./configure ${common_configure_args}
+                    --datarootdir=${CMAKE_INSTALL_PREFIX}/share/bison
                     --quiet
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     BUILD_IN_SOURCE 1

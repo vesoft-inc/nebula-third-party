@@ -18,6 +18,13 @@ ExternalProject_Add(
     CMAKE_ARGS
         ${common_cmake_args}
         -DCMAKE_BUILD_TYPE=Release
+        -DBUILD_SHARED_LIBS=OFF
+        -DBUILD_TESTING=OFF
+        -DWITH_GFLAGS=OFF
+        -DWITH_GTEST=OFF
+        -DWITH_GMOCK=OFF
+        -DWITH_CUSTOM_PREFIX=OFF
+
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     BUILD_IN_SOURCE 1
     INSTALL_COMMAND make -s -j${BUILDING_JOBS_NUM} install

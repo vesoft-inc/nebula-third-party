@@ -31,7 +31,7 @@ ExternalProject_Add(
     CONFIGURE_COMMAND
         ./bootstrap.sh
             --without-icu
-            --with-libraries=context,thread,system,filesystem,program_options,regex,iostreams,date_time,python
+            --with-libraries=context,thread,system,filesystem,program_options,regex,iostreams,date_time
             --prefix=${CMAKE_INSTALL_PREFIX}
 #--without-libraries=wave,nowide,chrono,atomic,fiber,type_erasure,exception,timer,contract,math,locale,json,test,stacktrace,mpi,log,graph,graph_parallel
     BUILD_COMMAND

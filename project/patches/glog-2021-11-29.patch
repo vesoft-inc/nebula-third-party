@@ -1,0 +1,16 @@
+diff --color -Naur source/CMakeLists.txt new_source/CMakeLists.txt
+--- source/CMakeLists.txt	2022-03-23 18:03:00.125534946 +0800
++++ new_source/CMakeLists.txt	2022-03-23 18:02:48.250027560 +0800
+@@ -41,9 +41,9 @@
+   set (CMAKE_DISABLE_FIND_PACKAGE_Threads ON)
+ endif (NOT WITH_THREADS)
+ 
+-set (CMAKE_C_VISIBILITY_PRESET hidden)
+-set (CMAKE_CXX_VISIBILITY_PRESET hidden)
+-set (CMAKE_VISIBILITY_INLINES_HIDDEN 1)
++set (CMAKE_C_VISIBILITY_PRESET default)
++set (CMAKE_CXX_VISIBILITY_PRESET default)
++set (CMAKE_VISIBILITY_INLINES_HIDDEN 0)
+ list (APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+ 
+ include (CheckCXXSourceCompiles)

@@ -177,6 +177,8 @@ set(ALL_TARGETS
     wangle
     zlib
     zstd
+    robin-hood-hashing
+    libev
 )
 
 if (CMAKE_HOST_SYSTEM_PROCESSOR MATCHES "x86_64")

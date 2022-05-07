@@ -34,13 +34,7 @@ ExternalProject_Add_Step(${name} pre-patch
     DEPENDEES update
     DEPENDERS patch
     COMMAND
-        git checkout -- cachelib/CMakeLists.txt
-    COMMAND
-        git checkout -- cachelib/common/CMakeLists.txt
-    COMMAND
-        git checkout -- cachelib/common/Utils.cpp
-    COMMAND
-        git checkout -- cachelib/shm/ShmCommon.h
+        git checkout -- *
     WORKING_DIRECTORY ${source_dir}
 )
 

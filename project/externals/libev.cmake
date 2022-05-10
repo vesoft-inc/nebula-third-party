@@ -4,12 +4,12 @@
 
 set(name libev)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
-ExternalProject_Add(
+ExternalProject_Add_Git(
     ${name}
-# TODO Need to change the url to a valid one
-    URL https://github.com/kindy/libev/archive/refs/4.33.tar.gz
-    URL_HASH MD5=a3433f23583167081bf4acdd5b01b34f
-    DOWNLOAD_NAME libev-4.33.tar.gz
+    GIT_REPOSITORY https://github.com/kindy/libev.git
+    GIT_TAG 6701966dfd095a080ba0b7d77cf950168256b0d0  # 4.33
+    ARCHIVE_FILE libev-4.33.tar.gz
+    ARCHIVE_MD5 2e41cd6820cb602d3bcb45165f6a90df
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}

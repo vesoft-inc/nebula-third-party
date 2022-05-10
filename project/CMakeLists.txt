@@ -16,6 +16,7 @@ set(CXX_STANDARD_REQUIRED ON)
 # Required CMake modules
 include(ExternalProject)
 include(CheckIncludeFileCXX)
+include(cmake/ExternalProjectGit.cmake)
 
 # Get number of physical CPU cores and megabytes of available memory
 if ("${CMAKE_HOST_SYSTEM_PROCESSOR}" STREQUAL "x86_64")

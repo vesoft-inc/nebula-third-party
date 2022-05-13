@@ -15,6 +15,7 @@ ExternalProject_Add_Git(
     STAMP_DIR ${BUILD_INFO_DIR}
     DOWNLOAD_DIR ${DOWNLOAD_DIR}
     SOURCE_DIR ${source_dir}
+    PATCH_COMMAND patch -p1 < ${CMAKE_SOURCE_DIR}/patches/${name}-4.33.patch
     CONFIGURE_COMMAND
         "env"
         "CC=${CMAKE_C_COMPILER}"
@@ -30,6 +31,17 @@ ExternalProject_Add_Git(
     LOG_CONFIGURE TRUE
     LOG_BUILD TRUE
     LOG_INSTALL TRUE
+)
+
+# Because we modify the file Makefile.am, we need to rerun autoconfig before
+# we can run configure
+ExternalProject_Add_Step(${name} pre-configure
+    DEPENDEES patch
+    DEPENDERS configure
+    ALWAYS FALSE
+    COMMAND
+        autoreconf -ivf
+    WORKING_DIRECTORY ${source_dir}
 )
 
 ExternalProject_Add_Step(${name} clean

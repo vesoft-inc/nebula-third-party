@@ -16,6 +16,7 @@ set(CXX_STANDARD_REQUIRED ON)
 # Required CMake modules
 include(ExternalProject)
 include(CheckIncludeFileCXX)
+include(cmake/ExternalProjectGit.cmake)
 
 # Get number of physical CPU cores and megabytes of available memory
 if ("${CMAKE_HOST_SYSTEM_PROCESSOR}" STREQUAL "x86_64")
@@ -177,6 +178,8 @@ set(ALL_TARGETS
     wangle
     zlib
     zstd
+    robin-hood-hashing
+    libev
 )
 
 if (CMAKE_HOST_SYSTEM_PROCESSOR MATCHES "x86_64")
@@ -242,11 +245,12 @@ maybe_add_dependencies(automake autoconf autoconf-archive)
 maybe_add_dependencies(libtool automake)
 
 maybe_add_dependencies(glog libtool)
-maybe_add_dependencies(bison libtool)
+maybe_add_dependencies(gettext libtool)
+maybe_add_dependencies(bison gettext libtool)
 maybe_add_dependencies(flex libtool)
 maybe_add_dependencies(zlib libtool)
-maybe_add_dependencies(gettext libtool)
 maybe_add_dependencies(lzma gettext)
+maybe_add_dependencies(libev gettext)
 maybe_add_dependencies(libevent libtool openssl)
 maybe_add_dependencies(gperf libtool)
 maybe_add_dependencies(cyrus-sasl openssl berkeleydb automake libtool)

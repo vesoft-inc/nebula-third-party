@@ -4,10 +4,12 @@
 
 set(name breakpad)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
-ExternalProject_Add(
+ExternalProject_Add_Git(
     ${name}
     GIT_REPOSITORY https://github.com/google/breakpad.git
     GIT_TAG 38ee0be4d1118c9d86c0ffab25c6c521ff99fdee  # As of 2021/11/11
+    ARCHIVE_FILE breakpad-2021-11-11.tar.gz
+    ARCHIVE_MD5 0fba349ccf23a3f8b7de4a449de00f9f
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}
@@ -35,14 +37,6 @@ ExternalProject_Add_Step(${name} post-download
     ALWAYS FALSE
     COMMAND
         tar -C src/third_party/. -zxf ${CMAKE_SOURCE_DIR}/patches/lss-2021-12-20.tgz
-    WORKING_DIRECTORY ${source_dir}
-)
-
-ExternalProject_Add_Step(${name} pre-patch
-    DEPENDEES update
-    DEPENDERS patch
-    COMMAND
-        git checkout -- src/client/linux/handler/exception_handler.cc
     WORKING_DIRECTORY ${source_dir}
 )
 

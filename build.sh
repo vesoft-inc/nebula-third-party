@@ -66,7 +66,7 @@ function check_cxx {
 check_cxx
 
 # Directories setup
-version=3.0
+version=5.0
 cur_dir=`pwd`
 source_dir=$this_dir/project
 build_root=$cur_dir
@@ -108,7 +108,7 @@ then
 fi
 
 # NOTE Please adjust the expected checksum once the source tarball changed
-if [[ ! $checksum = 3cd3d5ca04611eb0cb6942b6a89ea787 ]]
+if [[ ! $checksum = a0e2267809b9338fdb30a494856aa96d ]]
 then
     hash wget &> /dev/null && download_cmd="wget -c"
     if [[ -z $download_cmd ]]

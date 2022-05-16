@@ -1,0 +1,17 @@
+diff -ur a/Makefile.am b/Makefile.am
+--- a/Makefile.am	2019-10-31 12:02:23.000000000 +0800
++++ b/Makefile.am	2022-05-13 21:03:23.137700100 +0800
+@@ -10,11 +10,11 @@
+
+ man_MANS = ev.3
+
+-include_HEADERS = ev.h ev++.h event.h
++include_HEADERS = ev.h ev++.h
+
+ lib_LTLIBRARIES = libev.la
+
+-libev_la_SOURCES = ev.c event.c
++libev_la_SOURCES = ev.c
+ libev_la_LDFLAGS = -version-info $(VERSION_INFO)
+
+ ev.3: ev.pod

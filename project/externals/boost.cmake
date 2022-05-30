@@ -63,6 +63,13 @@ ExternalProject_Add_Step(${name} setup-compiler
     WORKING_DIRECTORY ${source_dir}
 )
 
+ExternalProject_Add_Step(${name} trim
+    DEPENDEES install
+    COMMAND
+        rm -rf ${CMAKE_INSTALL_PREFIX}/include/boost/{wave,log,atomic,test,typeof,fusion,geometry,gil,graph,phoenix,spirit,beast,compute,polygon,proto,units,metaparse,qvm,vmd,xpressive}
+    WORKING_DIRECTORY ${source_dir}
+)
+
 ExternalProject_Add_Step(${name} clean
     EXCLUDE_FROM_MAIN TRUE
     ALWAYS TRUE

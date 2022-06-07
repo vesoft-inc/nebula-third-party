@@ -66,7 +66,7 @@ ExternalProject_Add_Step(${name} setup-compiler
 ExternalProject_Add_Step(${name} trim
     DEPENDEES install
     COMMAND
-        rm -rf ${CMAKE_INSTALL_PREFIX}/include/boost/{wave,log,atomic,test,typeof,fusion,geometry,gil,graph,phoenix,spirit,beast,asio,compute,hana,polygon,proto,units,metaparse,qvm,vmd,xpressive}
+        rm -rf ${CMAKE_INSTALL_PREFIX}/include/boost/{wave,log,atomic,test,typeof,fusion,geometry,gil,graph,phoenix,spirit,beast,asio,compute,polygon,proto,units,metaparse,qvm,vmd,xpressive}
     WORKING_DIRECTORY ${source_dir}
 )
 

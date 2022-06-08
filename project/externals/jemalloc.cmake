@@ -4,6 +4,12 @@
 
 set(name jemalloc)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
+
+if ("${CMAKE_HOST_SYSTEM_PROCESSOR}" STREQUAL "aarch64")
+    # Set page size to 64KB
+    set(page_size_opts "--with-lg-page=16")
+endif()
+
 ExternalProject_Add(
     ${name}
     URL https://github.com/jemalloc/jemalloc/releases/download/5.2.1/jemalloc-5.2.1.tar.bz2
@@ -17,6 +23,7 @@ ExternalProject_Add(
         ${common_configure_envs}
         ./configure ${common_configure_args}
                     --enable-stats --enable-prof
+                    ${page_size_opts}
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     BUILD_IN_SOURCE 1
     INSTALL_COMMAND make -s install_bin install_include install_lib_static -j${BUILDING_JOBS_NUM}

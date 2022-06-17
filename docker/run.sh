@@ -3,7 +3,7 @@
 this_dir=$(dirname $(readlink -f $0))
 build_root=$(pwd)
 package_dir=$build_root/packages
-version=3.0
+version=5.0
 
 function atexit() {
     compgen -G $package_dir/vesoft-third-party-*.sh &> /dev/null
@@ -39,6 +39,7 @@ do
     build_package=1 disable_cxx11_abi=0 nebula-third-party/build.sh /opt/vesoft/third-party/$version
     if [[ $arch = 'x86_64' ]]
     then
+        rm -rf ./build
         rm -rf /opt/vesoft/third-party
         build_package=1 disable_cxx11_abi=1 nebula-third-party/build.sh /opt/vesoft/third-party/$version
     fi

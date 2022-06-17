@@ -61,7 +61,9 @@ macro(ExternalProject_Add_Git proj_name)
             message(STATUS "${proj_name}: Use archived file")
             execute_process(
                 COMMAND
-                    tar --one-top-level=${source_dir} --overwrite
+                    mkdir -p ${source_dir}
+                COMMAND
+                    tar -C ${source_dir} --overwrite
                         -zxf ${EPAG_ARCHIVE_FILE}
                 WORKING_DIRECTORY ${DOWNLOAD_DIR}
             )

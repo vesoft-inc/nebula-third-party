@@ -158,7 +158,7 @@ if ! check_cmake; then
     echo -n "Extracting cmake source into $build_root/build/cmake/source..." 1>&2
     mkdir -p $build_root/build/cmake
     cd $build_root/build/cmake
-    if ! tar -xzf $cmake_source_tar --one-top-level=source --strip-components=1; then
+    if ! mkdir -p source && tar -xzf $cmake_source_tar -C ./source --strip-components=1; then
         echo "corrupted" 1>&2
         exit 1
     fi

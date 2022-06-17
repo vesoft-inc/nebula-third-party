@@ -24,7 +24,7 @@ arch=$(uname -m)
 
 nebula-gears-update
 
-git clone --depth=1 https://github.com/vesoft-inc/nebula-third-party.git
+git clone -b $version --depth=1 https://github.com/vesoft-inc/nebula-third-party.git
 
 gcc_versions=${USE_GCC_VERSIONS:-7.5.0,8.3.0,9.1.0,9.2.0,9.3.0,10.1.0}
 install-gcc --version=$gcc_versions
@@ -39,6 +39,7 @@ do
     build_package=1 disable_cxx11_abi=0 nebula-third-party/build.sh /opt/vesoft/third-party/$version
     if [[ $arch = 'x86_64' ]]
     then
+        rm -rf ./build
         rm -rf /opt/vesoft/third-party
         build_package=1 disable_cxx11_abi=1 nebula-third-party/build.sh /opt/vesoft/third-party/$version
     fi

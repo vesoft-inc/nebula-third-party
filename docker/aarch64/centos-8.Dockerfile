@@ -37,7 +37,7 @@ RUN yum install -y make \
 
 ENV NG_URL=https://raw.githubusercontent.com/dutor/nebula-gears/master/install
 ENV OSS_UTIL_URL=https://gosspublic.alicdn.com/ossutil/1.7.13/ossutilarm64
-ENV PACKAGE_DIR=/usr/src/third-party/third-party
+ENV PACKAGE_DIR=/usr/src/third-party
 RUN curl -s ${NG_URL} | bash
 
 RUN mkdir -p ${PACKAGE_DIR}

@@ -1,4 +1,4 @@
-FROM arm64v8/ubuntu:20.10
+FROM ubuntu:22.04
 SHELL ["/bin/bash", "-c"]
 ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get clean
@@ -10,14 +10,14 @@ RUN apt-get install -y make \
                        unzip \
                        xz-utils \
                        patch \
-                       python \
+                       python2 \
                        curl \
-                       python-dev \
+                       python2-dev \
                        lsb-core \
-                       libz-dev \
+                       zlib1g-dev \
                        build-essential \
                        libreadline-dev \
-                       ncurses-dev \
+                       libncurses-dev \
                        build-essential \
                        cmake \
                        libtool \
@@ -31,15 +31,12 @@ RUN apt-get install -y make \
                        gettext
 
 ENV NG_URL=https://raw.githubusercontent.com/dutor/nebula-gears/master/install
-ENV OSS_UTIL_URL='https://gosspublic.alicdn.com/ossutil/1.7.0/ossutilarm64?spm=a2c63.p38356.879954.15.c0942454HuAZDI'
-ENV PACKAGE_DIR=/usr/src
+ENV OSS_UTIL_URL=http://gosspublic.alicdn.com/ossutil/1.7.13/ossutil64
+ENV PACKAGE_DIR=/usr/src/third-party
 RUN set -o pipefail && curl -s ${NG_URL} | bash
 
 RUN mkdir -p ${PACKAGE_DIR}
 WORKDIR ${PACKAGE_DIR}
-
-COPY run.sh ${PACKAGE_DIR}/run.sh
-RUN chmod +x ${PACKAGE_DIR}/run.sh
 
 COPY oss-upload.sh ${PACKAGE_DIR}/oss-upload.sh
 RUN chmod +x ${PACKAGE_DIR}/oss-upload.sh

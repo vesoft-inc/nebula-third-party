@@ -1,5 +1,5 @@
 arch=$(shell uname -m)
-tags=centos-7 centos-8 ubuntu-1604 ubuntu-1804 ubuntu-2004 ubuntu-2010
+tags=centos-7 centos-8 ubuntu-1604 ubuntu-1804 ubuntu-2004 ubuntu-2110 ubuntu-2204
 
 all: $(tags)
 

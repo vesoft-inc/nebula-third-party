@@ -38,6 +38,7 @@
  * wangle
  * zlib
  * zstd
+ * xsimd
 
 # How to Build
 

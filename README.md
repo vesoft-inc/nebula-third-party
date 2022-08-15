@@ -38,6 +38,8 @@
  * wangle
  * zlib
  * zstd
+ * robin-hood-hashing
+ * libev
  * xsimd
 
 # How to Build

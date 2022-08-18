@@ -180,6 +180,7 @@ set(ALL_TARGETS
     zstd
     robin-hood-hashing
     libev
+    xsimd
 )
 
 if (CMAKE_HOST_SYSTEM_PROCESSOR MATCHES "x86_64")

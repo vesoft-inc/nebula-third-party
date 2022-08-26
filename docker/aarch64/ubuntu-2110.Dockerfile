@@ -1,6 +1,6 @@
-FROM ubuntu:18.04
-ARG DEBIAN_FRONTEND=noninteractive
+FROM arm64v8/ubuntu:21.10
 SHELL ["/bin/bash", "-c"]
+ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get clean
 RUN apt-get update
 RUN apt-get install -y make \
@@ -10,14 +10,14 @@ RUN apt-get install -y make \
                        unzip \
                        xz-utils \
                        patch \
-                       python \
+                       python2 \
                        curl \
-                       python-dev \
+                       python2-dev \
                        lsb-core \
-                       libz-dev \
+                       zlib1g-dev \
                        build-essential \
                        libreadline-dev \
-                       ncurses-dev \
+                       libncurses-dev \
                        build-essential \
                        cmake \
                        libtool \
@@ -31,7 +31,7 @@ RUN apt-get install -y make \
                        gettext
 
 ENV NG_URL=https://raw.githubusercontent.com/dutor/nebula-gears/master/install
-ENV OSS_UTIL_URL=http://gosspublic.alicdn.com/ossutil/1.7.13/ossutil64
+ENV OSS_UTIL_URL=http://gosspublic.alicdn.com/ossutil/1.7.13/ossutilarm64
 ENV PACKAGE_DIR=/usr/src/third-party
 RUN set -o pipefail && curl -s ${NG_URL} | bash
 

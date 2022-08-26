@@ -108,7 +108,7 @@ then
 fi
 
 # NOTE Please adjust the expected checksum once the source tarball changed
-if [[ ! $checksum = 3cd3d5ca04611eb0cb6942b6a89ea787 ]]
+if [[ ! $checksum = a0e2267809b9338fdb30a494856aa96d ]]
 then
     hash wget &> /dev/null && download_cmd="wget -c"
     if [[ -z $download_cmd ]]
@@ -158,7 +158,7 @@ if ! check_cmake; then
     echo -n "Extracting cmake source into $build_root/build/cmake/source..." 1>&2
     mkdir -p $build_root/build/cmake
     cd $build_root/build/cmake
-    if ! tar -xzf $cmake_source_tar --one-top-level=source --strip-components=1; then
+    if ! mkdir -p source && tar -xzf $cmake_source_tar -C ./source --strip-components=1; then
         echo "corrupted" 1>&2
         exit 1
     fi

@@ -38,6 +38,9 @@
  * wangle
  * zlib
  * zstd
+ * robin-hood-hashing
+ * libev
+ * xsimd
 
 # How to Build
 
@@ -82,7 +85,7 @@ The docker-based build is for building pre-built packages of third parties. For 
 ```shell
 # Print all targets
 $ make -C $path/build print
-centos-7 centos-8 ubuntu-1604 ubuntu-1804 ubuntu-2004 ubuntu-2010
+centos-7 centos-8 ubuntu-1604 ubuntu-1804 ubuntu-2004 ubuntu-2110 ubuntu-2204
 
 # Build specific target
 $ make -C $path/build centos-7

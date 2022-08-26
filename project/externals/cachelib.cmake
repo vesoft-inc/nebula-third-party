@@ -4,11 +4,14 @@
 
 set(name cachelib)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
-ExternalProject_Add(
+
+ExternalProject_Add_Git(
     ${name}
     GIT_REPOSITORY https://github.com/facebook/CacheLib.git
     GIT_TAG 12822a2eddd04bb3e252f458b36ee0675a2d4643  # As of 2021/12/02
     GIT_SUBMODULES ""
+    ARCHIVE_FILE cachelib-2021-12-02.tar.gz
+    ARCHIVE_MD5 251194612eb8de3362cd089df975e45c
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}
@@ -28,20 +31,6 @@ ExternalProject_Add(
     LOG_CONFIGURE TRUE
     LOG_BUILD TRUE
     LOG_INSTALL TRUE
-)
-
-ExternalProject_Add_Step(${name} pre-patch
-    DEPENDEES update
-    DEPENDERS patch
-    COMMAND
-        git checkout -- cachelib/CMakeLists.txt
-    COMMAND
-        git checkout -- cachelib/common/CMakeLists.txt
-    COMMAND
-        git checkout -- cachelib/common/Utils.cpp
-    COMMAND
-        git checkout -- cachelib/shm/ShmCommon.h
-    WORKING_DIRECTORY ${source_dir}
 )
 
 ExternalProject_Add_Step(${name} clean

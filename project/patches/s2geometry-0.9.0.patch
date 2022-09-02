@@ -1,6 +1,18 @@
-diff -ur a/src/s2/encoded_uint_vector.h b/src/s2/encoded_uint_vector.h
---- a/src/s2/encoded_uint_vector.h	2019-03-04 11:53:16.000000000 -0500
-+++ b/src/s2/encoded_uint_vector.h	2020-11-05 22:54:29.008722506 -0500
+diff --color -ur a/CMakeLists.txt b/CMakeLists.txt
+--- a/CMakeLists.txt	2019-03-04 16:53:16.000000000 +0000
++++ b/CMakeLists.txt	2022-09-02 11:53:09.106010146 +0000
+@@ -13,7 +13,7 @@
+     set(CMAKE_MACOSX_RPATH TRUE)
+ endif()
+ 
+-set(CMAKE_CXX_STANDARD 11)
++set(CMAKE_CXX_STANDARD 17)
+ set(CMAKE_CXX_STANDARD_REQUIRED ON)
+ # No compiler-specific extensions, i.e. -std=c++11, not -std=gnu++11.
+ set(CMAKE_CXX_EXTENSIONS OFF)
+diff --color -ur a/src/s2/encoded_uint_vector.h b/src/s2/encoded_uint_vector.h
+--- a/src/s2/encoded_uint_vector.h	2019-03-04 16:53:16.000000000 +0000
++++ b/src/s2/encoded_uint_vector.h	2022-09-02 11:53:34.894113813 +0000
 @@ -20,9 +20,9 @@
  
  #include <type_traits>

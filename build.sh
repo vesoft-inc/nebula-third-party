@@ -108,7 +108,7 @@ then
 fi
 
 # NOTE Please adjust the expected checksum once the source tarball changed
-if [[ ! $checksum = a0e2267809b9338fdb30a494856aa96d ]]
+if [[ ! $checksum = 41f9f607fe37a7bd131ff0378eea8101 ]]
 then
     hash wget &> /dev/null && download_cmd="wget -c"
     if [[ -z $download_cmd ]]

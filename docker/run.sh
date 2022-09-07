@@ -3,7 +3,7 @@
 this_dir=$(dirname $(readlink -f $0))
 build_root=$(pwd)
 package_dir=$build_root/packages
-version=3.0
+version=3.3
 
 function atexit() {
     compgen -G $package_dir/vesoft-third-party-*.sh &> /dev/null
@@ -24,7 +24,7 @@ arch=$(uname -m)
 
 nebula-gears-update
 
-git clone -b $version --depth=1 https://github.com/vesoft-inc/nebula-third-party.git
+git clone -b release-$version --depth=1 https://github.com/vesoft-inc/nebula-third-party.git
 
 gcc_versions=${USE_GCC_VERSIONS:-7.5.0,8.3.0,9.1.0,9.2.0,9.3.0,10.1.0}
 install-gcc --version=$gcc_versions

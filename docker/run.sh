@@ -24,7 +24,7 @@ arch=$(uname -m)
 
 nebula-gears-update
 
-git clone -b $version --depth=1 https://github.com/vesoft-inc/nebula-third-party.git
+git clone -b v$version --depth=1 https://github.com/vesoft-inc/nebula-third-party.git
 
 gcc_versions=${USE_GCC_VERSIONS:-7.5.0,8.3.0,9.1.0,9.2.0,9.3.0,10.1.0}
 install-gcc --version=$gcc_versions

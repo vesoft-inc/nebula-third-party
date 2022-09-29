@@ -9,9 +9,8 @@ if(ENABLE_ROCKSDB_CLOUD)
 
     ExternalProject_Add_Git(
         ${name}
-        GIT_REPOSITORY https://github.com/aws/aws-sdk-cpp
+        GIT_REPOSITORY https://github.com/aws/aws-sdk-cpp.git
         GIT_TAG f61fa33a65d4c37cc3f2069d558771b45196158c  # As of 2022/9/19
-        GIT_SUBMODULES ""
         #ARCHIVE_FILE aws-sdk-2022-9-19.tar.gz
         #ARCHIVE_MD5 bee5b1a24318547232be73dbf06dbcc3
         PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}

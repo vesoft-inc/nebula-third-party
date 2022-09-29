@@ -7,10 +7,10 @@ set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 
 if(ENABLE_ROCKSDB_CLOUD)
     message(STATUS "use rocksdb cloud")
-    ExternalProject_Add_Git(
+    ExternalProject_Add(
         ${name}
         GIT_REPOSITORY https://github.com/rockset/rocksdb-cloud.git
-        GIT_TAG 14ed36afbf70df1ce73f03366003e8c00ebd5e9e  # As of 2022/9/19
+        GIT_TAG 956da0d46623d956670703a4af73b2526a5cd3cb  # As of 2022/9/19
         #ARCHIVE_FILE rocksdb-2022-9-19.tar.gz
         #ARCHIVE_MD5 89854dbe4a857068381b572081ab1e19
         PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
@@ -21,16 +21,15 @@ if(ENABLE_ROCKSDB_CLOUD)
         SOURCE_DIR ${source_dir}
         CONFIGURE_COMMAND ""
         BUILD_COMMAND
-            USE_AWS=1  PORTABLE=1 WITH_SNAPPY=1 WITH_ZSTD=1 WITH_ZLIB=1 WITH_LZ4=1 WITH_BZ2=1
-            WITH_JEMALLOC=0 WITH_GFLAGS=0 WITH_TESTS=0 WITH_BENCHMARK_TOOLS=0 WITH_TOOLS=0
-            USE_RTTI=1 FAIL_ON_WARNINGS=0  WITH_AWS=1
-            make static_lib -j${BUILDING_JOBS_NUM}
+            src_cur_dir=`pwd`
+            message(FATAL "!!!!!!!!!  ${src_cur_dir}")
+            #USE_AWS=1 PORTABLE=1 WITH_SNAPPY=1 WITH_ZSTD=1 WITH_ZLIB=1 WITH_LZ4=1 WITH_BZ2=1
+            #WITH_JEMALLOC=0 WITH_GFLAGS=0 WITH_TESTS=0 WITH_BENCHMARK_TOOLS=0 WITH_TOOLS=0
+            #USE_RTTI=1 FAIL_ON_WARNINGS=0  WITH_AWS=1
+            #make static_lib -j${BUILDING_JOBS_NUM}
         BUILD_IN_SOURCE 1
         INSTALL_COMMAND
-            make -C lib
-               -s install-pc install-static install-includes
-               -j${BUILDING_JOBS_NUM}
-               PREFIX=${CMAKE_INSTALL_PREFIX}
+            make install -j${BUILDING_JOBS_NUM} PREFIX=${CMAKE_INSTALL_PREFIX}
         LOG_CONFIGURE TRUE
         LOG_BUILD TRUE
         LOG_INSTALL TRUE

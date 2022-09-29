@@ -145,11 +145,11 @@ set(common_configure_envs
 )
 
 set(ALL_TARGETS
-    #berkeleydb
+    berkeleydb
     bison
     boost
     bzip2
-    #cachelib
+    cachelib
     capstone
     double-conversion
     fatal
@@ -167,7 +167,7 @@ set(ALL_TARGETS
     keyutils
     krb5
     cyrus-sasl
-    #ldap
+    ldap
     libaio
     libcurl
     libevent
@@ -178,7 +178,7 @@ set(ALL_TARGETS
     openssl
     proxygen
     rocksdb
-    #aws-sdk-cpp
+    aws-sdk-cpp
     s2geometry
     simdjson
     snappy
@@ -264,7 +264,7 @@ maybe_add_dependencies(libev gettext)
 maybe_add_dependencies(libevent libtool openssl)
 maybe_add_dependencies(gperf libtool)
 maybe_add_dependencies(cyrus-sasl openssl berkeleydb automake libtool)
-#maybe_add_dependencies(ldap berkeleydb libtool openssl cyrus-sasl)
+maybe_add_dependencies(ldap berkeleydb libtool openssl cyrus-sasl)
 
 maybe_add_dependencies(boost zlib bzip2 lzma)
 maybe_add_dependencies(mstch boost)
@@ -284,13 +284,13 @@ maybe_add_dependencies(proxygen wangle libunwind gperf)
 
 if(ENABLE_ROCKSDB_CLOUD)
     message(STATUS "ENABLE_ROCKSDB_CLOUD is ${ENABLE_ROCKSDB_CLOUD}")
-    #maybe_add_dependencies(aws-sdk-cpp libcurl)
-    maybe_add_dependencies(rocksdb snappy zlib zstd bzip2 lz4 lzma libunwind)
+    maybe_add_dependencies(aws-sdk-cpp libcurl)
+    maybe_add_dependencies(rocksdb aws-sdk-cpp snappy zlib zstd bzip2 lz4 lzma libunwind)
 else()
     maybe_add_dependencies(rocksdb snappy zlib zstd bzip2 lz4 lzma libunwind)
 endif()
 
-#maybe_add_dependencies(cachelib fbthrift sparsemap fizz googletest)
+maybe_add_dependencies(cachelib fbthrift sparsemap fizz googletest)
 
 # RocksDB has its own copy of gtest, which may conflict with ours
 # Here we build gtest after rocksdb intentionally

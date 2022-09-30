@@ -284,7 +284,7 @@ maybe_add_dependencies(proxygen wangle libunwind gperf)
 
 if(ENABLE_ROCKSDB_CLOUD)
     message(STATUS "ENABLE_ROCKSDB_CLOUD is ${ENABLE_ROCKSDB_CLOUD}")
-    maybe_add_dependencies(aws-sdk-cpp libcurl)
+    maybe_add_dependencies(aws-sdk-cpp libcurl openssl zlib)
     maybe_add_dependencies(rocksdb aws-sdk-cpp snappy zlib zstd bzip2 lz4 lzma libunwind)
 else()
     maybe_add_dependencies(rocksdb snappy zlib zstd bzip2 lz4 lzma libunwind)

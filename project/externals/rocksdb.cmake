@@ -5,6 +5,14 @@
 set(name rocksdb)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 
+#sed -i "12i EXTRA_CXXFLAGS=-I${CMAKE_INSTALL_PREFIX}/include" ${source_dir}/Makefile
+#sed -i "13i EXTRA_LDFLAGS=-L${CMAKE_INSTALL_PREFIX}/lib" ${source_dir}/Makefile
+
+execute_process(
+    COMMAND export "EXTRA_CXXFLAGS=-I${CMAKE_INSTALL_PREFIX}/include"
+    COMMAND export "EXTRA_LDFLAGS=-L${CMAKE_INSTALL_PREFIX}/lib"
+)
+
 if(ENABLE_ROCKSDB_CLOUD)
     message(STATUS "use rocksdb cloud")
     ExternalProject_Add(
@@ -22,10 +30,7 @@ if(ENABLE_ROCKSDB_CLOUD)
         CONFIGURE_COMMAND ""
         BUILD_IN_SOURCE 1
         BUILD_COMMAND
-            bash -c "pwd && USE_AWS=1 PORTABLE=1 WITH_SNAPPY=1 WITH_ZSTD=1 WITH_ZLIB=1 WITH_LZ4=1 WITH_BZ2=1 \
-            WITH_JEMALLOC=0 WITH_GFLAGS=0 WITH_TESTS=0 WITH_BENCHMARK_TOOLS=0 WITH_TOOLS=0 \
-            USE_RTTI=1 FAIL_ON_WARNINGS=0  WITH_AWS=1 \
-            make static_lib -j${BUILDING_JOBS_NUM}"
+             bash -c "USE_AWS=1 && PORTABLE=1 && WITH_SNAPPY=1 && WITH_ZSTD=1 && WITH_ZLIB=1 && WITH_LZ4=1 && WITH_BZ2=1 && WITH_JEMALLOC=0 && WITH_GFLAGS=0 && WITH_TESTS=0 && WITH_BENCHMARK_TOOLS=0 && WITH_TOOLS=0 && USE_RTTI=1 && FAIL_ON_WARNINGS=0 && WITH_AWS=1 && DISABLE_WARNING_AS_ERROR=0 && make static_lib -j${BUILDING_JOBS_NUM}"
         INSTALL_COMMAND
             make install -j${BUILDING_JOBS_NUM} PREFIX=${CMAKE_INSTALL_PREFIX}
         LOG_CONFIGURE TRUE

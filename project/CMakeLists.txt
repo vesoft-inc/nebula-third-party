@@ -4,7 +4,7 @@
 # ENABLE_ROCKSDB_CLOUD      -- When true, use the rocksdb cloud version,
 #                           -- when false, use the normal rocksdb version. Default is false.
 
-option(ENABLE_ROCKSDB_CLOUD "Enable rocksdb cloud" ON)
+option(ENABLE_ROCKSDB_CLOUD "Enable rocksdb cloud" OFF)
 
 cmake_minimum_required(VERSION 3.14.0)
 if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.19")

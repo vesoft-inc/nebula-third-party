@@ -1,3 +1,11 @@
+# The build can be controlled by defining following variables on the
+# <cmake> command line
+#
+# ENABLE_ROCKSDB_CLOUD      -- When true, use the rocksdb cloud version,
+#                           -- when false, use the normal rocksdb version. Default is false.
+
+option(ENABLE_ROCKSDB_CLOUD "Enable rocksdb cloud" OFF)
+
 cmake_minimum_required(VERSION 3.14.0)
 if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.19")
   cmake_policy(SET CMP0114 OLD)
@@ -170,6 +178,7 @@ set(ALL_TARGETS
     openssl
     proxygen
     rocksdb
+    aws-sdk-cpp
     s2geometry
     simdjson
     snappy
@@ -272,7 +281,15 @@ maybe_add_dependencies(fizz folly)
 maybe_add_dependencies(wangle folly fizz)
 maybe_add_dependencies(fbthrift folly krb5 bison flex mstch zlib zstd wangle fatal)
 maybe_add_dependencies(proxygen wangle libunwind gperf)
-maybe_add_dependencies(rocksdb snappy zlib zstd bzip2 lz4 lzma libunwind)
+
+if(ENABLE_ROCKSDB_CLOUD)
+    message(STATUS "ENABLE_ROCKSDB_CLOUD is ${ENABLE_ROCKSDB_CLOUD}")
+    maybe_add_dependencies(aws-sdk-cpp libcurl openssl zlib)
+    maybe_add_dependencies(rocksdb aws-sdk-cpp snappy zlib zstd bzip2 lz4 lzma libunwind)
+else()
+    maybe_add_dependencies(rocksdb snappy zlib zstd bzip2 lz4 lzma libunwind)
+endif()
+
 maybe_add_dependencies(cachelib fbthrift sparsemap fizz googletest)
 
 # RocksDB has its own copy of gtest, which may conflict with ours

@@ -1,6 +1,18 @@
+diff -ur a/thrift/lib/cpp2/async/HeaderServerChannel.h b/thrift/lib/cpp2/async/HeaderServerChannel.h
+--- a/thrift/lib/cpp2/async/HeaderServerChannel.h	2021-11-29 14:14:12.000000000 +0800
++++ b/thrift/lib/cpp2/async/HeaderServerChannel.h	2022-10-13 16:22:03.142090462 +0800
+@@ -108,7 +108,7 @@
+     }
+ 
+     bool isOneway() const override {
+-      return header_->getSequenceNumber() == ONEWAY_REQUEST_ID;
++      return header_ && header_->getSequenceNumber() == ONEWAY_REQUEST_ID;
+     }
+ 
+     bool includeEnvelope() const override { return true; }
 diff -ur a/thrift/lib/cpp2/server/IOWorkerContext.h b/thrift/lib/cpp2/server/IOWorkerContext.h
---- a/thrift/lib/cpp2/server/IOWorkerContext.h	2021-11-28 22:14:12.000000000 -0800
-+++ b/thrift/lib/cpp2/server/IOWorkerContext.h	2021-12-12 15:44:52.426772252 -0800
+--- a/thrift/lib/cpp2/server/IOWorkerContext.h	2021-11-29 14:14:12.000000000 +0800
++++ b/thrift/lib/cpp2/server/IOWorkerContext.h	2022-10-13 16:19:57.688867465 +0800
 @@ -59,7 +59,7 @@
            auto aliveLocked = alive->rlock();
            if (*aliveLocked) {

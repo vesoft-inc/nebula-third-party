@@ -178,7 +178,6 @@ set(ALL_TARGETS
     openssl
     proxygen
     rocksdb
-    aws-sdk-cpp
     s2geometry
     simdjson
     snappy
@@ -226,6 +225,10 @@ endif()
 find_package(Gettext QUIET)
 if (NOT Gettext_FOUND)
     list(APPEND ALL_TARGETS gettext)
+endif()
+
+if(ENABLE_ROCKSDB_CLOUD)
+    list(APPEND ALL_TARGETS aws-sdk-cpp)
 endif()
 
 foreach(target ${ALL_TARGETS})

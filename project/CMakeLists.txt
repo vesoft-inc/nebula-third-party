@@ -4,7 +4,7 @@
 # ENABLE_ROCKSDB_CLOUD      -- When true, use the rocksdb cloud version,
 #                           -- when false, use the normal rocksdb version. Default is false.
 
-option(ENABLE_ROCKSDB_CLOUD "Enable rocksdb cloud" OFF)
+option(ENABLE_ROCKSDB_CLOUD "Enable rocksdb cloud" ON)
 
 cmake_minimum_required(VERSION 3.14.0)
 if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.19")
@@ -14,6 +14,11 @@ endif()
 # Not to pull submodules when an empty string is given
 if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.16")
     cmake_policy(SET CMP0097 NEW)
+endif()
+
+# Avoid warning about DOWNLOAD_EXTRACT_TIMESTAMP in CMake 3.24:
+if (CMAKE_VERSION VERSION_GREATER_EQUAL "3.24.0")
+    cmake_policy(SET CMP0135 NEW)
 endif()
 
 project("Nebula Third Party" C CXX)
@@ -190,6 +195,7 @@ set(ALL_TARGETS
     robin-hood-hashing
     libev
     xsimd
+    librdkafka
 )
 
 if (CMAKE_HOST_SYSTEM_PROCESSOR MATCHES "x86_64")
@@ -281,11 +287,12 @@ maybe_add_dependencies(fizz folly)
 maybe_add_dependencies(wangle folly fizz)
 maybe_add_dependencies(fbthrift folly krb5 bison flex mstch zlib zstd wangle fatal)
 maybe_add_dependencies(proxygen wangle libunwind gperf)
+maybe_add_dependencies(librdkafka berkeleydb libcurl libtool openssl cyrus-sasl)
 
 if(ENABLE_ROCKSDB_CLOUD)
     message(STATUS "ENABLE_ROCKSDB_CLOUD is ${ENABLE_ROCKSDB_CLOUD}")
     maybe_add_dependencies(aws-sdk-cpp libcurl openssl zlib)
-    maybe_add_dependencies(rocksdb aws-sdk-cpp snappy zlib zstd bzip2 lz4 lzma libunwind)
+    maybe_add_dependencies(rocksdb aws-sdk-cpp librdkafka snappy zlib zstd bzip2 lz4 lzma libunwind)
 else()
     maybe_add_dependencies(rocksdb snappy zlib zstd bzip2 lz4 lzma libunwind)
 endif()

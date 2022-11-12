@@ -287,7 +287,6 @@ maybe_add_dependencies(fizz folly)
 maybe_add_dependencies(wangle folly fizz)
 maybe_add_dependencies(fbthrift folly krb5 bison flex mstch zlib zstd wangle fatal)
 maybe_add_dependencies(proxygen wangle libunwind gperf)
-maybe_add_dependencies(librdkafka berkeleydb libcurl libtool openssl cyrus-sasl)
 
 if(ENABLE_ROCKSDB_CLOUD)
     message(STATUS "ENABLE_ROCKSDB_CLOUD is ${ENABLE_ROCKSDB_CLOUD}")

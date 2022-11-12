@@ -291,6 +291,7 @@ maybe_add_dependencies(librdkafka berkeleydb libcurl libtool openssl cyrus-sasl)
 
 if(ENABLE_ROCKSDB_CLOUD)
     message(STATUS "ENABLE_ROCKSDB_CLOUD is ${ENABLE_ROCKSDB_CLOUD}")
+    maybe_add_dependencies(librdkafka berkeleydb libcurl libtool openssl cyrus-sasl)
     maybe_add_dependencies(aws-sdk-cpp libcurl openssl zlib)
     maybe_add_dependencies(rocksdb aws-sdk-cpp librdkafka snappy zlib zstd bzip2 lz4 lzma libunwind)
 else()

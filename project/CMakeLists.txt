@@ -16,6 +16,11 @@ if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.16")
     cmake_policy(SET CMP0097 NEW)
 endif()
 
+# Avoid warning about DOWNLOAD_EXTRACT_TIMESTAMP in CMake 3.24:
+if (CMAKE_VERSION VERSION_GREATER_EQUAL "3.24.0")
+    cmake_policy(SET CMP0135 NEW)
+endif()
+
 project("Nebula Third Party" C CXX)
 
 set(CXX_STANDARD 17)
@@ -189,6 +194,7 @@ set(ALL_TARGETS
     robin-hood-hashing
     libev
     xsimd
+    librdkafka
 )
 
 if (CMAKE_HOST_SYSTEM_PROCESSOR MATCHES "x86_64")
@@ -287,8 +293,9 @@ maybe_add_dependencies(proxygen wangle libunwind gperf)
 
 if(ENABLE_ROCKSDB_CLOUD)
     message(STATUS "ENABLE_ROCKSDB_CLOUD is ${ENABLE_ROCKSDB_CLOUD}")
+    maybe_add_dependencies(librdkafka berkeleydb libcurl libtool openssl cyrus-sasl)
     maybe_add_dependencies(aws-sdk-cpp libcurl openssl zlib)
-    maybe_add_dependencies(rocksdb aws-sdk-cpp snappy zlib zstd bzip2 lz4 lzma libunwind)
+    maybe_add_dependencies(rocksdb aws-sdk-cpp librdkafka snappy zlib zstd bzip2 lz4 lzma libunwind)
 else()
     maybe_add_dependencies(rocksdb snappy zlib zstd bzip2 lz4 lzma libunwind)
 endif()

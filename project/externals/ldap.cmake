@@ -6,8 +6,8 @@ set(name ldap)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL https://www.openldap.org/software/download/OpenLDAP/openldap-release/openldap-2.5.5.tgz
-    URL_HASH MD5=4f32d78070b0fdaba3e2b072b729912a
+    URL https://www.openldap.org/software/download/OpenLDAP/openldap-release/openldap-2.6.3.tgz
+    URL_HASH MD5=6b7229396b335dd5ab2d24841d7f4b53
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}

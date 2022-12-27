@@ -4,19 +4,17 @@
 
 set(name cachelib)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
+set(version "2022.12.26")
 
-ExternalProject_Add_Git(
+ExternalProject_Add(
     ${name}
-    GIT_REPOSITORY https://github.com/facebook/CacheLib.git
-    GIT_TAG 12822a2eddd04bb3e252f458b36ee0675a2d4643  # As of 2021/12/02
-    GIT_SUBMODULES ""
-    ARCHIVE_FILE cachelib-2021-12-02.tar.gz
-    ARCHIVE_MD5 251194612eb8de3362cd089df975e45c
+    URL http://github.com/facebook/cachelib/archive/refs/tags/v${version}.00.tar.gz
+    URL_HASH MD5=6ff1cc495ab500d5b1053248f069a087
+    DOWNLOAD_NAME cachelib-${version}.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}
     DOWNLOAD_DIR ${DOWNLOAD_DIR}
-    PATCH_COMMAND patch -p1 < ${CMAKE_SOURCE_DIR}/patches/${name}-2021-12-02.patch
     SOURCE_DIR ${source_dir}
     SOURCE_SUBDIR cachelib
     CMAKE_ARGS

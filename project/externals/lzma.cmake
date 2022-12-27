@@ -6,9 +6,9 @@ set(name lzma)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL https://tukaani.org/xz/xz-5.2.5.tar.xz
-    URL_HASH MD5=aa1621ec7013a19abab52a8aff04fe5b
-    DOWNLOAD_NAME lzma-5.2.5.tar.xz
+    URL https://tukaani.org/xz/xz-5.4.0.tar.xz
+    URL_HASH MD5=3518b2c6e00400f4df5dd8d2a70fc2a9
+    DOWNLOAD_NAME lzma-5.4.0.tar.xz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}

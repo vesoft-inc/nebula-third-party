@@ -137,13 +137,16 @@ set(common_configure_envs
 )
 
 set(ALL_TARGETS
+    abseil
     berkeleydb
     bison
     boost
     bzip2
     cachelib
     capstone
+    cyrus-sasl
     double-conversion
+    duckdb
     fatal
     fbthrift
     fizz
@@ -158,10 +161,10 @@ set(ALL_TARGETS
     jemalloc
     keyutils
     krb5
-    cyrus-sasl
     ldap
     libaio
     libcurl
+    libev
     libevent
     libunwind
     lz4
@@ -169,6 +172,7 @@ set(ALL_TARGETS
     mstch
     openssl
     proxygen
+    robin-hood-hashing
     rocksdb
     s2geometry
     simdjson
@@ -176,11 +180,9 @@ set(ALL_TARGETS
     sodium
     sparsemap
     wangle
+    xsimd
     zlib
     zstd
-    robin-hood-hashing
-    libev
-    xsimd
 )
 
 if (CMAKE_HOST_SYSTEM_PROCESSOR MATCHES "x86_64")
@@ -264,7 +266,7 @@ maybe_add_dependencies(glog gflags)
 
 maybe_add_dependencies(googlebenchmark googletest)
 
-maybe_add_dependencies(s2geometry googletest glog openssl)
+maybe_add_dependencies(s2geometry googletest glog openssl abseil)
 
 maybe_add_dependencies(krb5 keyutils openssl gettext bison)
 maybe_add_dependencies(folly glog boost double-conversion openssl libevent lzma zstd snappy lz4 libunwind libaio fmt sodium)

@@ -6,9 +6,9 @@ set(name cyrus-sasl)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL https://github.com/cyrusimap/cyrus-sasl/archive/refs/tags/cyrus-sasl-2.1.27.tar.gz
-    URL_HASH MD5=271b299bf4059f8ec99c63fa43a0d1a7
-    DOWNLOAD_NAME cyrus-sasl-2.1.27.tar.gz
+    URL https://github.com/cyrusimap/cyrus-sasl/archive/refs/tags/cyrus-sasl-2.1.28.tar.gz
+    URL_HASH MD5=7dcf3919b3085a1d09576438171bda91
+    DOWNLOAD_NAME cyrus-sasl-2.1.28.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}

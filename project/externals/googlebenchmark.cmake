@@ -6,9 +6,9 @@ set(name googlebenchmark)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL https://github.com/google/benchmark/archive/refs/tags/v1.6.0.tar.gz
-    URL_HASH MD5=a7cb118b00430e22cb16774a28fce7ec
-    DOWNLOAD_NAME googlebenchmark-1.6.0.tar.gz
+    URL https://github.com/google/benchmark/archive/refs/tags/v1.7.1.tar.gz
+    URL_HASH MD5=0459a6c530df9851bee6504c3e37c2e7
+    DOWNLOAD_NAME googlebenchmark-1.7.1.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}

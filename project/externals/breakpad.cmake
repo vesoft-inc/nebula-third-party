@@ -4,18 +4,16 @@
 
 set(name breakpad)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
-ExternalProject_Add_Git(
+ExternalProject_Add(
     ${name}
-    GIT_REPOSITORY https://github.com/google/breakpad.git
-    GIT_TAG 38ee0be4d1118c9d86c0ffab25c6c521ff99fdee  # As of 2021/11/11
-    ARCHIVE_FILE breakpad-2021-11-11.tar.gz
-    ARCHIVE_MD5 0fba349ccf23a3f8b7de4a449de00f9f
+    URL http://github.com/google/breakpad/archive/refs/tags/v2022.07.12.tar.gz
+    URL_HASH MD5=d5bcfd3f7b361ef5bda96123c3abdd0a
+    DOWNLOAD_NAME breakpad-2022.07.12.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}
     DOWNLOAD_DIR ${DOWNLOAD_DIR}
     SOURCE_DIR ${source_dir}
-    PATCH_COMMAND patch -p1 < ${CMAKE_SOURCE_DIR}/patches/${name}-2021-11-11.patch
     CONFIGURE_COMMAND
         ${common_configure_envs}
         ./configure ${common_configure_args}

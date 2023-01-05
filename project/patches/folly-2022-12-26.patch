@@ -1,0 +1,30 @@
+diff -ur a/CMake/FindLibDwarf.cmake b/CMake/FindLibDwarf.cmake
+--- a/CMake/FindLibDwarf.cmake	2022-12-27 15:59:36.511072945 +0800
++++ b/CMake/FindLibDwarf.cmake	2022-12-27 15:59:59.001018283 +0800
+@@ -15,7 +15,7 @@
+ # dwarf.h is typically installed in a libdwarf/ subdirectory on Debian-style
+ # Linux distributions.  It is not installed in a libdwarf/ subdirectory on Mac
+ # systems when installed with Homebrew.  Search for it in both locations.
+-find_path(LIBDWARF_INCLUDE_DIR NAMES dwarf.h PATH_SUFFIXES libdwarf)
++find_path(LIBDWARF_INCLUDE_DIR NAMES dwarf.h PATH_SUFFIXES libdwarf libdwarf-0)
+ mark_as_advanced(LIBDWARF_INCLUDE_DIR)
+
+ find_library(LIBDWARF_LIBRARY NAMES dwarf)
+diff -ur a/folly/experimental/exception_tracer/ExceptionTracerLib.cpp b/folly/experimental/exception_tracer/ExceptionTracerLib.cpp
+--- a/folly/experimental/exception_tracer/ExceptionTracerLib.cpp	2022-12-24 20:17:25.000000000 +0800
++++ b/folly/experimental/exception_tracer/ExceptionTracerLib.cpp	2022-12-27 16:25:58.444339235 +0800
+@@ -98,6 +98,7 @@
+ #define __builtin_unreachable()
+ #endif
+
++#if 0
+ namespace __cxxabiv1 {
+
+ void __cxa_throw(
+@@ -156,5 +157,6 @@
+ }
+
+ } // namespace std
++#endif
+
+ #endif // defined(__GLIBCXX__)

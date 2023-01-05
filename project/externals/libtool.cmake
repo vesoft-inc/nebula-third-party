@@ -6,8 +6,8 @@ set(name libtool)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL https://ftp.gnu.org/gnu/libtool/libtool-2.4.6.tar.xz
-    URL_HASH MD5=1bfb9b923f2c1339b4d2ce1807064aa5
+    URL https://ftp.gnu.org/gnu/libtool/libtool-2.4.7.tar.xz
+    URL_HASH MD5=2fc0b6ddcd66a89ed6e45db28fa44232
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}

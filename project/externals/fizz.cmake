@@ -6,14 +6,13 @@ set(name fizz)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL https://github.com/facebookincubator/fizz/archive/refs/tags/v2021.11.29.00.tar.gz
-    URL_HASH MD5=1d467ded69e3adfd5d5101c655729ece
-    DOWNLOAD_NAME fizz-2021-11-29.tar.gz
+    URL https://github.com/facebookincubator/fizz/archive/refs/tags/v2022.12.26.00.tar.gz
+    URL_HASH MD5=74eeed172e4b5bb8d990828e9787527d
+    DOWNLOAD_NAME fizz-2022-12-26.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}
     DOWNLOAD_DIR ${DOWNLOAD_DIR}
-    PATCH_COMMAND patch -p1 < ${CMAKE_SOURCE_DIR}/patches/${name}-2021-11-29.patch
     SOURCE_DIR ${source_dir}
     SOURCE_SUBDIR fizz
     CMAKE_ARGS

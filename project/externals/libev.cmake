@@ -4,12 +4,12 @@
 
 set(name libev)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
-ExternalProject_Add_Git(
+#ExternalProject_Add_Git(
+ExternalProject_Add(
     ${name}
-    GIT_REPOSITORY https://github.com/kindy/libev.git
-    GIT_TAG 6701966dfd095a080ba0b7d77cf950168256b0d0  # 4.33
-    ARCHIVE_FILE libev-4.33.tar.gz
-    ARCHIVE_MD5 2e41cd6820cb602d3bcb45165f6a90df
+    URL https://github.com/kindy/libev/archive/refs/heads/master.zip
+    URL_HASH MD5=02c06be6ec31c9fc5e148fb6c49a7af7  # 4.33
+    DOWNLOAD_NAME libev-4.33.zip
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}
@@ -22,9 +22,9 @@ ExternalProject_Add_Git(
         "CFLAGS=${CMAKE_C_FLAGS} -fPIC -O2"
         "CPPFLAGS=-isystem ${CMAKE_INSTALL_PREFIX}/include"
         "PATH=${BUILDING_PATH}"
-        ./configure --prefix=${CMAKE_INSTALL_PREFIX}
-                    --enable-static
-                    --disable-shared
+        ./src/configure --prefix=${CMAKE_INSTALL_PREFIX}
+                        --enable-static
+                        --disable-shared
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     BUILD_IN_SOURCE 1
     INSTALL_COMMAND make -s install -j${BUILDING_JOBS_NUM} PREFIX=${CMAKE_INSTALL_PREFIX}
@@ -41,7 +41,7 @@ ExternalProject_Add_Step(${name} pre-configure
     ALWAYS FALSE
     COMMAND
         autoreconf -ivf
-    WORKING_DIRECTORY ${source_dir}
+    WORKING_DIRECTORY ${source_dir}/src
 )
 
 ExternalProject_Add_Step(${name} clean

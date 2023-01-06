@@ -1,0 +1,14 @@
+diff -ur a/cachelib/shm/ShmCommon.h b/cachelib/shm/ShmCommon.h
+--- a/cachelib/shm/ShmCommon.h	2022-12-25 17:00:33.000000000 +0800
++++ a/cachelib/shm/ShmCommon.h	2023-01-06 10:03:07.621521164 +0800
+@@ -28,6 +28,10 @@
+ #include <folly/Range.h>
+ #pragma GCC diagnostic pop
+
++#ifndef MAP_HUGE_SHIFT
++#define MAP_HUGE_SHIFT 26
++#endif
++
+ /* On Mac OS / FreeBSD, mmap(2) syscall does not support these flags */
+ #ifndef MAP_LOCKED
+ #define MAP_LOCKED 0

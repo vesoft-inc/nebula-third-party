@@ -331,8 +331,8 @@ add_custom_target(
 add_custom_target(
     pack-tarballs
     COMMAND
-        tar czvf nebula-third-party-src-3.0.tgz tarballs
+        tar czvf nebula-third-party-src-3.3.tgz tarballs
     COMMAND
-        md5sum nebula-third-party-src-3.0.tgz
+        md5sum nebula-third-party-src-3.3.tgz
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/..
 )

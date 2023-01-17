@@ -22,3 +22,27 @@ diff -ur a/thrift/lib/cpp2/server/IOWorkerContext.h b/thrift/lib/cpp2/server/IOW
            }
          });
    }
+diff -ur a/thrift/lib/cpp2/CMakeLists.txt b/thrift/lib/cpp2/server/CMakeLists.txt
+--- a/thrift/lib/cpp2/CMakeLists.txt	2021-11-29 14:14:12.000000000 +0800
++++ b/thrift/lib/cpp2/CMakeLists.txt	2023-01-16 13:14:09.000000000 -0800
+@@ -159,6 +159,7 @@
+   async/HeaderClientChannel.cpp
+   async/HeaderServerChannel.cpp
+   async/HibernatingRequestChannel.cpp
++  async/HTTPClientChannel.cpp
+   async/Interaction.cpp
+   async/MultiplexAsyncProcessor.cpp
+   async/PooledRequestChannel.cpp
+@@ -198,6 +199,12 @@
+   transport/core/ThriftClient.cpp
+   transport/core/ThriftClientCallback.cpp
+   transport/core/ThriftRequest.cpp
++  transport/http2/client/H2ClientConnection.cpp
++  transport/http2/client/ThriftTransactionHandler.cpp
++  transport/http2/common/H2Channel.cpp
++  transport/http2/common/HTTP2RoutingHandler.cpp
++  transport/http2/common/SingleRpcChannel.cpp
++  transport/http2/server/ThriftRequestHandler.cpp
+   transport/rocket/PayloadUtils.cpp
+   transport/rocket/Types.cpp
+   transport/rocket/client/RequestContext.cpp

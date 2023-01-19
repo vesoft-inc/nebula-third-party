@@ -17,6 +17,7 @@ ExternalProject_Add(
     STAMP_DIR ${BUILD_INFO_DIR}
     DOWNLOAD_DIR ${DOWNLOAD_DIR}
     SOURCE_DIR ${source_dir}
+    PATCH_COMMAND patch -p1 < ${CMAKE_SOURCE_DIR}/patches/${name}-0.6.1.patch
     CONFIGURE_COMMAND ""
     BUILD_COMMAND
         "${MakeEnvs}"
@@ -32,7 +33,9 @@ ExternalProject_Add_Step(${name} custom-install
     ALWAYS TRUE
     DEPENDEES build
     DEPENDERS install
-    COMMAND cp -r src/include/. ${CMAKE_INSTALL_PREFIX}/include/
+    COMMAND python3 scripts/amalgamation.py --extended
+    COMMAND mkdir -p ${CMAKE_INSTALL_PREFIX}/include/duckdb
+    COMMAND cp src/amalgamation/duckdb.hpp ${CMAKE_INSTALL_PREFIX}/include/duckdb/.
     COMMAND cp build/release/src/libduckdb_static.a ${CMAKE_INSTALL_PREFIX}/lib/
     COMMAND cp build/release/third_party/fmt/libduckdb_fmt.a ${CMAKE_INSTALL_PREFIX}/lib/
     COMMAND cp build/release/third_party/miniz/libduckdb_miniz.a ${CMAKE_INSTALL_PREFIX}/lib/

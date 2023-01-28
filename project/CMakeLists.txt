@@ -287,7 +287,7 @@ maybe_add_dependencies(krb5 keyutils openssl gettext bison)
 maybe_add_dependencies(folly glog boost double-conversion openssl libevent lzma zstd snappy lz4 libunwind libaio fmt sodium)
 maybe_add_dependencies(fizz folly)
 maybe_add_dependencies(wangle folly fizz)
-maybe_add_dependencies(fbthrift folly krb5 bison flex mstch zlib zstd wangle fatal)
+maybe_add_dependencies(fbthrift folly krb5 bison flex mstch zlib zstd proxygen wangle fatal)
 maybe_add_dependencies(proxygen wangle libunwind gperf)
 
 if(ENABLE_ROCKSDB_CLOUD)

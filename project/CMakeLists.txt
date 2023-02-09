@@ -183,6 +183,7 @@ set(ALL_TARGETS
     xsimd
     zlib
     zstd
+    utf8proc
 )
 
 if (CMAKE_HOST_SYSTEM_PROCESSOR MATCHES "x86_64")

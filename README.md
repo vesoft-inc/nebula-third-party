@@ -41,6 +41,9 @@
  * robin-hood-hashing
  * libev
  * xsimd
+ * duckdb
+ * utf8proc
+ * apache-arrow
 
 # How to Build
 

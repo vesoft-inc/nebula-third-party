@@ -184,6 +184,7 @@ set(ALL_TARGETS
     zlib
     zstd
     utf8proc
+    arrow
 )
 
 if (CMAKE_HOST_SYSTEM_PROCESSOR MATCHES "x86_64")
@@ -281,6 +282,8 @@ maybe_add_dependencies(cachelib fbthrift sparsemap fizz googletest)
 # RocksDB has its own copy of gtest, which may conflict with ours
 # Here we build gtest after rocksdb intentionally
 maybe_add_dependencies(googletest rocksdb gflags)
+
+maybe_add_dependencies(arrow openssl)
 
 if (EXISTS ${CMAKE_INSTALL_PREFIX}/lib64)
     add_custom_target(

@@ -283,7 +283,7 @@ maybe_add_dependencies(cachelib fbthrift sparsemap fizz googletest)
 # Here we build gtest after rocksdb intentionally
 maybe_add_dependencies(googletest rocksdb gflags)
 
-maybe_add_dependencies(arrow openssl)
+maybe_add_dependencies(arrow openssl xsimd)
 
 if (EXISTS ${CMAKE_INSTALL_PREFIX}/lib64)
     add_custom_target(

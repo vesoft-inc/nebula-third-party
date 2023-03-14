@@ -184,6 +184,7 @@ set(ALL_TARGETS
     zlib
     zstd
     utf8proc
+    llvm
     arrow
 )
 
@@ -283,7 +284,7 @@ maybe_add_dependencies(cachelib fbthrift sparsemap fizz googletest)
 # Here we build gtest after rocksdb intentionally
 maybe_add_dependencies(googletest rocksdb gflags)
 
-maybe_add_dependencies(arrow openssl xsimd)
+maybe_add_dependencies(arrow openssl xsimd llvm)
 
 if (EXISTS ${CMAKE_INSTALL_PREFIX}/lib64)
     add_custom_target(

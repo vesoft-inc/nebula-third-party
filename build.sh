@@ -184,11 +184,20 @@ cd $build_dir
 
 echo "Starting building third-party libraries"
 
+cmake_addition_args=""
+if [[ $build_for_centos -ne 0 ]]; then
+  echo "Build for centos, append -DUSE_LLVM_CXX=ON"
+  cmake_addition_args="-DUSE_LLVM_CXX=ON"
+else
+  echo "Not build for centos, do not append -DUSE_LLVM_CXX=ON"
+fi
+
 $cmake_cmd  -DDOWNLOAD_DIR=$download_dir              \
             -DCMAKE_INSTALL_PREFIX=$install_dir       \
             -DSOURCE_PREFIX=$source_dir               \
             ${C_COMPILER_ARG} ${CXX_COMPILER_ARG}     \
             ${DISABLE_CXX11_ABI}                      \
+            $cmake_addition_args                      \
             $source_dir |& tee $logfile
 
 make |& \

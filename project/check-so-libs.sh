@@ -14,7 +14,7 @@ if [ -e $install_dir/lib ]; then
   # llvm need generate some shared library for following reasons, do not check them here
   # 1. it generate libLTO.so libRemarks.so even configured build static library
   # 2. reduce binary size: tools configured to linked shared library: libclang.so, libLLVM.so
-  so_in_lib=`find $install_dir/lib -name '*.so' | grep -v "libLTO.so\|libRemarks.so\|libclang\|libLLVM"`
+  so_in_lib=`find $install_dir/lib -name '*.so' | grep -v "libLTO.so\|libRemarks.so\|libclang\|libLLVM\|libc++"`
 fi
 if [ -e $install_dir/lib64 ]; then
   so_in_lib64=`find $install_dir/lib64 -name *.so`

@@ -14,10 +14,10 @@ ExternalProject_Add(
     STAMP_DIR ${BUILD_INFO_DIR}
     DOWNLOAD_DIR ${DOWNLOAD_DIR}
     SOURCE_DIR ${source_dir}
-    CONFIGURE_COMMAND ""
+    CONFIGURE_COMMAND mkdir -p ${CMAKE_INSTALL_PREFIX}/include/
     BUILD_COMMAND ""
     BUILD_IN_SOURCE 1
-    INSTALL_COMMAND cp src/include/robin_hood.h ${CMAKE_INSTALL_PREFIX}/include
+    INSTALL_COMMAND cp src/include/robin_hood.h ${CMAKE_INSTALL_PREFIX}/include/robin_hood.h
     LOG_CONFIGURE TRUE
     LOG_BUILD TRUE
     LOG_INSTALL TRUE

@@ -15,18 +15,20 @@ ExternalProject_Add(
         STAMP_DIR ${BUILD_INFO_DIR}
         DOWNLOAD_DIR ${DOWNLOAD_DIR}
         CONFIGURE_COMMAND
-        "${CMAKE_COMMAND}" -S llvm -B build -G Ninja
-                           -DCMAKE_BUILD_TYPE=Release
-                           -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-                           -DLLVM_ENABLE_PROJECTS='clang'
-                           -DLLVM_ENABLE_RTTI=ON
-                           -DLLVM_BUILD_LLVM_DYLIB=ON
-                           -DLLVM_LINK_LLVM_DYLIB=ON
-                           -DLLVM_INCLUDE_BENCHMARKS=OFF
-                           -DLLVM_INCLUDE_EXAMPLES=OFF
-                           -DLLVM_INCLUDE_TESTS=OFF
-                           -DLLVM_PARALLEL_COMPILE_JOBS=${BUILDING_JOBS_NUM}
-                           -DLLVM_PARALLEL_LINK_JOBS=${BUILDING_JOBS_NUM}
+        ${CMAKE_COMMAND} -S llvm -B build -G Ninja
+                         -DCMAKE_BUILD_TYPE=Release
+                         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+                         -DLLVM_ENABLE_PROJECTS='clang'
+                         -DLLVM_ENABLE_RUNTIMES='libcxx\\$<SEMICOLON>libcxxabi'
+                         -DLLVM_ENABLE_RTTI=ON
+                         -DLLVM_BUILD_LLVM_DYLIB=ON
+                         -DLLVM_LINK_LLVM_DYLIB=ON
+                         -DLLVM_INCLUDE_BENCHMARKS=OFF
+                         -DLLVM_INCLUDE_EXAMPLES=OFF
+                         -DLLVM_INCLUDE_TESTS=OFF
+                         -DLLVM_PARALLEL_COMPILE_JOBS=${BUILDING_JOBS_NUM}
+                         -DLLVM_PARALLEL_LINK_JOBS=${BUILDING_JOBS_NUM}
+
         BUILD_COMMAND ninja -C build install
         BUILD_IN_SOURCE 1
         INSTALL_COMMAND ""

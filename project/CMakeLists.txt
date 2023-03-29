@@ -1,10 +1,6 @@
 # The build can be controlled by defining following variables on the
 # <cmake> command line
 #
-# ENABLE_ROCKSDB_CLOUD      -- When true, use the rocksdb cloud version,
-#                           -- when false, use the normal rocksdb version. Default is false.
-
-option(ENABLE_ROCKSDB_CLOUD "Enable rocksdb cloud" OFF)
 
 cmake_minimum_required(VERSION 3.14.0)
 if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.19")
@@ -183,6 +179,8 @@ set(ALL_TARGETS
     openssl
     proxygen
     rocksdb
+    rocksdb-cloud
+    aws-sdk-cpp
     s2geometry
     simdjson
     snappy
@@ -230,11 +228,6 @@ endif()
 find_package(Gettext QUIET)
 if (NOT Gettext_FOUND)
     list(APPEND ALL_TARGETS gettext)
-endif()
-
-if(ENABLE_ROCKSDB_CLOUD)
-    list(APPEND ALL_TARGETS aws-sdk-cpp)
-    list(APPEND ALL_TARGETS librdkafka)
 endif()
 
 foreach(target ${ALL_TARGETS})
@@ -291,14 +284,11 @@ maybe_add_dependencies(wangle folly fizz)
 maybe_add_dependencies(fbthrift folly krb5 bison flex mstch zlib zstd proxygen wangle fatal)
 maybe_add_dependencies(proxygen wangle libunwind gperf)
 
-if(ENABLE_ROCKSDB_CLOUD)
-    message(STATUS "ENABLE_ROCKSDB_CLOUD is ${ENABLE_ROCKSDB_CLOUD}")
-    maybe_add_dependencies(librdkafka berkeleydb libcurl libtool openssl cyrus-sasl)
-    maybe_add_dependencies(aws-sdk-cpp libcurl openssl zlib)
-    maybe_add_dependencies(rocksdb aws-sdk-cpp librdkafka snappy zlib zstd bzip2 lz4 lzma libunwind)
-else()
-    maybe_add_dependencies(rocksdb snappy zlib zstd bzip2 lz4 lzma libunwind)
-endif()
+
+maybe_add_dependencies(librdkafka berkeleydb libcurl libtool openssl cyrus-sasl)
+maybe_add_dependencies(aws-sdk-cpp libcurl openssl zlib)
+maybe_add_dependencies(rocksdb-cloud aws-sdk-cpp librdkafka snappy zlib zstd bzip2 lz4 lzma libunwind)
+maybe_add_dependencies(rocksdb snappy zlib zstd bzip2 lz4 lzma libunwind)
 
 maybe_add_dependencies(cachelib fbthrift sparsemap fizz googletest)
 

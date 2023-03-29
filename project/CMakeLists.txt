@@ -194,7 +194,6 @@ set(ALL_TARGETS
     robin-hood-hashing
     libev
     xsimd
-    librdkafka
 )
 
 if (CMAKE_HOST_SYSTEM_PROCESSOR MATCHES "x86_64")
@@ -235,6 +234,7 @@ endif()
 
 if(ENABLE_ROCKSDB_CLOUD)
     list(APPEND ALL_TARGETS aws-sdk-cpp)
+    list(APPEND ALL_TARGETS librdkafka)
 endif()
 
 foreach(target ${ALL_TARGETS})

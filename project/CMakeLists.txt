@@ -192,6 +192,7 @@ set(ALL_TARGETS
     robin-hood-hashing
     libev
     xsimd
+    librdkafka
 )
 
 if (CMAKE_HOST_SYSTEM_PROCESSOR MATCHES "x86_64")

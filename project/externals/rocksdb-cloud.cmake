@@ -47,6 +47,18 @@ ExternalProject_Add_Step(${name} install-static
     WORKING_DIRECTORY ${source_dir}
 )
 
+ExternalProject_Add_Step(${name} replace-rocksdb
+    DEPENDEES install-static
+    DEPENDERS install
+    ALWAYS false
+    COMMAND
+        ${CMAKE_COMMAND} -E echo "Replacing #include \"rocksdb to #include \"rocksdb-cloud in header files"
+    COMMAND
+        ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_SOURCE_DIR}/rocksdb-cloud-update-headers.cmake
+    WORKING_DIRECTORY ${CMAKE_INSTALL_PREFIX}/include/rocksdb-cloud
+    COMMENT "Replacing #include \"rocksdb to #include \"rocksdb-cloud in header files"
+)
+
 ExternalProject_Add_Step(${name} clean
     EXCLUDE_FROM_MAIN TRUE
     ALWAYS TRUE

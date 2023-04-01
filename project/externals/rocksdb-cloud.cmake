@@ -1,4 +1,4 @@
-# Copyright (c) 2019 vesoft inc. All rights reserved.
+# Copyright (c) 2023 vesoft inc. All rights reserved.
 #
 # This source code is licensed under Apache 2.0 License.
 
@@ -69,4 +69,3 @@ ExternalProject_Add_Step(${name} clean
 )
 
 ExternalProject_Add_StepTargets(${name} clean)
-

@@ -54,7 +54,7 @@ ExternalProject_Add_Step(${name} replace-rocksdb
     COMMAND
         ${CMAKE_COMMAND} -E echo "Replacing #include \"rocksdb to #include \"rocksdb-cloud in header files"
     COMMAND
-        ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_SOURCE_DIR}/rocksdb-cloud-update-headers.cmake
+    ${CMAKE_COMMAND} -DINSTALL_PREFIX=${CMAKE_INSTALL_PREFIX} -P ${CMAKE_CURRENT_SOURCE_DIR}/externals/rocksdb-cloud-update-headers.cmake
     WORKING_DIRECTORY ${CMAKE_INSTALL_PREFIX}/include/rocksdb-cloud
     COMMENT "Replacing #include \"rocksdb to #include \"rocksdb-cloud in header files"
 )

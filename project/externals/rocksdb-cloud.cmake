@@ -21,7 +21,6 @@ ExternalProject_Add(
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}
     DOWNLOAD_DIR ${DOWNLOAD_DIR}
-    #PATCH_COMMAND patch -p1 < ${CMAKE_SOURCE_DIR}/patches/${name}-2022-9-19.patch
     SOURCE_DIR ${source_dir}
     BUILD_IN_SOURCE 1
     CONFIGURE_COMMAND ""
@@ -43,11 +42,11 @@ ExternalProject_Add_Step(${name} install-static
     COMMAND
         ${CMAKE_COMMAND} -E copy
         ${source_dir}/librocksdb.a
-        ${CMAKE_INSTALL_PREFIX}/lib/librocksdb-cloud.a
+        ${CMAKE_INSTALL_PREFIX}/lib/librocksdb_cloud.a
     WORKING_DIRECTORY ${source_dir}
 )
 
-ExternalProject_Add_Step(${name} replace-rocksdb
+ExternalProject_Add_Step(${name} update-headers
     DEPENDEES install-static
     DEPENDERS install
     ALWAYS false

@@ -2,8 +2,6 @@
 #
 # This source code is licensed under Apache 2.0 License.
 
-#set(AWS_BUILD "\\\"s3;kinesis;transfer\\\"")
-
 set(name aws-sdk-cpp)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 

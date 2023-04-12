@@ -3,7 +3,7 @@
 this_dir=$(dirname $(readlink -f $0))
 build_root=$(pwd)
 package_dir=$build_root/packages
-version=3.3
+version=3.4-cloud
 
 function atexit() {
     compgen -G $package_dir/vesoft-third-party-*.sh &> /dev/null

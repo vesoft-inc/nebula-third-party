@@ -289,7 +289,7 @@ maybe_add_dependencies(proxygen wangle libunwind gperf)
 maybe_add_dependencies(librdkafka berkeleydb libcurl libtool openssl cyrus-sasl)
 maybe_add_dependencies(aws-sdk-cpp libcurl openssl zlib)
 maybe_add_dependencies(rocksdb-cloud aws-sdk-cpp librdkafka snappy zlib zstd bzip2 lz4 lzma libunwind)
-maybe_add_dependencies(rocksdb snappy zlib zstd bzip2 lz4 lzma libunwind)
+maybe_add_dependencies(rocksdb snappy zlib zstd bzip2 lz4 lzma libunwind rocksdb-cloud)
 
 maybe_add_dependencies(cachelib fbthrift sparsemap fizz googletest)
 

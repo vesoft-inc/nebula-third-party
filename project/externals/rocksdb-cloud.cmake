@@ -14,7 +14,7 @@ set(CMAKE_INSTALL_INCLUDEDIR ${CMAKE_INSTALL_PREFIX}/include/rocksdb-cloud)
 ExternalProject_Add(
     ${name}
     GIT_REPOSITORY https://github.com/rockset/rocksdb-cloud.git
-    GIT_TAG 956da0d46623d956670703a4af73b2526a5cd3cb  # As of 2022/9/19
+    GIT_TAG 8f23442255d9eeb9e205591724fded15b5b4ff96  # As of 2023/05/05
     #ARCHIVE_FILE rocksdb-2022-9-19.tar.gz
     #ARCHIVE_MD5 89854dbe4a857068381b572081ab1e19
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}

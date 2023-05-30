@@ -8,11 +8,11 @@ set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 # Function to get glibc version
 function(glibc_version version)
     execute_process(
-        COMMAND bash -c "ldd --version 2>&1"
+        COMMAND bash -c "ldd --version 2>&1 | head -n 1 | cut -d ')' -f 2"
         OUTPUT_VARIABLE GLIBC_VERSION
     )
-    string(REGEX MATCH "^(.*\n)*ldd \\(GNU libc\\) ([0-9]*\\.[0-9]*)" _ ${GLIBC_VERSION})
-    set(${version} ${CMAKE_MATCH_2} PARENT_SCOPE)
+    string(STRIP ${GLIBC_VERSION} GLIBC_VERSION)
+    set(${version} ${GLIBC_VERSION} PARENT_SCOPE)
 endfunction()
 
 # Get the glibc version

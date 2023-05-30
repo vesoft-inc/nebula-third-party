@@ -1,0 +1,50 @@
+diff -ur a/src/client/linux/dump_writer_common/thread_info.h b/src/client/linux/dump_writer_common/thread_info.h
+--- a/src/client/linux/dump_writer_common/thread_info.h     2022-05-10 04:45:04.000000000 +0000
++++ b/src/client/linux/dump_writer_common/thread_info.h 2023-05-29 09:38:21.045938682 +0000
+@@ -32,6 +32,20 @@
+
+ #include <sys/ucontext.h>
+ #include <sys/user.h>
++struct user_regs_struct
++{
++  unsigned long long regs[31];
++  unsigned long long sp;
++  unsigned long long pc;
++  unsigned long long pstate;
++};
++
++struct user_fpsimd_struct
++{
++  __uint128_t  vregs[32];
++  unsigned int fpsr;
++  unsigned int fpcr;
++};
+
+ #include "client/linux/dump_writer_common/raw_context_cpu.h"
+ #include "common/memory_allocator.h"
+diff -ur a/src/tools/linux/md2core/minidump-2-core.cc b/src/tools/linux/md2core/minidump-2-core.cc
+--- a/src/tools/linux/md2core/minidump-2-core.cc        2022-05-10 04:45:04.000000000 +0000
++++ b/src/tools/linux/md2core/minidump-2-core.cc        2023-05-29 10:10:01.982373549 +0000
+@@ -41,6 +41,22 @@
+ #include <sys/user.h>
+ #include <unistd.h>
+
++struct user_regs_struct
++{
++  unsigned long long regs[31];
++  unsigned long long sp;
++  unsigned long long pc;
++  unsigned long long pstate;
++};
++
++struct user_fpsimd_struct
++{
++  __uint128_t  vregs[32];
++  unsigned int fpsr;
++  unsigned int fpcr;
++};
++
++
+ #include <map>
+ #include <string>
+ #include <vector>

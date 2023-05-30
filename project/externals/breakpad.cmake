@@ -4,6 +4,26 @@
 
 set(name breakpad)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
+
+# Function to get glibc version
+function(glibc_version version)
+    execute_process(
+        COMMAND bash -c "ldd --version 2>&1 | head -n 1 | cut -d ')' -f 2"
+        OUTPUT_VARIABLE GLIBC_VERSION
+    )
+    string(STRIP ${GLIBC_VERSION} GLIBC_VERSION)
+    set(${version} ${GLIBC_VERSION} PARENT_SCOPE)
+endfunction()
+
+# Get the glibc version
+glibc_version(GLIBC_VERSION)
+
+set(patch_command "patch -p1 < ${CMAKE_SOURCE_DIR}/patches/${name}-2021-11-11.patch")
+
+if("${CMAKE_HOST_SYSTEM_PROCESSOR}" STREQUAL "aarch64" AND ${GLIBC_VERSION} VERSION_LESS 2.20)
+    string(APPEND patch_command " && patch -p1 < ${CMAKE_SOURCE_DIR}/patches/${name}-aarch64.patch")
+endif()
+
 ExternalProject_Add_Git(
     ${name}
     GIT_REPOSITORY https://github.com/google/breakpad.git
@@ -15,7 +35,7 @@ ExternalProject_Add_Git(
     STAMP_DIR ${BUILD_INFO_DIR}
     DOWNLOAD_DIR ${DOWNLOAD_DIR}
     SOURCE_DIR ${source_dir}
-    PATCH_COMMAND patch -p1 < ${CMAKE_SOURCE_DIR}/patches/${name}-2021-11-11.patch
+    PATCH_COMMAND bash -c "${patch_command}"
     CONFIGURE_COMMAND
         ${common_configure_envs}
         ./configure ${common_configure_args}

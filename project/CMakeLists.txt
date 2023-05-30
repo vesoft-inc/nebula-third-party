@@ -262,7 +262,6 @@ maybe_add_dependencies(libtool automake)
 
 maybe_add_dependencies(glog libtool)
 maybe_add_dependencies(libunwind glog)
-maybe_add_dependencies(sodium berkeleydb)
 maybe_add_dependencies(gettext libtool)
 maybe_add_dependencies(bison gettext libtool)
 maybe_add_dependencies(flex libtool)

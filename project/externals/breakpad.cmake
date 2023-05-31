@@ -4,20 +4,6 @@
 
 set(name breakpad)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
-
-# Function to get glibc version
-function(glibc_version version)
-    execute_process(
-        COMMAND bash -c "ldd --version 2>&1 | head -n 1 | cut -d ')' -f 2"
-        OUTPUT_VARIABLE GLIBC_VERSION
-    )
-    string(STRIP ${GLIBC_VERSION} GLIBC_VERSION)
-    set(${version} ${GLIBC_VERSION} PARENT_SCOPE)
-endfunction()
-
-# Get the glibc version
-glibc_version(GLIBC_VERSION)
-
 set(patch_command "patch -p1 < ${CMAKE_SOURCE_DIR}/patches/${name}-2021-11-11.patch")
 
 if("${CMAKE_HOST_SYSTEM_PROCESSOR}" STREQUAL "aarch64" AND ${GLIBC_VERSION} VERSION_LESS 2.20)

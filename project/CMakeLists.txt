@@ -35,6 +35,11 @@ execute_process(
     OUTPUT_STRIP_TRAILING_WHITESPACE
 )
 
+file(STRINGS /etc/os-release DISTRO_NAME REGEX "^NAME=")
+file(STRINGS /etc/os-release DISTRO_VERSION_ID REGEX "^VERSION_ID=")
+string(REGEX REPLACE "^NAME=\"(.*)\"$" "\\1" DISTRO_NAME ${DISTRO_NAME})
+string(REGEX REPLACE "^VERSION_ID=\"(.*)\"$" "\\1" DISTRO_VERSION_ID ${DISTRO_VERSION_ID})
+
 # Guess the number of building jobs based on the available memories
 set(jobs_by_cpu ${num_cores})
 math(EXPR jobs_by_mem "${available_memory_mb} / 1024 / 2")
@@ -59,6 +64,8 @@ message(STATUS "Number of online physcial CPU cores: ${num_cores}")
 message(STATUS "Available physical memory: ${available_memory_mb} MB")
 message(STATUS "Building third party with ${BUILDING_JOBS_NUM} jobs")
 message(STATUS "Glibc version: ${GLIBC_VERSION}")
+message(STATUS "Linux distribution name: ${DISTRO_NAME}")
+message(STATUS "Linux distribution version ID: ${DISTRO_VERSION_ID}")
 
 if (NOT DOWNLOAD_DIR)
     set(DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/tarballs)

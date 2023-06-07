@@ -2,13 +2,18 @@ diff --git a/cpp/src/gandiva/precompiled/CMakeLists.txt b/cpp/src/gandiva/precom
 index d7c7ef157..2c92e28d2 100644
 --- a/cpp/src/gandiva/precompiled/CMakeLists.txt
 +++ b/cpp/src/gandiva/precompiled/CMakeLists.txt
-@@ -49,6 +49,14 @@ else()
+@@ -49,6 +49,19 @@ else()
    set(PLATFORM_CLANG_OPTIONS -std=c++17)
  endif()
- 
+
 +if (USE_LLVM_CXX)
 +  message(STATUS "USE LLVM CXX")
-+  set(LLVM_CXX_INCLUDE -I${LLVM_INCLUDE_DIRS}/c++/v1 -I${LLVM_INCLUDE_DIRS}/x86_64-unknown-linux-gnu/c++/v1)
++  file(GLOB_RECURSE LLVM_CXX_INCLUDE_DIR
++    "${LLVM_INCLUDE_DIRS}/*-gnu/c++/v1/__config_site")
++
++  list(GET LLVM_CXX_INCLUDE_DIR 0 LLVM_CXX_INCLUDE_DIR)
++  get_filename_component(LLVM_CXX_INCLUDE_DIR ${LLVM_CXX_INCLUDE_DIR} DIRECTORY)
++  set(LLVM_CXX_INCLUDE -I${LLVM_INCLUDE_DIRS}/c++/v1 -I${LLVM_CXX_INCLUDE_DIR})
 +else()
 +  message(STATUS "NOT USE LLVM CXX")
 +  set(LLVM_CXX_INCLUDE "")

@@ -1,6 +1,12 @@
 # Copyright (c) 2023 vesoft inc. All rights reserved.
 #
 # This source code is licensed under Apache 2.0 License.
+# This source code is licensed under Apache 2.0 License.
+if(DISTRO_NAME STREQUAL "CentOS Linux" AND DISTRO_VERSION_ID STREQUAL "7")
+    set(USE_LLVM_CXX ON)
+else()
+    set(USE_LLVM_CXX OFF)
+endif()
 
 set(name arrow)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)

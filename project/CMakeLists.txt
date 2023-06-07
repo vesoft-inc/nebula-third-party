@@ -148,6 +148,7 @@ set(ALL_TARGETS
     berkeleydb
     bison
     boost
+    breakpad
     bzip2
     cachelib
     capstone
@@ -194,10 +195,6 @@ set(ALL_TARGETS
     llvm
     arrow
 )
-
-if (CMAKE_HOST_SYSTEM_PROCESSOR MATCHES "x86_64")
-  list(APPEND ALL_TARGETS breakpad)
-endif()
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
 
@@ -257,7 +254,7 @@ maybe_add_dependencies(autoconf-archive autoconf)
 maybe_add_dependencies(automake autoconf autoconf-archive)
 maybe_add_dependencies(libtool automake)
 
-maybe_add_dependencies(glog libtool)
+maybe_add_dependencies(glog libtool libunwind)
 maybe_add_dependencies(gettext libtool)
 maybe_add_dependencies(bison gettext libtool)
 maybe_add_dependencies(flex libtool)
@@ -319,8 +316,8 @@ add_custom_target(
 add_custom_target(
     pack-tarballs
     COMMAND
-        tar czvf nebula-third-party-src-3.0.tgz tarballs
+        tar czvf nebula-third-party-src-5.0.tgz tarballs
     COMMAND
-        md5sum nebula-third-party-src-3.0.tgz
+        md5sum nebula-third-party-src-5.0.tgz
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/..
 )

@@ -230,7 +230,7 @@ do
 done
 
 binaries=()
-binaries+=(kdb5_util krb5{-send-pr,kdc})
+#binaries+=(kdb5_util krb5{-send-pr,kdc})
 binaries+=(key.dns_resolver request-key k{prop,proplog,propd,admin.local,admind})
 binaries+=(request-key uuserver sserver sim_server gss-server)
 binaries+=(slap{acl,add,auth,cat,dn,index,passwd,schema,test})
@@ -266,9 +266,9 @@ rm -rf $install_dir/lib/cmake/[Bb]oost*
 march=$(uname -m)
 
 # Make krb5 relocatable
-sed -i 's/^prefix=.*$/prefix=$(dirname $(dirname $(readlink -f $0)))/' $install_dir/bin/krb5-config
-sed -i 's#^LDFLAGS=.*$#LDFLAGS="-L$prefix/lib -L$prefix/lib64"#' $install_dir/bin/krb5-config
-sed -i -r 's#^DEFCKTNAME=.*(/var.*keytab).*#DEFCKTNAME="FILE:$prefix\1"#' $install_dir/bin/krb5-config
+#sed -i 's/^prefix=.*$/prefix=$(dirname $(dirname $(readlink -f $0)))/' $install_dir/bin/krb5-config
+#sed -i 's#^LDFLAGS=.*$#LDFLAGS="-L$prefix/lib -L$prefix/lib64"#' $install_dir/bin/krb5-config
+#sed -i -r 's#^DEFCKTNAME=.*(/var.*keytab).*#DEFCKTNAME="FILE:$prefix\1"#' $install_dir/bin/krb5-config
 
 cat > $install_dir/version-info <<EOF
 Package         : Nebula Third Party

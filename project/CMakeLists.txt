@@ -156,11 +156,8 @@ set(ALL_TARGETS
     googletest
     gperf
     jemalloc
-    keyutils
-    krb5
     cyrus-sasl
     ldap
-    libaio
     libcurl
     libevent
     libunwind
@@ -266,11 +263,10 @@ maybe_add_dependencies(googlebenchmark googletest)
 
 maybe_add_dependencies(s2geometry googletest glog openssl)
 
-maybe_add_dependencies(krb5 keyutils openssl gettext bison)
-maybe_add_dependencies(folly glog boost double-conversion openssl libevent lzma zstd snappy lz4 libunwind libaio fmt sodium)
+maybe_add_dependencies(folly glog boost double-conversion openssl libevent lzma zstd snappy lz4 libunwind fmt sodium)
 maybe_add_dependencies(fizz folly)
 maybe_add_dependencies(wangle folly fizz)
-maybe_add_dependencies(fbthrift folly krb5 bison flex mstch zlib zstd wangle fatal)
+maybe_add_dependencies(fbthrift folly bison flex mstch zlib zstd wangle fatal)
 maybe_add_dependencies(proxygen wangle libunwind gperf)
 maybe_add_dependencies(rocksdb snappy zlib zstd bzip2 lz4 lzma libunwind)
 maybe_add_dependencies(cachelib fbthrift sparsemap fizz googletest)

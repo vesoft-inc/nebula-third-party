@@ -4,6 +4,11 @@
 
 set(name breakpad)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
+
+if("${CMAKE_HOST_SYSTEM_PROCESSOR}" STREQUAL "aarch64" AND ${GLIBC_VERSION} VERSION_LESS 2.20)
+    set(patch_command "patch -p1 < ${CMAKE_SOURCE_DIR}/patches/${name}-aarch64.patch")
+endif()
+
 ExternalProject_Add(
     ${name}
     URL http://github.com/google/breakpad/archive/refs/tags/v2022.07.12.tar.gz
@@ -14,6 +19,7 @@ ExternalProject_Add(
     STAMP_DIR ${BUILD_INFO_DIR}
     DOWNLOAD_DIR ${DOWNLOAD_DIR}
     SOURCE_DIR ${source_dir}
+    PATCH_COMMAND bash -c "${patch_command}"
     CONFIGURE_COMMAND
         ${common_configure_envs}
         ./configure ${common_configure_args}

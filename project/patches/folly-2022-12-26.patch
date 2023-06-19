@@ -28,3 +28,25 @@ diff -ur a/folly/experimental/exception_tracer/ExceptionTracerLib.cpp b/folly/ex
 +#endif
 
  #endif // defined(__GLIBCXX__)
+diff -ur a/CMakeLists.txt b/CMakeLists.txt
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -77,10 +77,14 @@ set(CMAKE_CXX_STANDARD 17)
+ set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+ if("${CMAKE_LIBRARY_ARCHITECTURE}" STREQUAL "")
+-  # CMAKE_LIBRARY_ARCHITECTURE is not always set, so we have to assume
+-  # arch might be x86_64
+-  message(WARNING "CMAKE_LIBRARY_ARCHITECTURE not set, assuming x86_64")
+-  set(IS_X86_64_ARCH ON)
++  if(NOT "${CMAKE_HOST_SYSTEM_PROCESSOR}" STREQUAL "x86_64")
++    set(IS_X86_64_ARCH OFF)
++  else()
++    # CMAKE_LIBRARY_ARCHITECTURE is not always set, so we have to assume
++    # arch might be x86_64
++    message(WARNING "CMAKE_LIBRARY_ARCHITECTURE not set, assuming x86_64")
++    set(IS_X86_64_ARCH ON)
++  endif()
+ else()
+   string(FIND "${CMAKE_LIBRARY_ARCHITECTURE}" "x86_64" IS_X86_64_ARCH)
+   if(IS_X86_64_ARCH STREQUAL "-1")

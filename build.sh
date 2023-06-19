@@ -205,8 +205,6 @@ end_time=$(date +%s)
 find $install_dir -name '*.la' | xargs rm -f
 
 # Remove big unneeded binaries
-binaries+=(k{rb5-onfig,init,admin,su,tutil,list,vno,passwd})
-binaries+=(k{destroy,switch,5srvutil,eyctl})
 binaries+=(openssl gss-client dump_syms_mac)
 binaries+=(uuclient sim_client)
 binaries+=(sclient compile_et)

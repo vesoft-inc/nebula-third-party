@@ -18,10 +18,7 @@
  * googletest
  * gperf
  * jemalloc
- * keyutils
- * krb5
  * ldap
- * libaio
  * libcurl
  * libevent
  * libunwind

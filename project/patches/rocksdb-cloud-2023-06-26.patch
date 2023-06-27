@@ -1,0 +1,63 @@
+diff --git a/cloud/aws/aws_retry.cc b/cloud/aws/aws_retry.cc
+index 28c00f9e3..70474b176 100644
+--- a/cloud/aws/aws_retry.cc
++++ b/cloud/aws/aws_retry.cc
+@@ -129,6 +129,9 @@ Status AwsCloudOptions::GetClientConfiguration(
+   }
+
+   config->region = ToAwsString(region);
++  if(!cloud_fs_options.endpoint_override.empty()) {
++    config->endpointOverride = cloud_fs_options.endpoint_override;
++  }
+   return Status::OK();
+ }
+ #else
+diff --git a/cloud/cloud_file_system.cc b/cloud/cloud_file_system.cc
+index 2201e601d..1ec9e5ded 100644
+--- a/cloud/cloud_file_system.cc
++++ b/cloud/cloud_file_system.cc
+@@ -82,6 +82,8 @@ void CloudFileSystemOptions::Dump(Logger* log) const {
+          delete_cloud_invisible_files_on_open);
+   Header(log, "          COptions.cloud_file_deletion_delay: %ld",
+          cloud_file_deletion_delay.count());
++  Header(log, "                  COptions.endpoint_override: %s",
++         endpoint_override.c_str());
+   if (sst_file_cache != nullptr) {
+     Header(log, "           COptions.sst_file_cache size: %ld bytes",
+            sst_file_cache->GetCapacity());
+
+diff --git a/include/rocksdb/cloud/cloud_file_system.h b/include/rocksdb/cloud/cloud_file_system.h
+index acfc1bf29..93903d88e 100644
+--- a/include/rocksdb/cloud/cloud_file_system.h
++++ b/include/rocksdb/cloud/cloud_file_system.h
+@@ -403,6 +403,10 @@ class CloudFileSystemOptions {
+   // Default: 1 hour
+   std::chrono::seconds cloud_file_deletion_delay;
+
++  // Aws endpoint override.
++  // Default: empty
++  std::string endpoint_override;
++
+   CloudFileSystemOptions(
+       CloudType _cloud_type = CloudType::kCloudAws,
+       LogType _log_type = LogType::kLogKafka,
+@@ -425,7 +429,8 @@ class CloudFileSystemOptions {
+       std::string _cookie_on_open = "", std::string _new_cookie_on_open = "",
+       bool _delete_cloud_invisible_files_on_open = true,
+       std::chrono::seconds _cloud_file_deletion_delay =
+-          std::chrono::hours(1))
++          std::chrono::hours(1),
++      std::string _endpoint_override = "")
+       : log_type(_log_type),
+         sst_file_cache(_sst_file_cache),
+         keep_local_sst_files(_keep_local_sst_files),
+@@ -454,7 +459,8 @@ class CloudFileSystemOptions {
+         delete_cloud_invisible_files_on_open(
+             _delete_cloud_invisible_files_on_open),
+         cloud_file_deletion_delay(
+-            _cloud_file_deletion_delay) {
++            _cloud_file_deletion_delay),
++        endpoint_override(std::move(_endpoint_override)) {
+     (void) _cloud_type;
+   }
+

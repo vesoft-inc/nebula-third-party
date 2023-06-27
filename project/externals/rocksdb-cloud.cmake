@@ -21,6 +21,7 @@ ExternalProject_Add(
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}
     DOWNLOAD_DIR ${DOWNLOAD_DIR}
+    PATCH_COMMAND patch -p1 < ${CMAKE_SOURCE_DIR}/patches/${name}-2023-06-26.patch
     SOURCE_DIR ${source_dir}
     BUILD_IN_SOURCE 1
     CONFIGURE_COMMAND ""

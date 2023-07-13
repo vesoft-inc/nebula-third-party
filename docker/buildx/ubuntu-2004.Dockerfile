@@ -1,8 +1,9 @@
 FROM ubuntu:20.04
 SHELL ["/bin/bash", "-c"]
+RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo 'Asia/Shanghai' >/etc/timezone
 ARG DEBIAN_FRONTEND=noninteractive
-RUN apt-get update \
- && apt-get install -y make \
+RUN apt update \
+     && apt install -y make \
                        git \
                        m4 \
                        wget \
@@ -27,10 +28,10 @@ RUN apt-get update \
                        flex \
                        gperf \
                        gettext \
-		       ninja-build \
-                       libdwarf-devel \
-                    && apt clean \
-                    && rm -rf /var/lib/apt/lists/*
+                       ninja-build \
+                       libdwarf-dev \
+    && apt clean \
+    && rm -rf /var/lib/apt/lists/*
 
 # Install cmake
 RUN wget https://github.com/Kitware/CMake/releases/download/v3.20.0/cmake-3.20.0-linux-$(uname -m).sh \

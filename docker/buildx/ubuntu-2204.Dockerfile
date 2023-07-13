@@ -1,8 +1,9 @@
 FROM ubuntu:22.04
 SHELL ["/bin/bash", "-c"]
 ARG DEBIAN_FRONTEND=noninteractive
-RUN apt-get update \
- && apt-get install -y make \
+RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo 'Asia/Shanghai' >/etc/timezone
+RUN apt update \
+     && apt install -y make \
                        git \
                        m4 \
                        wget \
@@ -28,8 +29,10 @@ RUN apt-get update \
                        flex \
                        gperf \
                        gettext \
-		       ninja-build \
-		       libdwarf-dev
+                       ninja-build \
+                       libdwarf-dev \
+    && apt clean \
+    && rm -rf /var/lib/apt/lists/*
 
 ENV PACKAGE_DIR=/usr/src/third-party
 RUN mkdir -p ${PACKAGE_DIR}

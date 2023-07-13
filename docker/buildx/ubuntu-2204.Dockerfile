@@ -10,9 +10,9 @@ RUN apt update \
                        unzip \
                        xz-utils \
                        patch \
-                       python2 \
                        curl \
-                       python2-dev \
+                       python \
+                       python-dev \
                        lsb-core \
                        zlib1g-dev \
                        build-essential \

@@ -10,10 +10,10 @@ RUN apt-get update \
                        unzip \
                        xz-utils \
                        patch \
-                       python2 \
                        curl \
-                       python2-dev \
-                       lsb-core \
+                       python \
+                       python-dev \
+                       lsb-release \
                        zlib1g-dev \
                        build-essential \
                        libreadline-dev \

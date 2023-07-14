@@ -46,8 +46,10 @@ RUN wget --no-check-certificate https://www.prevanders.net/libdwarf-20200114.tar
     && cd .. \
     && rm -rf libdwarf-20200114 libdwarf-20200114.tar.gz
 
-ENV PACKAGE_DIR=/usr/src/third-party
+# Install ossutil
+RUN curl https://gosspublic.alicdn.com/ossutil/install.sh | bash
+
+ENV PACKAGE_DIR=/usr/src/third-party    
 RUN mkdir -p ${PACKAGE_DIR}
 WORKDIR ${PACKAGE_DIR}
-
 

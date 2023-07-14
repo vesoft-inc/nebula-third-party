@@ -33,7 +33,6 @@ RUN yum install -y epel-release && yum update -y \
                    ninja-build \
                 && yum clean all \
                 && rm -rf /var/cache/yum
-
 RUN if ! [ -x "$(command -v ninja)" ]; then ln -s $(which ninja-build) /usr/bin/ninja; fi
 
 # Install cmake
@@ -51,6 +50,9 @@ RUN wget --no-check-certificate https://www.prevanders.net/libdwarf-20200114.tar
     && make install \
     && cd .. \
     && rm -rf libdwarf-20200114 libdwarf-20200114.tar.gz
+
+# Install ossutil
+RUN curl https://gosspublic.alicdn.com/ossutil/install.sh | bash
 
 ENV PACKAGE_DIR=/usr/src/third-party
 RUN mkdir -p ${PACKAGE_DIR}

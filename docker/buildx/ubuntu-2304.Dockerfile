@@ -34,6 +34,9 @@ RUN apt-get update \
     && apt clean \
     && rm -rf /var/lib/apt/lists/*
 
+# Install ossutil
+RUN curl https://gosspublic.alicdn.com/ossutil/install.sh | bash
+
 ENV PACKAGE_DIR=/usr/src/third-party
 RUN mkdir -p ${PACKAGE_DIR}
 WORKDIR ${PACKAGE_DIR}

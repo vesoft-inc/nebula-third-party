@@ -11,8 +11,8 @@ RUN apt update \
                        xz-utils \
                        patch \
                        curl \
-                       python \
-                       python-dev \
+                       python3 \
+                       python3-dev \
                        lsb-core \
                        zlib1g-dev \
                        build-essential \
@@ -33,6 +33,9 @@ RUN apt update \
                        libdwarf-dev \
     && apt clean \
     && rm -rf /var/lib/apt/lists/*
+
+# Install ossutil
+RUN curl https://gosspublic.alicdn.com/ossutil/install.sh | bash
 
 ENV PACKAGE_DIR=/usr/src/third-party
 RUN mkdir -p ${PACKAGE_DIR}

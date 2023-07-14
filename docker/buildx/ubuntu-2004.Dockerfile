@@ -39,6 +39,9 @@ RUN wget https://github.com/Kitware/CMake/releases/download/v3.20.0/cmake-3.20.0
     && ./cmake-3.20.0-linux-$(uname -m).sh --skip-license --prefix=/usr/local \
     && rm cmake-3.20.0-linux-$(uname -m).sh
 
+# Install ossutil
+RUN curl https://gosspublic.alicdn.com/ossutil/install.sh | bash
+
 ENV PACKAGE_DIR=/usr/src/third-party
 RUN mkdir -p ${PACKAGE_DIR}
 WORKDIR ${PACKAGE_DIR}

@@ -2,8 +2,8 @@ FROM ubuntu:23.04
 SHELL ["/bin/bash", "-c"]
 ARG DEBIAN_FRONTEND=noninteractive
 RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo 'Asia/Shanghai' >/etc/timezone
-RUN apt-get update \
- && apt-get install -y make \
+RUN apt update \
+ && apt install -y make \
                        git \
                        m4 \
                        wget \

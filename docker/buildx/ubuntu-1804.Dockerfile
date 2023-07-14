@@ -9,7 +9,6 @@ RUN apt-get update
                        curl \
                        wget \
                        unzip \
-                       which \
                        xz-utils \
                        patch \
                        python3 \

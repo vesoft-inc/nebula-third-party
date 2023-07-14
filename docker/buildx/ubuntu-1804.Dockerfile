@@ -2,7 +2,7 @@ FROM ubuntu:18.04
 ARG DEBIAN_FRONTEND=noninteractive
 RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo 'Asia/Shanghai' >/etc/timezone
 SHELL ["/bin/bash", "-c"]
-RUN apt-get update
+RUN apt-get update \
  && apt-get install -y make \
                        git \
                        m4 \

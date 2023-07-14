@@ -6,11 +6,12 @@ RUN apt update \
      && apt install -y make \
                        git \
                        m4 \
+                       curl \
                        wget \
                        unzip \
+                       which \
                        xz-utils \
                        patch \
-                       curl \
                        python3 \
                        python3-dev \
                        lsb-core \
@@ -18,7 +19,6 @@ RUN apt update \
                        build-essential \
                        libreadline-dev \
                        libncurses-dev \
-                       build-essential \
                        cmake \
                        libtool \
                        automake \

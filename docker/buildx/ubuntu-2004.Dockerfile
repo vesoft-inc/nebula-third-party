@@ -6,19 +6,19 @@ RUN apt update \
      && apt install -y make \
                        git \
                        m4 \
+                       curl \
                        wget \
                        unzip \
+                       which \
                        xz-utils \
                        patch \
-                       python \
-                       curl \
-                       python-dev \
+                       python3 \
+                       python3-dev \
                        lsb-core \
                        libz-dev \
                        build-essential \
                        libreadline-dev \
                        ncurses-dev \
-                       build-essential \
                        libtool \
                        automake \
                        autoconf \

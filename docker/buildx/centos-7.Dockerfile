@@ -7,12 +7,11 @@ RUN yum install -y epel-release && yum update -y \
                    curl \
                    wget \
                    unzip \
+                   which \
                    xz \
                    patch \
                    python3 \
                    python3-devel \
-                   python \
-                   python-devel \
                    redhat-lsb-core \
                    perl-Data-Dumper \
                    perl-Thread-Queue \
@@ -27,7 +26,6 @@ RUN yum install -y epel-release && yum update -y \
                    automake \
                    bison \
                    flex \
-                   which \
                    gperf \
                    gettext \
                    ninja-build \

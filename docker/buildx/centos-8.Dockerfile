@@ -7,6 +7,7 @@ RUN yum install -y epel-release yum-utils &&  yum config-manager --set-enabled p
                    curl \
                    wget \
                    unzip \
+                   which \
                    xz \
                    patch \
                    python3 \

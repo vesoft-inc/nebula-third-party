@@ -11,7 +11,7 @@ env:
 
 jobs:
   build_and_upload:
-    runs-on: [self-hosted, nebula]
+    runs-on: [self-hosted]
     strategy:
       fail-fast: false
       matrix:
@@ -24,7 +24,6 @@ jobs:
           - ubuntu2204
           - ubuntu2304
         compiler:
-          - 8.5.0
           - 9.3.0
         architecture:
           - x86_64

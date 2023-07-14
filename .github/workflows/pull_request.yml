@@ -1,0 +1,64 @@
+name: Nebula Third Party Build and Upload
+
+on:
+  pull_request:
+    branches:
+      - '**' # This will run the workflow on any branch when a pull request is created
+  workflow_dispatch:
+
+env:
+  URL: https://raw.githubusercontent.com/vesoft-inc/nebula-gears/master/install
+
+jobs:
+  build_and_upload:
+    runs-on: [self-hosted, nebula]
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - centos7
+          - centos8
+          - ubuntu1604
+          - ubuntu1804
+          - ubuntu2004
+          - ubuntu2204
+          - ubuntu2304
+        compiler:
+          - 8.5.0
+          - 9.3.0
+        architecture:
+          - x86_64
+          - arm64
+    container:
+      image: vesoft/third-party-build:${{ matrix.os }}
+      arch: ${{ matrix.architecture }}
+    steps:
+    - name: Checkout nebula-third-party
+      uses: actions/checkout@v3
+
+    - name: Set up environment
+      run: |
+        echo "path=$(pwd)/nebula-third-party" >> $GITHUB_ENV
+
+    - name: Install dependencies
+      run: |
+        bash <(curl -Ls $URL)
+        install-gcc --version=${{ matrix.compiler }}
+
+    - name: Build
+      run: |
+        cd ..
+        mkdir build
+        cd build
+        build_package=1 ${{ env.path }}/build.sh
+
+    - name: Upload to OSS
+      uses: vesoft-inc/upload-oss
+      with:
+        key-id: ${{ secrets.OSS_ID }}
+        key-secret: ${{ secrets.OSS_SECRET }}
+        endpoint: ${{ secrets.OSS_ENDPOINT }}
+        bucket: nebula-test11
+        asset-path: ./packages/
+        target-path: third-party/v-test/
+

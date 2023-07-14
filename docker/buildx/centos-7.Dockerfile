@@ -10,6 +10,8 @@ RUN yum install -y epel-release && yum update -y \
                    which \
                    xz \
                    patch \
+                   python \
+                   python-devel \
                    python3 \
                    python3-devel \
                    redhat-lsb-core \

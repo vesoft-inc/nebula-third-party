@@ -53,8 +53,8 @@ jobs:
         TOOLSET_GCC_DIR: /opt/vesoft/toolset/gcc/9.3.0
         CC: ${TOOLSET_GCC_DIR}/bin/gcc
         CXX: ${TOOLSET_GCC_DIR}/bin/g++
-        PATH: ${TOOLSET_GCC_DIR}/bin:${PATH}
       run: |
+        echo "PATH=${{ env.TOOLSET_GCC_DIR }}/bin:${{ env.PATH }}" >> $GITHUB_ENV
         cd ..
         mkdir build
         cd build

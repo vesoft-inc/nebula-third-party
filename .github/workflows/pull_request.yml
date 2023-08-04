@@ -1,7 +1,7 @@
 name: pull_request
 
 on:
-  pull_request:
+  push:
     branches:
       - '**' # This will run the workflow on any branch when a pull request is created
   workflow_dispatch:

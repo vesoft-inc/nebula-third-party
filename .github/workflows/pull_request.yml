@@ -55,7 +55,11 @@ jobs:
         echo "CXX=${TOOLSET_GCC_DIR}/bin/g++" >> $GITHUB_ENV
         echo "PATH=${TOOLSET_GCC_DIR}/bin:${PATH}" >> $GITHUB_ENV
         cd ..
-        mkdir build
+        if [ -d "build" ]; then
+          find build -mindepth 1 ! -name '*.tgz' -exec rm -rf {} +
+        else
+          mkdir build
+        fi
         cd build
         build_package=1 ${{ env.path }}/build.sh
     - name: Upload to OSS

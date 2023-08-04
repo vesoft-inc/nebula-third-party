@@ -11,7 +11,9 @@ env:
 
 jobs:
   build_and_upload:
-    runs-on: [self-hosted]
+    runs-on: 
+      - self-hosted
+      - ${{ matrix.arch }}
     strategy:
       fail-fast: false
       matrix:
@@ -25,12 +27,11 @@ jobs:
           - ubuntu2304
         compiler:
           - 9.3.0
-        architecture:
+        arch:
           - x86_64
           - arm64
     container:
       image: vesoft/third-party-build:${{ matrix.os }}
-      arch: ${{ matrix.architecture }}
     steps:
     - name: Checkout nebula-third-party
       uses: actions/checkout@v3
@@ -52,7 +53,7 @@ jobs:
         build_package=1 ${{ env.path }}/build.sh
 
     - name: Upload to OSS
-      uses: vesoft-inc/upload-oss
+      uses: vesoft-inc/.github/actions/upload-to-oss@master
       with:
         key-id: ${{ secrets.OSS_ID }}
         key-secret: ${{ secrets.OSS_SECRET }}

@@ -49,12 +49,11 @@ jobs:
         bash <(curl -Ls $URL)
         install-gcc --version=${{ matrix.compiler }}
     - name: Build
-      env:
-        TOOLSET_GCC_DIR: /opt/vesoft/toolset/gcc/9.3.0
-        CC: ${TOOLSET_GCC_DIR}/bin/gcc
-        CXX: ${TOOLSET_GCC_DIR}/bin/g++
       run: |
-        echo "PATH=${{ env.TOOLSET_GCC_DIR }}/bin:${{ env.PATH }}" >> $GITHUB_ENV
+        echo "TOOLSET_GCC_DIR=/opt/vesoft/toolset/gcc/9.3.0" >> $GITHUB_ENV
+        echo "CC=${TOOLSET_GCC_DIR}/bin/gcc" >> $GITHUB_ENV
+        echo "CXX=${TOOLSET_GCC_DIR}/bin/g++" >> $GITHUB_ENV
+        echo "PATH=${TOOLSET_GCC_DIR}/bin:${PATH}" >> $GITHUB_ENV
         cd ..
         mkdir build
         cd build

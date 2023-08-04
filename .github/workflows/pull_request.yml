@@ -53,7 +53,7 @@ jobs:
         build_package=1 ${{ env.path }}/build.sh
 
     - name: Upload to OSS
-      uses: vesoft-inc/upload-to-oss@master
+      uses: vesoft-inc/.github/actions/upload-to-oss@master
       with:
         key-id: ${{ secrets.OSS_ID }}
         key-secret: ${{ secrets.OSS_SECRET }}

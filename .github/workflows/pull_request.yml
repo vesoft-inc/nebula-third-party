@@ -49,6 +49,11 @@ jobs:
         bash <(curl -Ls $URL)
         install-gcc --version=${{ matrix.compiler }}
     - name: Build
+      env:
+        TOOLSET_GCC_DIR: /opt/vesoft/toolset/gcc/9.3.0
+        CC: ${TOOLSET_GCC_DIR}/bin/gcc
+        CXX: ${TOOLSET_GCC_DIR}/bin/g++
+        PATH: ${TOOLSET_GCC_DIR}/bin:${PATH}
       run: |
         cd ..
         mkdir build

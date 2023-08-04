@@ -5,7 +5,11 @@ on:
     branches:
       - '**' # This will run the workflow on any branch when a pull request is created
   workflow_dispatch:
-
+  
+defaults:
+  run:
+    shell: bash
+    
 env:
   URL: https://raw.githubusercontent.com/vesoft-inc/nebula-gears/master/install
 

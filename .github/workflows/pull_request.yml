@@ -37,25 +37,23 @@ jobs:
     container:
       image: vesoft/third-party-build:${{ matrix.os }}
     steps:
-    - name: Checkout nebula-third-party
-      uses: actions/checkout@v3
-
+    - uses: webiny/action-post-run@3.0.0
+      with:
+        run: sh -c "find . -mindepth 1 -delete"
+    - uses: actions/checkout@v3
     - name: Set up environment
       run: |
         echo "path=$(pwd)" >> $GITHUB_ENV
-
     - name: Install dependencies
       run: |
         bash <(curl -Ls $URL)
         install-gcc --version=${{ matrix.compiler }}
-
     - name: Build
       run: |
         cd ..
         mkdir build
         cd build
         build_package=1 ${{ env.path }}/build.sh
-
     - name: Upload to OSS
       uses: vesoft-inc/.github/actions/upload-to-oss@master
       with:
@@ -65,4 +63,3 @@ jobs:
         bucket: nebula-test11
         asset-path: ./packages/
         target-path: third-party/v-test/
-

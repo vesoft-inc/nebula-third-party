@@ -42,7 +42,7 @@ jobs:
 
     - name: Set up environment
       run: |
-        echo "path=$(pwd)/nebula-third-party" >> $GITHUB_ENV
+        echo "path=$(pwd)" >> $GITHUB_ENV
 
     - name: Install dependencies
       run: |

@@ -1,4 +1,4 @@
-name: Nebula Third Party Build and Upload
+name: pull_request
 
 on:
   pull_request:

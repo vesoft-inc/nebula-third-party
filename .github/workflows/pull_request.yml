@@ -52,10 +52,11 @@ jobs:
       run: |
         cd ..
         if [ -d "build" ]; then
-          find build -mindepth 1 ! -name '*.tgz' -exec rm -rf {} +
+          find build -maxdepth 1 -mindepth 1 ! -name '*.tgz' ! -name 'tarballs' -exec rm -rf {} +
         else
           mkdir build
         fi
+        sync
     - name: Build    
       run: |
         TOOLSET_GCC_DIR=/opt/vesoft/toolset/gcc/9.3.0

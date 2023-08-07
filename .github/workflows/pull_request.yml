@@ -59,10 +59,10 @@ jobs:
         sync
     - name: Build    
       run: |
-        TOOLSET_GCC_DIR=/opt/vesoft/toolset/gcc/9.3.0
-        CC=${TOOLSET_GCC_DIR}/bin/gcc
-        CXX=${TOOLSET_GCC_DIR}/bin/g++
-        PATH=${TOOLSET_GCC_DIR}/bin:${PATH}
+        export TOOLSET_GCC_DIR=/opt/vesoft/toolset/gcc/9.3.0
+        export CC=${TOOLSET_GCC_DIR}/bin/gcc
+        export CXX=${TOOLSET_GCC_DIR}/bin/g++
+        export PATH=${TOOLSET_GCC_DIR}/bin:${PATH}
         build_package=1 ${{ env.path }}/build.sh
       working-directory: ../build/
     - name: Upload to OSS

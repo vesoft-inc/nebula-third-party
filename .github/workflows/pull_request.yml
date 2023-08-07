@@ -44,6 +44,7 @@ jobs:
     - name: Set up environment
       run: |
         echo "path=$(pwd)" >> $GITHUB_ENV
+        echo "COMPILER_VERSION=${{ matrix.compiler }}" >> $GITHUB_ENV
     - name: Install dependencies
       run: |
         bash <(curl -Ls $URL)
@@ -59,10 +60,11 @@ jobs:
         sync
     - name: Build    
       run: |
-        export TOOLSET_GCC_DIR=/opt/vesoft/toolset/gcc/9.3.0
+        export TOOLSET_GCC_DIR=/opt/vesoft/toolset/gcc/${COMPILER_VERSION}
         export CC=${TOOLSET_GCC_DIR}/bin/gcc
         export CXX=${TOOLSET_GCC_DIR}/bin/g++
         export PATH=${TOOLSET_GCC_DIR}/bin:${PATH}
+        export LD_LIBRARY_PATH=${TOOLSET_GCC_DIR}/lib64:$LD_LIBRARY_PATH
         build_package=1 ${{ env.path }}/build.sh
       working-directory: ../build/
     - name: Upload to OSS

@@ -36,11 +36,6 @@ jobs:
           - arm64
     container:
       image: vesoft/third-party-build:${{ matrix.os }}
-    env:
-      TOOLSET_GCC_DIR: /opt/vesoft/toolset/gcc/${{ matrix.compiler }}
-      CC: /opt/vesoft/toolset/gcc/${{ matrix.compiler }}/bin/gcc
-      CXX: /opt/vesoft/toolset/gcc/${{ matrix.compiler }}/bin/g++
-      PATH: /opt/vesoft/toolset/gcc/${{ matrix.compiler }}/bin:${{ env.PATH }}
     steps:
     - uses: webiny/action-post-run@3.0.0
       with:
@@ -63,6 +58,10 @@ jobs:
         fi
     - name: Build    
       run: |
+        TOOLSET_GCC_DIR=/opt/vesoft/toolset/gcc/9.3.0
+        CC=${TOOLSET_GCC_DIR}/bin/gcc
+        CXX=${TOOLSET_GCC_DIR}/bin/g++
+        PATH=${TOOLSET_GCC_DIR}/bin:${PATH}
         build_package=1 ${{ env.path }}/build.sh
       working-directory: ../build/
     - name: Upload to OSS

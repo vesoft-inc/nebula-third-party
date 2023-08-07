@@ -69,5 +69,6 @@ jobs:
         key-secret: ${{ secrets.OSS_SECRET }}
         endpoint: ${{ secrets.OSS_ENDPOINT }}
         bucket: nebula-test11
-        asset-path: ./packages/
+        asset-path: ../build/packages/
         target-path: third-party/v-test/
+

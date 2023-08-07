@@ -36,6 +36,11 @@ jobs:
           - arm64
     container:
       image: vesoft/third-party-build:${{ matrix.os }}
+    env:
+      TOOLSET_GCC_DIR: /opt/vesoft/toolset/gcc/${{ matrix.compiler }}
+      CC: /opt/vesoft/toolset/gcc/${{ matrix.compiler }}/bin/gcc
+      CXX: /opt/vesoft/toolset/gcc/${{ matrix.compiler }}/bin/g++
+      PATH: /opt/vesoft/toolset/gcc/${{ matrix.compiler }}/bin:${{ env.PATH }}
     steps:
     - uses: webiny/action-post-run@3.0.0
       with:
@@ -48,20 +53,18 @@ jobs:
       run: |
         bash <(curl -Ls $URL)
         install-gcc --version=${{ matrix.compiler }}
-    - name: Build
+    - name: Pre-Build
       run: |
-        TOOLSET_GCC_DIR=/opt/vesoft/toolset/gcc/9.3.0
-        CC=${TOOLSET_GCC_DIR}/bin/gcc
-        CXX=${TOOLSET_GCC_DIR}/bin/g++
-        PATH=${TOOLSET_GCC_DIR}/bin:${PATH}
         cd ..
         if [ -d "build" ]; then
           find build -mindepth 1 ! -name '*.tgz' -exec rm -rf {} +
         else
           mkdir build
         fi
-        cd build
+    - name: Build    
+      run: |
         build_package=1 ${{ env.path }}/build.sh
+      working-directory: ../build/
     - name: Upload to OSS
       uses: vesoft-inc/.github/actions/upload-to-oss@master
       with:
@@ -69,6 +72,6 @@ jobs:
         key-secret: ${{ secrets.OSS_SECRET }}
         endpoint: ${{ secrets.OSS_ENDPOINT }}
         bucket: nebula-test11
-        asset-path: ../build/packages/
-        target-path: third-party/v-test/
+        asset-path: ../build/packages
+        target-path: third-party
 

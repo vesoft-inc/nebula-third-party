@@ -22,13 +22,13 @@ jobs:
       fail-fast: false
       matrix:
         os:
-          #- centos7
-          #- centos8
-          #- ubuntu1604
-          #- ubuntu1804
-          #- ubuntu2004
-          - ubuntu2204
-          - ubuntu2304
+          - centos7
+          - centos8
+          - ubuntu1604
+          - ubuntu1804
+          - ubuntu2004
+          #- ubuntu2204
+          #- ubuntu2304
         compiler:
           - 9.3.0
         arch:
@@ -44,11 +44,9 @@ jobs:
     - name: Set up environment
       run: |
         echo "path=$(pwd)" >> $GITHUB_ENV
-        echo "COMPILER_VERSION=${{ matrix.compiler }}" >> $GITHUB_ENV
-    - name: Install dependencies
-      run: |
         bash <(curl -Ls $URL)
         install-gcc --version=${{ matrix.compiler }}
+        echo "COMPILER_VERSION=${{ matrix.compiler }}" >> $GITHUB_ENV
     - name: Pre-Build
       run: |
         cd ..
@@ -68,13 +66,12 @@ jobs:
         export PATH=${TOOLSET_GCC_DIR}/bin:${PATH}
         build_package=1 ${{ env.path }}/build.sh
       working-directory: ../build/
-    - name: Upload to OSS
-      uses: vesoft-inc/.github/actions/upload-to-oss@master
+      
+    - name: Setup MinIO
+      uses: vesoft-inc/.github/actions/setup-minio@master
       with:
-        key-id: ${{ secrets.OSS_ID }}
-        key-secret: ${{ secrets.OSS_SECRET }}
-        endpoint: ${{ secrets.OSS_ENDPOINT }}
-        bucket: nebula-test11
-        asset-path: ../build/packages
-        target-path: third-party
-
+        minio_url: ${{ secrets.MINIO_ENDPOINT }}
+        access_key: ${{ secrets.MINIO_KEY }}
+        secret_key: ${{ secrets.MINIO_SECRET }}
+    - name: Copy dir to MinIO
+      run: mc cp -r ../build/packages/ minio/test1/third-party/5.0/

@@ -58,13 +58,14 @@ jobs:
           mkdir build
         fi
         sync
+        echo "/opt/vesoft/toolset/gcc/${COMPILER_VERSION}/lib64" > /etc/ld.so.conf.d/my_compiler.conf
+        ldconfig
     - name: Build    
       run: |
         export TOOLSET_GCC_DIR=/opt/vesoft/toolset/gcc/${COMPILER_VERSION}
         export CC=${TOOLSET_GCC_DIR}/bin/gcc
         export CXX=${TOOLSET_GCC_DIR}/bin/g++
         export PATH=${TOOLSET_GCC_DIR}/bin:${PATH}
-        export LD_LIBRARY_PATH=${TOOLSET_GCC_DIR}/lib64:$LD_LIBRARY_PATH
         build_package=1 ${{ env.path }}/build.sh
       working-directory: ../build/
     - name: Upload to OSS

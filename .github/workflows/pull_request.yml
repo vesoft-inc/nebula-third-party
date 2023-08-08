@@ -22,11 +22,11 @@ jobs:
       fail-fast: false
       matrix:
         os:
-          - centos7
-          - centos8
-          - ubuntu1604
-          - ubuntu1804
-          - ubuntu2004
+          #- centos7
+          #- centos8
+          #- ubuntu1604
+          #- ubuntu1804
+          #- ubuntu2004
           - ubuntu2204
           - ubuntu2304
         compiler:

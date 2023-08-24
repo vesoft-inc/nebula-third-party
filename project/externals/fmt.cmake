@@ -14,6 +14,7 @@ ExternalProject_Add(
     STAMP_DIR ${BUILD_INFO_DIR}
     DOWNLOAD_DIR ${DOWNLOAD_DIR}
     SOURCE_DIR ${source_dir}
+    PATCH_COMMAND patch -p1 < ${CMAKE_SOURCE_DIR}/patches/${name}-9.1.0.patch
     CONFIGURE_COMMAND ""
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     BUILD_IN_SOURCE 1

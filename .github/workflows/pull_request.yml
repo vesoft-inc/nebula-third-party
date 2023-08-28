@@ -46,6 +46,7 @@ jobs:
         run: sh -c "find . -mindepth 1 -delete"
     - uses: actions/checkout@v3
     - name: Set up environment
+      if: matrix.compiler != ''
       run: |
         export URL=https://raw.githubusercontent.com/vesoft-inc/nebula-gears/master/install
         bash <(curl -Ls $URL)

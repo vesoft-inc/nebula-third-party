@@ -31,7 +31,7 @@ ExternalProject_Add(
     CONFIGURE_COMMAND
         ./bootstrap.sh
             --without-icu
-            --with-libraries=context,thread,system,filesystem,graph,program_options,regex,iostreams,date_time,python
+            --with-libraries=context,thread,system,filesystem,graph,program_options,regex,iostreams,date_time,python,typeof
             --prefix=${CMAKE_INSTALL_PREFIX}
 #--without-libraries=wave,nowide,chrono,atomic,fiber,type_erasure,exception,timer,contract,math,locale,json,test,stacktrace,mpi,log,graph,graph_parallel
     BUILD_COMMAND
@@ -66,7 +66,7 @@ ExternalProject_Add_Step(${name} setup-compiler
 ExternalProject_Add_Step(${name} trim
     DEPENDEES install
     COMMAND
-        rm -rf ${CMAKE_INSTALL_PREFIX}/include/boost/{wave,log,atomic,test,typeof,fusion,geometry,gil,phoenix,spirit,beast,asio,compute,polygon,proto,units,metaparse,qvm,vmd,xpressive}
+        rm -rf ${CMAKE_INSTALL_PREFIX}/include/boost/{wave,log,atomic,test,fusion,geometry,gil,phoenix,spirit,beast,asio,compute,polygon,proto,units,metaparse,qvm,vmd,xpressive}
     WORKING_DIRECTORY ${source_dir}
 )
 

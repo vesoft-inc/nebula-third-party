@@ -52,9 +52,9 @@ jobs:
         bash <(curl -Ls $URL)
         install-gcc --version=${{ matrix.compiler }}
         echo "COMPILER_VERSION=${{ matrix.compiler }}" >> $GITHUB_ENV
-        echo "path=$(pwd)" >> $GITHUB_ENV
     - name: Pre-Build
       run: |
+        echo "path=$(pwd)" >> $GITHUB_ENV
         cd ..
         if [ -d "build" ]; then
           find build -maxdepth 1 -mindepth 1 ! -name '*.tgz' -exec rm -rf {} +

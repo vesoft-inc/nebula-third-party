@@ -23,7 +23,7 @@ ExternalProject_Add(
     BUILD_IN_SOURCE 1
     INSTALL_COMMAND
       make -C lib
-           -s install-pc install-static install-includes
+           -s install-pc install-shared install-includes
            -j${BUILDING_JOBS_NUM}
            PREFIX=${CMAKE_INSTALL_PREFIX}
     LOG_CONFIGURE TRUE

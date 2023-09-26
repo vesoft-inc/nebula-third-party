@@ -18,8 +18,8 @@ ExternalProject_Add(
         ${common_configure_envs}
         "LDFLAGS=${ld_flags} -lcrypto -lcrypt -ldb-5.1"
         ./autogen.sh ${common_configure_args}
-                    --disable-shared
-                    --enable-static
+                    --disable-static
+                    --enable-shared
                     --disable-scram
                     --disable-digest
                     --disable-sample

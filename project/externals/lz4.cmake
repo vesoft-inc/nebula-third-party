@@ -21,7 +21,7 @@ ExternalProject_Add(
         make install -s
              MOREFLAGS=-fPIC
              "LN_S=ln -sf"
-             BUILD_SHARED=no
+             BUILD_STATIC=no
              -j${BUILDING_JOBS_NUM}
              PREFIX=${CMAKE_INSTALL_PREFIX}
     LOG_CONFIGURE TRUE

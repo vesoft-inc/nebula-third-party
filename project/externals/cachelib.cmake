@@ -21,7 +21,7 @@ ExternalProject_Add(
     CMAKE_ARGS
         ${common_cmake_args}
         -DCMAKE_BUILD_TYPE=Release
-        -DBoost_USE_STATIC_RUNTIME=ON
+        -DBoost_NO_BOOST_CMAKE=ON
         -DBUILD_TESTS=OFF
         "-DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS} -Wno-error=deprecated-declarations ${extra_cpp_flags}"
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}

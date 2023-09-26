@@ -26,7 +26,7 @@ ExternalProject_Add(
     SOURCE_DIR ${source_dir}
     CONFIGURE_COMMAND
         ${common_configure_envs}
-        ${openssl_config_command} no-shared threads --prefix=${CMAKE_INSTALL_PREFIX}
+        ${openssl_config_command} threads --prefix=${CMAKE_INSTALL_PREFIX}
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     BUILD_IN_SOURCE 1
     INSTALL_COMMAND make -s install_sw -j${BUILDING_JOBS_NUM}

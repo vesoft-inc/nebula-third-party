@@ -1,0 +1,49 @@
+diff -ur a/Makefile-libbz2_so b/Makefile-libbz2_so
+--- a/Makefile-libbz2_so	2019-07-14 01:50:05.000000000 +0800
++++ b/Makefile-libbz2_so	2023-09-21 15:07:59.220363985 +0800
+@@ -1,9 +1,9 @@
+ 
+-# This Makefile builds a shared version of the library, 
++# This Makefile builds a shared version of the library,
+ # libbz2.so.1.0.8, with soname libbz2.so.1.0,
+-# at least on x86-Linux (RedHat 7.2), 
+-# with gcc-2.96 20000731 (Red Hat Linux 7.1 2.96-98).  
+-# Please see the README file for some important info 
++# at least on x86-Linux (RedHat 7.2),
++# with gcc-2.96 20000731 (Red Hat Linux 7.1 2.96-98).
++# Please see the README file for some important info
+ # about building the library like this.
+ 
+ # ------------------------------------------------------------------
+@@ -13,7 +13,7 @@
+ # bzip2/libbzip2 version 1.0.8 of 13 July 2019
+ # Copyright (C) 1996-2019 Julian Seward <jseward@acm.org>
+ #
+-# Please read the WARNING, DISCLAIMER and PATENTS sections in the 
++# Please read the WARNING, DISCLAIMER and PATENTS sections in the
+ # README file.
+ #
+ # This program is released under the terms of the license contained
+@@ -37,11 +37,19 @@
+ all: $(OBJS)
+ 	$(CC) -shared -Wl,-soname -Wl,libbz2.so.1.0 -o libbz2.so.1.0.8 $(OBJS)
+ 	$(CC) $(CFLAGS) -o bzip2-shared bzip2.c libbz2.so.1.0.8
+-	rm -f libbz2.so.1.0
++	rm -f libbz2.so.1.0 libbz2.so
+ 	ln -s libbz2.so.1.0.8 libbz2.so.1.0
++	ln -s libbz2.so.1.0.8 libbz2.so
+ 
+-clean: 
+-	rm -f $(OBJS) bzip2.o libbz2.so.1.0.8 libbz2.so.1.0 bzip2-shared
++install: all
++	if ( test ! -d $(PREFIX)/lib ) ; then mkdir -p $(PREFIX)/lib ; fi
++	if ( test ! -d $(PREFIX)/include ) ; then mkdir -p $(PREFIX)/include ; fi
++	cp -f bzlib.h $(PREFIX)/include
++	chmod a+r $(PREFIX)/include/bzlib.h
++	cp -f libbz2.so* $(PREFIX)/lib
++
++clean:
++	rm -f $(OBJS) bzip2.o libbz2.so.1.0.8 libbz2.so.1.0 libbz2.so bzip2-shared
+ 
+ blocksort.o: blocksort.c
+ 	$(CC) $(CFLAGS) -c blocksort.c

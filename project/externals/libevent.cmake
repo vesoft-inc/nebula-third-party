@@ -16,7 +16,7 @@ ExternalProject_Add(
     CMAKE_ARGS
         ${common_cmake_args}
         -DCMAKE_BUILD_TYPE=Release
-        -DEVENT__LIBRARY_TYPE=STATIC
+        -DEVENT__LIBRARY_TYPE=SHARED
         -DEVENT__DISABLE_OPENSSL=ON
         -DEVENT__DISABLE_TESTS=ON
         -DEVENT__DISABLE_BENCHMARK=ON

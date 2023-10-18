@@ -19,7 +19,7 @@ ExternalProject_Add(
         ${common_cmake_args}
         -DCMAKE_BUILD_TYPE=Release
         -DSIMDJSON_JUST_LIBRARY=ON
-        -DSIMDJSON_BUILD_STATIC=ON
+        -DSIMDJSON_BUILD_STATIC=OFF
     BUILD_IN_SOURCE 1
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     INSTALL_COMMAND make -s install -j${BUILDING_JOBS_NUM}

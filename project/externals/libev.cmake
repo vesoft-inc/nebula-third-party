@@ -23,8 +23,8 @@ ExternalProject_Add(
         "CPPFLAGS=-isystem ${CMAKE_INSTALL_PREFIX}/include"
         "PATH=${BUILDING_PATH}"
         ./src/configure --prefix=${CMAKE_INSTALL_PREFIX}
-                        --enable-static
-                        --disable-shared
+                        --disable-static
+                        --enable-shared
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     BUILD_IN_SOURCE 1
     INSTALL_COMMAND make -s install -j${BUILDING_JOBS_NUM} PREFIX=${CMAKE_INSTALL_PREFIX}

@@ -13,10 +13,11 @@ ExternalProject_Add(
     STAMP_DIR ${BUILD_INFO_DIR}
     DOWNLOAD_DIR ${DOWNLOAD_DIR}
     SOURCE_DIR ${source_dir}
+    PATCH_COMMAND patch -p1 < ${CMAKE_SOURCE_DIR}/patches/${name}-1.0.8.patch
     CONFIGURE_COMMAND ""
-    BUILD_COMMAND make CFLAGS=-fPIC -s -j${BUILDING_JOBS_NUM}
+    BUILD_COMMAND make CFLAGS=-fPIC -s -j${BUILDING_JOBS_NUM}  -f Makefile-libbz2_so
     BUILD_IN_SOURCE 1
-    INSTALL_COMMAND make -s install -j${BUILDING_JOBS_NUM} PREFIX=${CMAKE_INSTALL_PREFIX}
+    INSTALL_COMMAND make -s install PREFIX=${CMAKE_INSTALL_PREFIX} -f Makefile-libbz2_so
     LOG_CONFIGURE TRUE
     LOG_BUILD TRUE
     LOG_INSTALL TRUE

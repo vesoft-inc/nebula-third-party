@@ -18,7 +18,8 @@ ExternalProject_Add(
     ./configure ${common_configure_args}
     --enable-syslog
     --enable-modules=no
-    --enable-shared=no
+    --enable-shared=yes
+    --enable-static=no
     --with-tls
     BUILD_IN_SOURCE 1
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}

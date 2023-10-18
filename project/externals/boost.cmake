@@ -44,8 +44,8 @@ ExternalProject_Add(
             include=${CMAKE_INSTALL_PREFIX}/include
             linkflags=-L${CMAKE_INSTALL_PREFIX}/lib
             "cxxflags=-fPIC ${extra_cpp_flags}"
-            runtime-link=static
-            link=static
+            runtime-link=shared
+            link=shared
             variant=release
     BUILD_IN_SOURCE 1
     INSTALL_COMMAND rm -rf ${CMAKE_INSTALL_PREFIX}/lib/cmake/boost* ${CMAKE_INSTALL_PREFIX}/lib/cmake/Boost*

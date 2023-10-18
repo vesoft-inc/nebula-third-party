@@ -22,7 +22,7 @@ ExternalProject_Add(
         "LIBS=${LIBS}"
         ./build_unix/../dist/configure
             ${common_configure_args}
-            --enable-shared=no
+            --enable-shared=yes
             --libdir=${BERKELEYDB_LIB_DIR}
             --includedir=${BERKELEYDB_INCLUDE_DIR}
             --build=${sys_info}

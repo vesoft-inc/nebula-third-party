@@ -21,7 +21,7 @@ ExternalProject_Add(
         -DBUILD_EXAMPLES=OFF
         -DWITH_GLOG=ON
         -DWITH_GFLAGS=ON
-        -DBUILD_SHARED_LIBS=OFF
+        -DBUILD_SHARED_LIBS=ON
 
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     BUILD_IN_SOURCE 1

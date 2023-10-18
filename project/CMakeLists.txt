@@ -99,10 +99,9 @@ set(common_cmake_args
     "-DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS} -fno-omit-frame-pointer -fPIC ${extra_cpp_flags}"
     "-DCMAKE_C_FLAGS=${CMAKE_C_FLAGS} -fno-omit-frame-pointer -fPIC"
     "-DCMAKE_EXE_LINKER_FLAGS=${extra_link_libs}"
-    "-DCMAKE_SHARED_LINKER_FLAGS=${extra_link_libs}"
     -DCMAKE_INCLUDE_PATH=${CMAKE_INSTALL_PREFIX}/include
     -DCMAKE_LIBRARY_PATH=${CMAKE_INSTALL_PREFIX}/lib
-    -DBUILD_SHARED_LIBS=OFF
+    -DBUILD_SHARED_LIBS=ON
 )
 
 set(common_configure_args
@@ -148,10 +147,9 @@ set(ALL_TARGETS
     berkeleydb
     bison
     boost
-    breakpad
+    #breakpad
     bzip2
     cachelib
-    capstone
     cyrus-sasl
     double-conversion
     duckdb
@@ -191,6 +189,7 @@ set(ALL_TARGETS
     utf8proc
     llvm
     arrow
+    datasketches
 )
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
@@ -228,13 +227,6 @@ endif()
 foreach(target ${ALL_TARGETS})
     include(externals/${target}.cmake)
     list(APPEND CLEAN_TARGETS ${target}-clean)
-# Verify there is no shared library installed by the individual project
-    ExternalProject_Add_Step(${target} verify
-        DEPENDEES install
-        ALWAYS false
-        COMMAND ${SOURCE_PREFIX}/check-so-libs.sh ${CMAKE_INSTALL_PREFIX}
-        WORKING_DIRECTORY ${CMAKE_INSTALL_PREFIX}
-)
 endforeach()
 
 macro(maybe_add_dependencies depender)
@@ -259,6 +251,7 @@ maybe_add_dependencies(zlib libtool)
 maybe_add_dependencies(lzma gettext)
 maybe_add_dependencies(libev gettext)
 maybe_add_dependencies(libevent libtool openssl)
+maybe_add_dependencies(libcurl libtool openssl)
 maybe_add_dependencies(gperf libtool)
 maybe_add_dependencies(cyrus-sasl openssl berkeleydb automake libtool)
 maybe_add_dependencies(ldap berkeleydb libtool openssl cyrus-sasl)
@@ -272,7 +265,7 @@ maybe_add_dependencies(googlebenchmark googletest)
 
 maybe_add_dependencies(s2geometry googletest glog openssl abseil)
 
-maybe_add_dependencies(folly glog boost double-conversion openssl libevent lzma zstd snappy lz4 libunwind fmt sodium)
+maybe_add_dependencies(folly glog boost double-conversion openssl libevent lzma zstd snappy lz4 libunwind fmt sodium jemalloc)
 maybe_add_dependencies(fizz folly)
 maybe_add_dependencies(wangle folly fizz)
 maybe_add_dependencies(fbthrift folly bison flex mstch zlib zstd wangle fatal)
@@ -286,23 +279,23 @@ maybe_add_dependencies(googletest rocksdb gflags)
 
 maybe_add_dependencies(arrow openssl xsimd llvm boost jemalloc zstd, utf8proc)
 
-if (EXISTS ${CMAKE_INSTALL_PREFIX}/lib64)
-    add_custom_target(
-        strip-archives ALL
-        COMMAND
-            strip --strip-unneeded ${CMAKE_INSTALL_PREFIX}/lib/*.a
-        COMMAND
-            strip --strip-unneeded ${CMAKE_INSTALL_PREFIX}/lib64/*.a
-        DEPENDS ${ALL_TARGETS}
-    )
-else()
-    add_custom_target(
-        strip-archives ALL
-        COMMAND
-            strip --strip-unneeded ${CMAKE_INSTALL_PREFIX}/lib/*.a
-        DEPENDS ${ALL_TARGETS}
-    )
-endif()
+#if (EXISTS ${CMAKE_INSTALL_PREFIX}/lib64)
+    #add_custom_target(
+        #strip-archives ALL
+        #COMMAND
+            #strip --strip-unneeded ${CMAKE_INSTALL_PREFIX}/lib/*.a
+        #COMMAND
+            #strip --strip-unneeded ${CMAKE_INSTALL_PREFIX}/lib64/*.a
+        #DEPENDS ${ALL_TARGETS}
+    #)
+#else()
+    #add_custom_target(
+        #strip-archives ALL
+        #COMMAND
+            #strip --strip-unneeded ${CMAKE_INSTALL_PREFIX}/lib/*.a
+        #DEPENDS ${ALL_TARGETS}
+    #)
+#endif()
 
 add_custom_target(
     clean-all

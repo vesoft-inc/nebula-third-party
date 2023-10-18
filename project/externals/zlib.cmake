@@ -20,7 +20,7 @@ ExternalProject_Add(
         "CFLAGS=${CMAKE_C_FLAGS} -fPIC -O2"
         "CPPFLAGS=-isystem ${CMAKE_INSTALL_PREFIX}/include"
         "PATH=${BUILDING_PATH}"
-        ./configure --prefix=${CMAKE_INSTALL_PREFIX} --static
+        ./configure --prefix=${CMAKE_INSTALL_PREFIX} --shared
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     BUILD_IN_SOURCE 1
     INSTALL_COMMAND make -s install -j${BUILDING_JOBS_NUM} PREFIX=${CMAKE_INSTALL_PREFIX}

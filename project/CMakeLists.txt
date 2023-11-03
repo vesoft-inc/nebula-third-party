@@ -191,6 +191,7 @@ set(ALL_TARGETS
     zstd
     robin-hood-hashing
     libev
+    faiss
     xsimd
 )
 

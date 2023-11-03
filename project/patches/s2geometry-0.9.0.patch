@@ -1,15 +1,30 @@
 diff --color -ur a/CMakeLists.txt b/CMakeLists.txt
---- a/CMakeLists.txt	2019-03-04 16:53:16.000000000 +0000
-+++ b/CMakeLists.txt	2022-09-02 11:53:09.106010146 +0000
+--- a/CMakeLists.txt    2023-10-27 15:05:27.881317774 +0800
++++ b/CMakeLists.txt    2023-10-27 15:05:58.561623109 +0800
 @@ -13,7 +13,7 @@
      set(CMAKE_MACOSX_RPATH TRUE)
  endif()
- 
+
 -set(CMAKE_CXX_STANDARD 11)
 +set(CMAKE_CXX_STANDARD 17)
  set(CMAKE_CXX_STANDARD_REQUIRED ON)
  # No compiler-specific extensions, i.e. -std=c++11, not -std=gnu++11.
  set(CMAKE_CXX_EXTENSIONS OFF)
+@@ -61,7 +61,6 @@
+ find_package(OpenSSL REQUIRED)
+ # pthreads isn't used directly, but this is still required for std::thread.
+ find_package(Threads REQUIRED)
+-find_package(SWIG)
+ find_package(PythonInterp)
+ find_package(PythonLibs)
+
+@@ -531,6 +531,3 @@
+   add_subdirectory("doc/examples" examples)
+ endif()
+
+-if (${SWIG_FOUND} AND ${PYTHONLIBS_FOUND})
+-  add_subdirectory("src/python" python)
+-endif()
 diff --color -ur a/src/s2/encoded_uint_vector.h b/src/s2/encoded_uint_vector.h
 --- a/src/s2/encoded_uint_vector.h	2019-03-04 16:53:16.000000000 +0000
 +++ b/src/s2/encoded_uint_vector.h	2022-09-02 11:53:34.894113813 +0000
@@ -23,4 +38,3 @@ diff --color -ur a/src/s2/encoded_uint_vector.h b/src/s2/encoded_uint_vector.h
 -#include "s2/util/coding/coder.h"
  
  namespace s2coding {
- 

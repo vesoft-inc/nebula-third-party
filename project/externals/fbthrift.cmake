@@ -18,10 +18,11 @@ ExternalProject_Add(
     CMAKE_COMMAND env PATH=${CMAKE_INSTALL_PREFIX}/bin:$ENV{PATH} ${CMAKE_COMMAND}
     CMAKE_ARGS
         ${common_cmake_args}
-        "-DCMAKE_EXE_LINKER_FLAGS=-static-libstdc++ -static-libgcc"
+        "-DCMAKE_EXE_LINKER_FLAGS=-static-libstdc++ -static-libgcc -Wl,-rpath=\$ORIGIN/../lib"
         -DCMAKE_BUILD_TYPE=Release
         -DBoost_NO_BOOST_CMAKE=ON
         -Denable_tests=OFF
+        -DCMAKE_SHARED_LINKER_FLAGS=-Wl,-rpath=\$ORIGIN
         -D_OPENSSL_LIBDIR=${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     BUILD_IN_SOURCE 1

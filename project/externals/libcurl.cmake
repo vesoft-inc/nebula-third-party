@@ -18,8 +18,10 @@ ExternalProject_Add(
         ${common_cmake_args}
         -DCMAKE_BUILD_TYPE=Release
         -DBUILD_CURL_EXE=OFF
+        -DUSE_LIBIDN2=OFF
         -DCURL_DISABLE_LDAP=ON
         -DCURL_DISABLE_LDAPS=ON
+        -DCMAKE_SHARED_LINKER_FLAGS=-Wl,-rpath=\$ORIGIN
     BUILD_IN_SOURCE 1
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     INSTALL_COMMAND make -s -j${BUILDING_JOBS_NUM} install

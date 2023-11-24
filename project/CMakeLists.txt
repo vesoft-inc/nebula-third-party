@@ -137,7 +137,7 @@ set(common_configure_envs
     "CFLAGS=${CMAKE_C_FLAGS} -fcommon -fno-omit-frame-pointer -fPIC -O2 -D_DEFAULT_SOURCE -D_GNU_SOURCE ${extra_cpp_flags}"
     "CXXFLAGS=${CMAKE_CXX_FLAGS} -fcommon -fno-omit-frame-pointer -fPIC -O2 -D_DEFAULT_SOURCE -D_GNU_SOURCE ${extra_cpp_flags}"
     "CPPFLAGS=-isystem ${CMAKE_INSTALL_PREFIX}/include -I${BERKELEYDB_INCLUDE_DIR} ${extra_cpp_flags}"
-    "LDFLAGS=${ld_flags}"
+    "LDFLAGS=-Wl,-rpath=\\\\$\\$ORIGIN ${ld_flags}"
     "PATH=${BUILDING_PATH}"
     "ACLOCAL_PATH=${ACLOCAL_PATH}"
 )

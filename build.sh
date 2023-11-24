@@ -66,7 +66,7 @@ function check_cxx {
 check_cxx
 
 # Directories setup
-version=5.0
+version=5.1
 cur_dir=`pwd`
 source_dir=$this_dir/project
 build_root=$cur_dir
@@ -288,6 +288,7 @@ mkdir -p \$prefix
 [[ -w \$prefix ]] || { echo "\$prefix: No permission to write"; exit 1; }
 
 archive_offset=\$(awk '/^__start_of_archive__$/{print NR+1; exit 0;}' \$0)
+rm -rf \$prefix/*
 tail -n+\$archive_offset \$0 | tar --no-same-owner --numeric-owner -xJf - -C \$prefix
 
 echo "Nebula Third Party has been installed to \$prefix"

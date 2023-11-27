@@ -21,7 +21,7 @@ ExternalProject_Add(
         -DUSE_LIBIDN2=OFF
         -DCURL_DISABLE_LDAP=ON
         -DCURL_DISABLE_LDAPS=ON
-        -DCMAKE_SHARED_LINKER_FLAGS=-Wl,-rpath=\$ORIGIN
+        -DCMAKE_SHARED_LINKER_FLAGS=-Wl,-rpath=\$ORIGIN:\$ORIGIN/../3rd
     BUILD_IN_SOURCE 1
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     INSTALL_COMMAND make -s -j${BUILDING_JOBS_NUM} install

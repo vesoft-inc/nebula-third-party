@@ -22,7 +22,7 @@ ExternalProject_Add(
             -DBUILD_TESTS=OFF
             -DBUILD_SAMPLES=OFF
             -DPACKAGE_VERSION=2022.12.26
-            -DCMAKE_SHARED_LINKER_FLAGS=-Wl,-rpath=\$ORIGIN
+            -DCMAKE_SHARED_LINKER_FLAGS=-Wl,-rpath=\$ORIGIN:\$ORIGIN/../3rd
             "-DCMAKE_EXE_LINKER_FLAGS=-static-libstdc++ -static-libgcc -pthread"
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     BUILD_IN_SOURCE 1

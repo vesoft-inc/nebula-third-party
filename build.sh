@@ -66,7 +66,7 @@ function check_cxx {
 check_cxx
 
 # Directories setup
-version=5.0
+version=5.1
 cur_dir=`pwd`
 source_dir=$this_dir/project
 build_root=$cur_dir

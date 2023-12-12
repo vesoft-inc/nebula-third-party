@@ -4,6 +4,10 @@
 
 set(name llvm)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
+set(LLVM_ENV_COMMAND
+    "env"
+    "LD_LIBRARY_PATH=${CMAKE_INSTALL_PREFIX}/lib:${CMAKE_INSTALL_PREFIX}/lib64:${BERKELEYDB_LIB_DIR}:$ENV{LD_LIBRARY_PATH}"
+)
 
 ExternalProject_Add(
         ${name}
@@ -29,7 +33,7 @@ ExternalProject_Add(
                          -DLLVM_PARALLEL_COMPILE_JOBS=${BUILDING_JOBS_NUM}
                          -DLLVM_PARALLEL_LINK_JOBS=${BUILDING_JOBS_NUM}
 
-        BUILD_COMMAND ninja -C build install
+        BUILD_COMMAND ${LLVM_ENV_COMMAND} ninja -C build install
         BUILD_IN_SOURCE 1
         INSTALL_COMMAND ""
         LOG_CONFIGURE TRUE

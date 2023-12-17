@@ -16,8 +16,6 @@ ExternalProject_Add(
     SOURCE_DIR ${source_dir}
     CONFIGURE_COMMAND
         ${common_configure_envs}
-        "LDFLAGS=${ld_flags} -lcrypto -lcrypt -ldb-5.1"
-        "LD_LIBRARY_PATH=${CMAKE_INSTALL_PREFIX}/lib:${CMAKE_INSTALL_PREFIX}/lib64:${CMAKE_INSTALL_PREFIX}/lib/berkeleydb-5.1.29:$LD_LIBRARY_PATH"
         ./autogen.sh ${common_configure_args}
                     --disable-static
                     --enable-shared

@@ -6,7 +6,7 @@
 
 set(name duckdb)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
-set(MakeEnvs "env" "GEN=ninja")
+set(make_envs "env" "GEN=ninja")
 ExternalProject_Add(
     ${name}
     URL https://github.com/duckdb/duckdb/archive/refs/tags/v0.6.1.tar.gz
@@ -20,7 +20,7 @@ ExternalProject_Add(
     PATCH_COMMAND patch -p1 < ${CMAKE_SOURCE_DIR}/patches/${name}-0.6.1.patch
     CONFIGURE_COMMAND ""
     BUILD_COMMAND
-        "${MakeEnvs}"
+        "${make_envs}"
         make -e -s -j${BUILDING_JOBS_NUM}
     BUILD_IN_SOURCE 1
     INSTALL_COMMAND ""

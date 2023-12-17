@@ -50,3 +50,16 @@ diff -ur a/CMakeLists.txt b/CMakeLists.txt
  else()
    string(FIND "${CMAKE_LIBRARY_ARCHITECTURE}" "x86_64" IS_X86_64_ARCH)
    if(IS_X86_64_ARCH STREQUAL "-1")
+diff -ur a/folly/system/AtFork.cpp b/folly/system/AtFork.cpp
+--- a/folly/system/AtFork.cpp   2022-12-24 20:17:25.000000000 +0800
++++ b/folly/system/AtFork.cpp   2023-12-12 10:44:30.560711808 +0800
+@@ -16,6 +16,9 @@
+
+ #include <folly/system/AtFork.h>
+
++#include <stdexcept>
++#include <system_error>
++
+ #include <folly/ScopeGuard.h>
+ #include <folly/lang/Exception.h>
+ #include <folly/portability/PThread.h>

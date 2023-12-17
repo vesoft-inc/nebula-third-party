@@ -19,7 +19,6 @@ ExternalProject_Add(
         ${common_cmake_args}
         -DBENCHMARK_ENABLE_GTEST_TESTS=OFF
         -DCMAKE_BUILD_TYPE=Release
-        -DCMAKE_SHARED_LINKER_FLAGS=-Wl,-rpath=\$ORIGIN:\$ORIGIN/../3rd
         "-DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS} -Wno-error=unused-parameter"
     BUILD_IN_SOURCE 1
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}

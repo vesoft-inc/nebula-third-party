@@ -22,3 +22,13 @@ diff -ur a/thrift/lib/cpp2/server/IOWorkerContext.h b/thrift/lib/cpp2/server/IOW
            }
          });
    }
+diff -ur a/thrift/compiler/generate/json.cc b/thrift/compiler/generate/json.cc
+--- a/thrift/compiler/generate/json.cc  2022-12-25 17:00:33.000000000 +0800
++++ b/thrift/compiler/generate/json.cc  2023-12-12 10:57:27.256511493 +0800
+@@ -16,6 +16,7 @@
+
+ #include <thrift/compiler/generate/json.h>
+
++#include <cstdint>
+ #include <ostream>
+ #include <sstream>

@@ -1,0 +1,22 @@
+diff -ur a/proxygen/lib/utils/ConsistentHash.h b/proxygen/lib/utils/ConsistentHash.h
+--- a/proxygen/lib/utils/ConsistentHash.h   2022-12-25 17:00:33.000000000 +0800
++++ b/proxygen/lib/utils/ConsistentHash.h   2023-12-12 14:23:09.206845550 +0800
+@@ -8,6 +8,7 @@
+
+ #pragma once
+
++#include <cstdint>
+ #include <string>
+ #include <vector>
+
+diff -ur a/proxygen/lib/utils/RendezvousHash.h b/proxygen/lib/utils/RendezvousHash.h
+--- a/proxygen/lib/utils/RendezvousHash.h   2022-12-25 17:00:33.000000000 +0800
++++ b/proxygen/lib/utils/RendezvousHash.h   2023-12-12 14:24:00.470176104 +0800
+@@ -9,6 +9,7 @@
+ #pragma once
+
+ #include <proxygen/lib/utils/ConsistentHash.h>
++#include <cstdint>
+ #include <string>
+ #include <vector>
+

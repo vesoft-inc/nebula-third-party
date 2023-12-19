@@ -12,3 +12,15 @@ diff -ur a/cachelib/shm/ShmCommon.h b/cachelib/shm/ShmCommon.h
  /* On Mac OS / FreeBSD, mmap(2) syscall does not support these flags */
  #ifndef MAP_LOCKED
  #define MAP_LOCKED 0
+diff -ur a/cachelib/allocator/MarginalHitsState-inl.h b/cachelib/allocator/MarginalHitsState-inl.h
+--- a/cachelib/allocator/MarginalHitsState-inl.h    2022-12-25 17:00:33.000000000 +0800
++++ b/cachelib/allocator/MarginalHitsState-inl.h    2023-12-12 11:54:16.430563776 +0800
+@@ -14,6 +14,8 @@
+  * limitations under the License.
+  */
+
++#include <cstdint>
++
+ namespace facebook {
+ namespace cachelib {
+ template <typename EntityId>

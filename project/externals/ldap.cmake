@@ -15,12 +15,13 @@ ExternalProject_Add(
     SOURCE_DIR ${source_dir}
     CONFIGURE_COMMAND
     ${common_configure_envs}
-    ./configure ${common_configure_args}
-    --enable-syslog
-    --enable-modules=no
-    --enable-shared=yes
-    --enable-static=no
-    --with-tls
+    ./configure
+        ${common_configure_args}
+        --enable-syslog
+        --enable-modules=no
+        --enable-shared=yes
+        --enable-static=no
+        --with-tls
     BUILD_IN_SOURCE 1
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     INSTALL_COMMAND make -s -j${BUILDING_JOBS_NUM} install

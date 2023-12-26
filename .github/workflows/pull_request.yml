@@ -81,7 +81,7 @@ jobs:
     - name: Setup MinIO
       uses: vesoft-inc/.github/actions/setup-minio@master
       with:
-        minio_url: 'http://minio.vesoft-inc.com:9090'
+        minio_url: ${{ secrets.MINIO_ENDPOINT }}
         access_key: ${{ secrets.MINIO_KEY }}
         secret_key: ${{ secrets.MINIO_SECRET }}
     - name: Copy dir to MinIO

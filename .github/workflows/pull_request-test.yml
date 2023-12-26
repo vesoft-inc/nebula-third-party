@@ -16,8 +16,8 @@ defaults:
 jobs:
   build_and_upload:
     runs-on: 
-      - self-hosted
-      - ${{ matrix.arch }}
+      - ubuntu-latest
+      #- ${{ matrix.arch }}
     strategy:
       fail-fast: false
       matrix:

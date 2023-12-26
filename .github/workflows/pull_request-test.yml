@@ -57,7 +57,14 @@ jobs:
         install-gcc --version=${{ matrix.compiler }}
         echo "COMPILER_VERSION=${{ matrix.compiler }}" >> $GITHUB_ENV
     - name: Pre-Build
+      env:
+        URL: ${{ secrets.MINIO_ENDPOINT }}
+        KEY: ${{ secrets.MINIO_KEY }}
+        SECRET: ${{ secrets.MINIO_SECRET }}
       run: |
+        echo "${{ env.URL }}"
+        echo "${{ env.KEY }}"
+        echo "${{ env.SECRET }}"
         echo "path=$(pwd)" >> $GITHUB_ENV
         cd ..
         if [ -d "build" ]; then

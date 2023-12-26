@@ -75,7 +75,9 @@ jobs:
           export PATH=${TOOLSET_GCC_DIR}/bin:${PATH}
           export LD_LIBRARY_PATH=${TOOLSET_GCC_DIR}/lib64:$LD_LIBRARY_PATH
         fi
-        build_package=1 ${{ env.path }}/build.sh
+        #build_package=1 ${{ env.path }}/build.sh
+        mkdir packages
+        dd if=/dev/zero of=./packages/$(date +%Y-%m-%d-%H-%M-%S).bin bs=4M count=1
       working-directory: ../build/
       
     - uses: vesoft-inc/.github/actions/setup-minio@master

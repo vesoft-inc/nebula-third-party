@@ -81,9 +81,13 @@ jobs:
       working-directory: ../build/
       
     - uses: vesoft-inc/.github/actions/setup-minio@master
+      env:
+        URL: ${{ secrets.MINIO_ENDPOINT }}
+        KEY: ${{ secrets.MINIO_KEY }}
+        SECRET: ${{ secrets.MINIO_SECRET }}
       with:
-        minio_url: ${{ secrets.MINIO_ENDPOINT }}
-        access_key: ${{ secrets.MINIO_KEY }}
-        secret_key: ${{ secrets.MINIO_SECRET }}
+        minio_url: ${{ env.URL }}
+        access_key: ${{ env.KEY }}
+        secret_key: ${{ env.SECRET }}
     - name: Copy dir to MinIO
       run: mc cp -r ../build/packages/ minio/pr-build/third-party/5.0/

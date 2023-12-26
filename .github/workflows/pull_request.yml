@@ -78,8 +78,7 @@ jobs:
         build_package=1 ${{ env.path }}/build.sh
       working-directory: ../build/
       
-    - name: Setup MinIO
-      uses: vesoft-inc/.github/actions/setup-minio@master
+    - uses: vesoft-inc/.github/actions/setup-minio@master
       with:
         minio_url: ${{ secrets.MINIO_ENDPOINT }}
         access_key: ${{ secrets.MINIO_KEY }}

@@ -16,8 +16,8 @@ defaults:
 jobs:
   build_and_upload:
     runs-on: 
-      - ubuntu-latest
-      #- ${{ matrix.arch }}
+      - self-hosted
+      - ${{ matrix.arch }}
     strategy:
       fail-fast: false
       matrix:
@@ -62,9 +62,9 @@ jobs:
         KEY: ${{ secrets.MINIO_KEY }}
         SECRET: ${{ secrets.MINIO_SECRET }}
       run: |
-        echo "${{ env.URL }}"
-        echo "${{ env.KEY }}"
-        echo "${{ env.SECRET }}"
+        echo "test echo ${{ env.URL }}"
+        echo "test echo ${{ env.KEY }}"
+        echo "test echo ${{ env.SECRET }}"
         echo "path=$(pwd)" >> $GITHUB_ENV
         cd ..
         if [ -d "build" ]; then
@@ -88,13 +88,9 @@ jobs:
       working-directory: ../build/
       
     - uses: vesoft-inc/.github/actions/setup-minio@master
-      env:
-        URL: ${{ secrets.MINIO_ENDPOINT }}
-        KEY: ${{ secrets.MINIO_KEY }}
-        SECRET: ${{ secrets.MINIO_SECRET }}
       with:
-        minio_url: ${{ env.URL }}
-        access_key: ${{ env.KEY }}
-        secret_key: ${{ env.SECRET }}
+        minio_url: ${{ secrets.MINIO_ENDPOINT }}
+        access_key: ${{ secrets.MINIO_KEY }}
+        secret_key: ${{ secrets.MINIO_SECRET }}
     - name: Copy dir to MinIO
       run: mc cp -r ../build/packages/ minio/pr-build/third-party/5.0/

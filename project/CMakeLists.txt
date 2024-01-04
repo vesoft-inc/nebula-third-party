@@ -154,6 +154,7 @@ set(ALL_TARGETS
     bzip2
     cachelib
     cyrus-sasl
+    date
     double-conversion
     duckdb
     fatal
@@ -245,6 +246,7 @@ endmacro()
 maybe_add_dependencies(autoconf-archive autoconf)
 maybe_add_dependencies(automake autoconf autoconf-archive)
 maybe_add_dependencies(libtool automake)
+maybe_add_dependencies(date)
 
 maybe_add_dependencies(glog libtool libunwind)
 maybe_add_dependencies(gettext libtool)

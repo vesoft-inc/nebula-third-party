@@ -92,5 +92,6 @@ jobs:
         minio_url: ${{ secrets.MINIO_ENDPOINT }}
         access_key: ${{ secrets.MINIO_KEY }}
         secret_key: ${{ secrets.MINIO_SECRET }}
+        
     - name: Copy dir to MinIO
       run: mc cp -r ../build/packages/ minio/pr-build/third-party/5.0/

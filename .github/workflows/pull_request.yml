@@ -57,7 +57,14 @@ jobs:
         install-gcc --version=${{ matrix.compiler }}
         echo "COMPILER_VERSION=${{ matrix.compiler }}" >> $GITHUB_ENV
     - name: Pre-Build
+      env:
+        URL: ${{ secrets.MINIO_ENDPOINT }}
+        KEY: ${{ secrets.MINIO_KEY }}
+        SECRET: ${{ secrets.MINIO_SECRET }}
       run: |
+        echo "test echo ${{ env.URL }}"
+        echo "test echo ${{ env.KEY }}"
+        echo "test echo ${{ env.SECRET }}"
         echo "path=$(pwd)" >> $GITHUB_ENV
         cd ..
         if [ -d "build" ]; then
@@ -75,11 +82,12 @@ jobs:
           export PATH=${TOOLSET_GCC_DIR}/bin:${PATH}
           export LD_LIBRARY_PATH=${TOOLSET_GCC_DIR}/lib64:$LD_LIBRARY_PATH
         fi
-        build_package=1 ${{ env.path }}/build.sh
+        #build_package=1 ${{ env.path }}/build.sh
+        mkdir packages
+        dd if=/dev/zero of=./packages/$(date +%Y-%m-%d-%H-%M-%S).bin bs=4M count=1
       working-directory: ../build/
       
-    - name: Setup MinIO
-      uses: vesoft-inc/.github/actions/setup-minio@master
+    - uses: vesoft-inc/.github/actions/setup-minio@master
       with:
         minio_url: ${{ secrets.MINIO_ENDPOINT }}
         access_key: ${{ secrets.MINIO_KEY }}

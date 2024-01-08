@@ -14,14 +14,11 @@ ExternalProject_Add(
     STAMP_DIR ${BUILD_INFO_DIR}
     DOWNLOAD_DIR ${DOWNLOAD_DIR}
     SOURCE_DIR ${source_dir}
-    CONFIGURE_COMMAND
-        ${common_configure_envs}
-        ./configure ${common_configure_args}
-                    --enable-shared --disable-static
     CMAKE_ARGS
         ${common_cmake_args}
         -DBUILD_TZ_LIB=ON
         -DENABLE_DATE_TESTING=OFF
+        -DBUILD_SHARED_LIBS=ON
         -DCMAKE_BUILD_TYPE=Release
     BUILD_IN_SOURCE 1
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}

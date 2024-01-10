@@ -5,6 +5,7 @@
  * breakpad
  * bzip2
  * capstone
+ * date
  * double-conversion
  * fatal
  * fbthrift

@@ -1,5 +1,4 @@
-arch=$(shell uname -m)
-tags=centos-7 centos-8 ubuntu-1604 ubuntu-1804 ubuntu-2004 ubuntu-2110 ubuntu-2204
+tags=centos-7 centos-8 rockylinux-8 ubuntu-1604 ubuntu-1804 ubuntu-2004 ubuntu-2204
 
 all: $(tags)
 
@@ -21,5 +20,5 @@ ifneq ($(USE_GCC_VERSIONS),)
 endif
 
 %:
-	@echo '******************' Build Nebula Third Party For $*-$(arch) '********************'
-	@$(docker_cmd) --rm -it vesoft/third-party-build:$*-$(arch) ./run.sh
+	@echo '******************' Build Nebula Third Party For $* '********************'
+	@$(docker_cmd) --rm -it vesoft/third-party-build:$* ./run.sh

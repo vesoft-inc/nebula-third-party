@@ -1,6 +1,6 @@
 FROM centos:8
 SHELL ["/bin/bash", "-c"]
-
+ARG GOLANG_VERSION=1.21.6
 RUN cd /etc/yum.repos.d/ && \
     sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-* && \
     sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
@@ -41,6 +41,18 @@ RUN wget https://github.com/Kitware/CMake/releases/download/v3.20.0/cmake-3.20.0
     && chmod +x cmake-3.20.0-linux-$(uname -m).sh \
     && ./cmake-3.20.0-linux-$(uname -m).sh --skip-license --prefix=/usr/local \
     && rm cmake-3.20.0-linux-$(uname -m).sh
+
+# Install golang
+RUN ARCH="$(uname -m)"; \
+    case "${ARCH}" in \
+        x86_64) GOARCH='amd64';; \
+        aarch64) GOARCH='arm64';; \
+        *) echo "Unsupported architecture: ${ARCH}" && exit 1;; \
+    esac; \
+    curl -L https://go.dev/dl/go${GOLANG_VERSION}.linux-${GOARCH}.tar.gz -o go.tar.gz && \
+    tar -C /usr/local -xzf go.tar.gz && \
+    rm go.tar.gz
+ENV PATH="/usr/local/go/bin:${PATH}"
 
 # Install ossutil
 RUN curl https://gosspublic.alicdn.com/ossutil/install.sh | bash

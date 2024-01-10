@@ -33,6 +33,7 @@ RUN yum install -y epel-release yum-utils &&  yum config-manager --set-enabled p
                    flex \
                    gperf \
                    gettext \
+                   libstdc++-devel \
    && yum --enablerepo=powertools install -y ninja-build \
    && yum clean all && rm -rf /var/cache/yum
 

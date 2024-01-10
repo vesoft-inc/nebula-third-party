@@ -154,6 +154,7 @@ set(ALL_TARGETS
     bzip2
     cachelib
     cyrus-sasl
+    date
     double-conversion
     duckdb
     fatal
@@ -255,6 +256,7 @@ maybe_add_dependencies(lzma gettext)
 maybe_add_dependencies(libev gettext)
 maybe_add_dependencies(libevent libtool openssl)
 maybe_add_dependencies(libcurl libtool openssl)
+maybe_add_dependencies(date libcurl)
 maybe_add_dependencies(gperf libtool)
 maybe_add_dependencies(cyrus-sasl openssl berkeleydb automake libtool)
 maybe_add_dependencies(ldap berkeleydb libtool openssl cyrus-sasl)

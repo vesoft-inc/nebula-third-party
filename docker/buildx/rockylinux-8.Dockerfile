@@ -37,16 +37,6 @@ RUN wget https://github.com/Kitware/CMake/releases/download/v3.20.0/cmake-3.20.0
     && ./cmake-3.20.0-linux-$(uname -m).sh --skip-license --prefix=/usr/local \
     && rm cmake-3.20.0-linux-$(uname -m).sh
 
-# Install libdwarf-20200114
-RUN wget --no-check-certificate https://www.prevanders.net/libdwarf-20200114.tar.gz \
-    && tar -xzf libdwarf-20200114.tar.gz \
-    && cd libdwarf-20200114 \
-    && ./configure \
-    && make \
-    && make install \
-    && cd .. \
-    && rm -rf libdwarf-20200114 libdwarf-20200114.tar.gz
-
 # Install ossutil
 RUN curl https://gosspublic.alicdn.com/ossutil/install.sh | bash
 

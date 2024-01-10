@@ -28,7 +28,6 @@ RUN apt update \
                        gperf \
                        gettext \
                        ninja-build \
-                       libdwarf-dev \
     && apt clean \
     && rm -rf /var/lib/apt/lists/*
 

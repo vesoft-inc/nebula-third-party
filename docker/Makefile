@@ -1,5 +1,4 @@
-arch=$(shell uname -m)
-tags=centos-7 centos-8 ubuntu-1604 ubuntu-1804 ubuntu-2004 ubuntu-2010
+tags=centos-7 centos-8 rockylinux-8 ubuntu-1604 ubuntu-1804 ubuntu-2004 ubuntu-2204
 
 all: $(tags)
 .PHONY: all
@@ -7,12 +6,12 @@ all: $(tags)
 print:
 	@echo $(tags)
 
-build-%: $(arch)/%.Dockerfile
+build-%: buildx/%.Dockerfile
 	@echo '******************' Build Nebula Third Party Docker For $*-$(arch) '********************'
-	@docker build --no-cache -t vesoft/third-party-build:$*-$(arch) -f $(arch)/$*.Dockerfile .
+	@docker build --no-cache -t vesoft/third-party-build:$* -f buildx/$*.Dockerfile .
 
 push-%: build-%
-	@echo '******************' Pushing image $*-$(arch) '********************'
-	@docker push vesoft/third-party-build:$*-$(arch)
+	@echo '******************' Pushing image $* '********************'
+	@docker push vesoft/third-party-build:$*
 
 %: push-% ;

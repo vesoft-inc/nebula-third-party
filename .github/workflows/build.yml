@@ -3,7 +3,7 @@ name: build
 on:
   push:
     branches:
-      - '**' 
+      - 'master' 
   
 concurrency:
   group: ${{ github.head_ref }}
@@ -85,4 +85,4 @@ jobs:
         access_key: ${{ secrets.MINIO_KEY }}
         secret_key: ${{ secrets.MINIO_SECRET }}
     - name: Copy dir to MinIO
-      run: mc cp -r ../build/packages/ minio/pr-build/third-party/5.0/
+      run: mc cp -r ../build/packages/ minio/rc-build/third-party/5.0/

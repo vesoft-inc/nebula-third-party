@@ -12,7 +12,7 @@ set(name arrow)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 set(ARROW_CMAKE_ARGS
         -DProtobuf_SOURCE=BUNDLED
-        -DRE2_SOURCE=BUNDLED
+        -Dre2_SOURCE=SYSTEM
         -DBoost_ROOT=${CMAKE_INSTALL_PREFIX}
         -DGTest_ROOT=${CMAKE_INSTALL_PREFIX}
         -DOPENSSL_ROOT_DIR=${CMAKE_INSTALL_PREFIX}

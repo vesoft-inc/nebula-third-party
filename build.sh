@@ -110,6 +110,7 @@ fi
 # NOTE Please adjust the expected checksum once the source tarball changed
 if [[ ! $checksum = d466687c0f2946fd300e8c2bca42a5d7 ]]
 then
+    rm -f $source_tar_name
     hash wget &> /dev/null && download_cmd="wget -c"
     if [[ -z $download_cmd ]]
     then

@@ -324,7 +324,7 @@ maybe_add_dependencies(wangle folly fizz)
 maybe_add_dependencies(fbthrift folly bison flex mstch zlib zstd wangle fatal)
 maybe_add_dependencies(proxygen wangle libunwind gperf)
 maybe_add_dependencies(rocksdb snappy zlib zstd bzip2 lz4 lzma libunwind)
-#maybe_add_dependencies(cachelib fbthrift sparsemap fizz googletest)
+maybe_add_dependencies(cachelib fbthrift sparsemap fizz googletest)
 
 # RocksDB has its own copy of gtest, which may conflict with ours
 # Here we build gtest after rocksdb intentionally

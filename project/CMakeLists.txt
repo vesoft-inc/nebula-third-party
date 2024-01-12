@@ -79,6 +79,46 @@ if (${CMAKE_HOST_SYSTEM_PROCESSOR} STREQUAL "mips64")
     set(MIPS_LINK_FLAGS "-fuse-ld=bfd")
 endif()
 
+# Retrieve path and soname of libstdc++
+execute_process(
+    COMMAND ${CMAKE_CXX_COMPILER} --print-file-name=libstdc++.so
+    OUTPUT_VARIABLE libstdcxx_path
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+execute_process(
+    COMMAND readelf -d ${libstdcxx_path}
+    COMMAND grep SONAME
+    COMMAND sed "s/.*\\[\\(.*\\)\\]/\\1/"
+    OUTPUT_VARIABLE LIB_STDCXX_SONAME
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+execute_process(
+    COMMAND ${CMAKE_CXX_COMPILER} --print-file-name=${LIB_STDCXX_SONAME}
+    OUTPUT_VARIABLE libstdcxx_path
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+get_filename_component(LIB_STDCXX_DIR ${libstdcxx_path} DIRECTORY CACHE)
+
+# Retrieve path and soname of libgcc
+execute_process(
+    COMMAND ${CMAKE_CXX_COMPILER} --print-file-name=libgcc_s.so.1
+    OUTPUT_VARIABLE libgcc_path
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+execute_process(
+    COMMAND readelf -d ${libgcc_path}
+    COMMAND grep SONAME
+    COMMAND sed "s/.*\\[\\(.*\\)\\]/\\1/"
+    OUTPUT_VARIABLE LIB_GCC_SONAME
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+execute_process(
+    COMMAND ${CMAKE_CXX_COMPILER} --print-file-name=${LIB_GCC_SONAME}
+    OUTPUT_VARIABLE libgcc_path
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+get_filename_component(LIB_GCC_DIR ${libgcc_path} DIRECTORY CACHE)
+
 message(STATUS "MIPS_LINK_FLAGS: ${MIPS_LINK_FLAGS}")
 
 set(extra_lib_dirs "-L${CMAKE_INSTALL_PREFIX}/lib -L${CMAKE_INSTALL_PREFIX}/lib64")
@@ -99,7 +139,7 @@ set(common_cmake_args
     "-DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}"
     "-DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS} -fno-omit-frame-pointer -fPIC ${extra_cpp_flags}"
     "-DCMAKE_C_FLAGS=${CMAKE_C_FLAGS} -fno-omit-frame-pointer -fPIC"
-    "-DCMAKE_EXE_LINKER_FLAGS=${extra_link_libs}"
+    "-DCMAKE_EXE_LINKER_FLAGS=${extra_link_libs} -Wl,-rpath=\$ORIGIN/../lib:\$ORIGIN/../lib64"
     -DCMAKE_SHARED_LINKER_FLAGS=-Wl,-rpath=\$ORIGIN:\$ORIGIN/../3rd
     -DCMAKE_INCLUDE_PATH=${CMAKE_INSTALL_PREFIX}/include
     -DCMAKE_LIBRARY_PATH=${CMAKE_INSTALL_PREFIX}/lib
@@ -195,6 +235,13 @@ set(ALL_TARGETS
     llvm
     arrow
     datasketches
+    c-ares
+    protobuf
+    re2
+    grpc
+    protoc-gen-go
+    protoc-gen-go-grpc
+    protoc-gen-grpc-java
 )
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
@@ -277,13 +324,16 @@ maybe_add_dependencies(wangle folly fizz)
 maybe_add_dependencies(fbthrift folly bison flex mstch zlib zstd wangle fatal)
 maybe_add_dependencies(proxygen wangle libunwind gperf)
 maybe_add_dependencies(rocksdb snappy zlib zstd bzip2 lz4 lzma libunwind)
-maybe_add_dependencies(cachelib fbthrift sparsemap fizz googletest)
+#maybe_add_dependencies(cachelib fbthrift sparsemap fizz googletest)
 
 # RocksDB has its own copy of gtest, which may conflict with ours
 # Here we build gtest after rocksdb intentionally
 maybe_add_dependencies(googletest rocksdb gflags)
 
-maybe_add_dependencies(arrow openssl xsimd llvm boost jemalloc zstd, utf8proc)
+maybe_add_dependencies(arrow openssl xsimd llvm boost jemalloc zstd utf8proc protobuf re2)
+maybe_add_dependencies(protobuf zlib abseil)
+maybe_add_dependencies(re2 abseil)
+maybe_add_dependencies(grpc protobuf re2 c-ares openssl)
 
 #if (EXISTS ${CMAKE_INSTALL_PREFIX}/lib64)
     #add_custom_target(

@@ -1,14 +1,14 @@
-# Copyright (c) 2019 vesoft inc. All rights reserved.
+# Copyright (c) 2024 vesoft inc. All rights reserved.
 #
 # This source code is licensed under Apache 2.0 License.
 
-set(name abseil)
+set(name grpc)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL https://github.com/abseil/abseil-cpp/archive/refs/tags/20230802.1.tar.gz
-    URL_HASH MD5=84665b6daa5dda7c9082b1a00057457a
-    DOWNLOAD_NAME abseil-2022.06.23.1.tar.gz
+    URL https://github.com/grpc/grpc/archive/refs/tags/v1.60.0.tar.gz
+    URL_HASH MD5=64832f5ba092d160132a8b8be28b0487
+    DOWNLOAD_NAME grpc-1.60.0.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}
@@ -17,9 +17,15 @@ ExternalProject_Add(
     CMAKE_ARGS
         ${common_cmake_args}
         -DCMAKE_BUILD_TYPE=Release
+        -DgRPC_ZLIB_PROVIDER=package
+        -DgRPC_CARES_PROVIDER=package
+        -DgRPC_RE2_PROVIDER=package
+        -DgRPC_SSL_PROVIDER=package
+        -DgRPC_PROTOBUF_PROVIDER=package
+        -DgRPC_ABSL_PROVIDER=package
+    BUILD_COMMAND env LD_LIBRARY_PATH=$ENV{LD_LIBRARY_PATH}:${CMAKE_INSTALL_PREFIX}/lib:${CMAKE_INSTALL_PREFIX}/lib64  make -s -j${BUILDING_JOBS_NUM}
     BUILD_IN_SOURCE 1
-    BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
-    INSTALL_COMMAND make -s install -j${BUILDING_JOBS_NUM}
+    INSTALL_COMMAND make -s -j${BUILDING_JOBS_NUM} install
     LOG_CONFIGURE TRUE
     LOG_BUILD TRUE
     LOG_INSTALL TRUE

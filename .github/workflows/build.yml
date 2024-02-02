@@ -28,7 +28,6 @@ jobs:
           #- ubuntu1804
           - ubuntu2004
           - ubuntu2204
-          #- ubuntu2304
         compiler:
           - 9.3.0
           - ''

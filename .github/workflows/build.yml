@@ -43,7 +43,7 @@ jobs:
           - os: ubuntu2304
             compiler: '9.3.0'
     container:
-      image: vesoft/third-party-build:${{ matrix.os }}
+      image: reg.vesoft-inc.com/vesoft/third-party-build:${{ matrix.os }}
     steps:
     - uses: webiny/action-post-run@3.0.0
       with:

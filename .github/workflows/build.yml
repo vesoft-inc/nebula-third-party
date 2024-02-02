@@ -41,8 +41,6 @@ jobs:
             compiler: ''
           - os: ubuntu2204
             compiler: '9.3.0' 
-          - os: ubuntu2304
-            compiler: '9.3.0'
     container:
       image: reg.vesoft-inc.com/vesoft/third-party-build:${{ matrix.os }}
     steps:

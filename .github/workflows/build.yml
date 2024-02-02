@@ -28,7 +28,6 @@ jobs:
           #- ubuntu1804
           - ubuntu2004
           - ubuntu2204
-          #- ubuntu2304
         compiler:
           - 9.3.0
           - ''
@@ -38,17 +37,17 @@ jobs:
         exclude:
           - os: centos7
             compiler: ''
+          - os: centos8
+            compiler: ''
           - os: ubuntu2204
             compiler: '9.3.0' 
-          - os: ubuntu2304
-            compiler: '9.3.0'
     container:
       image: reg.vesoft-inc.com/vesoft/third-party-build:${{ matrix.os }}
     steps:
-    - uses: webiny/action-post-run@3.0.0
+    - uses: webiny/action-post-run@3.1.0
       with:
         run: sh -c "find . -mindepth 1 -delete"
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Set up environment
       if: matrix.compiler != ''
       run: |

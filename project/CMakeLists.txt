@@ -140,9 +140,9 @@ set(common_cmake_args
     "-DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS} -fno-omit-frame-pointer -fPIC ${extra_cpp_flags}"
     "-DCMAKE_C_FLAGS=${CMAKE_C_FLAGS} -fno-omit-frame-pointer -fPIC"
     "-DCMAKE_EXE_LINKER_FLAGS=${extra_link_libs} -Wl,-rpath=\$ORIGIN/../lib:\$ORIGIN/../lib64"
-    -DCMAKE_SHARED_LINKER_FLAGS=-Wl,-rpath=\$ORIGIN:\$ORIGIN/../3rd
+    -DCMAKE_SHARED_LINKER_FLAGS=-Wl,-rpath=\$ORIGIN:\$ORIGIN/../3rd:\$ORIGIN/../lib64:\$ORIGIN/../lib
     -DCMAKE_INCLUDE_PATH=${CMAKE_INSTALL_PREFIX}/include
-    -DCMAKE_LIBRARY_PATH=${CMAKE_INSTALL_PREFIX}/lib
+    "-DCMAKE_LIBRARY_PATH=${CMAKE_INSTALL_PREFIX}/lib:${CMAKE_INSTALL_PREFIX}/lib64"
     -DBUILD_SHARED_LIBS=ON
 )
 

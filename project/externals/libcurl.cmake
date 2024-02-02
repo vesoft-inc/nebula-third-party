@@ -17,6 +17,7 @@ ExternalProject_Add(
     CMAKE_ARGS
         ${common_cmake_args}
         -DCMAKE_BUILD_TYPE=Release
+        -DOPENSSL_ROOT_DIR=${CMAKE_INSTALL_PREFIX}
         -DBUILD_CURL_EXE=OFF
         -DUSE_LIBIDN2=OFF
         -DCURL_DISABLE_LDAP=ON

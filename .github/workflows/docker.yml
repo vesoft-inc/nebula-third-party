@@ -60,7 +60,7 @@ jobs:
         file: ./docker/buildx/${{ matrix.os }}.Dockerfile
         platforms: linux/${{ steps.vars.outputs.ARCH }}
         tags: |
-          ${{ secrets.HARBOR_REGISTRY }}/vesoft/third-party-build:${{ matrix.os }}-${{ steps.vars.outputs.ARCH }}
+          ${{ secrets.HARBOR_REGISTRY }}/vesoft/third-party-build:${{ steps.vars.outputs.TAG }}-${{ steps.vars.outputs.ARCH }}
         cache-to: type=local,dest=/tmp/buildx-cache,mode=max
         push: true
 

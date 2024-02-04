@@ -187,7 +187,6 @@ echo "Starting building third-party libraries"
 
 $cmake_cmd  -DDOWNLOAD_DIR=$download_dir              \
             -DCMAKE_INSTALL_PREFIX=$install_dir       \
-            -DSOURCE_PREFIX=$source_dir               \
             ${C_COMPILER_ARG} ${CXX_COMPILER_ARG}     \
             ${DISABLE_CXX11_ABI}                      \
             $source_dir |& tee $logfile

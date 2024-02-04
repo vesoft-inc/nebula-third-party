@@ -82,6 +82,7 @@ jobs:
         password: ${{ secrets.HARBOR_PASSWORD }}
     - name: Create and push manifest
       env:
+        DOCKER_CLI_EXPERIMENTAL: enabled
         IMAGE: ${{ secrets.HARBOR_REGISTRY }}/vesoft/third-party-build:${{ matrix.os }}
       run: |
         docker manifest create $IMAGE --amend $IMAGE-amd64 --amend $IMAGE-arm64

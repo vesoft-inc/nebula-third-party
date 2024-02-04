@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - 'master'
+    paths-ignore:
+      - 'docker/buildx/**.Dockerfile'
 
 concurrency:
   group: ${{ github.ref }}

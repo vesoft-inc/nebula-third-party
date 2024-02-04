@@ -18,70 +18,31 @@ defaults:
 
 jobs:
   docker:
-    runs-on:
-      - self-hosted
-      - ${{ matrix.arch }}
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         os:
           - centos-7
           - centos-8
-          #- ubuntu-1604
-          #- ubuntu-1804
           - ubuntu-2004
           - ubuntu-2204
-        arch:
-          - amd64
-          - arm64
     steps:
-    - uses: webiny/action-post-run@3.0.0
-      with:
-        run: sh -c "find . -mindepth 1 -delete"
     - name: Setup environment variables
       id: vars
       run: |
         echo "TAG=$(echo ${{ matrix.os }} | tr -d '-')" >> $GITHUB_OUTPUT
     - uses: actions/checkout@v3
-    - uses: docker/setup-buildx-action@v2
     - uses: docker/login-action@v2
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
+    - uses: docker/setup-qemu-action@v2
+    - uses: docker/setup-buildx-action@v2
     - uses: docker/build-push-action@v4
       with:
         context: .
         file: ./docker/buildx/${{ matrix.os }}.Dockerfile
-        platforms: linux/${{ matrix.arch }}
-        tags: |
-          vesoft/third-party-build:${{ steps.vars.outputs.TAG }}-${{ matrix.arch }}
-        cache-to: type=local,dest=/tmp/buildx-cache,mode=max
+        platforms: linux/amd64,linux/arm64
+        tags: vesoft/third-party-build:${{ steps.vars.outputs.TAG }}
         push: true
-
-  manifest:
-    needs: docker
-    runs-on:
-      - self-hosted
-    strategy:
-      fail-fast: false
-      matrix:
-        os:
-          - centos7
-          - centos8
-          #- ubuntu1604
-          #- ubuntu1804
-          - ubuntu2004
-          - ubuntu2204
-    steps:
-    - uses: docker/setup-buildx-action@v2
-    - uses: docker/login-action@v2
-      with:
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
-    - name: Create and push manifest
-      env:
-        DOCKER_CLI_EXPERIMENTAL: enabled
-        IMAGE: vesoft/third-party-build:${{ matrix.os }}
-      run: |
-        docker manifest create $IMAGE --amend $IMAGE-amd64 --amend $IMAGE-arm64
-        docker manifest push $IMAGE

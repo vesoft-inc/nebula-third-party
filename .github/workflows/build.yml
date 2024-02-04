@@ -3,19 +3,21 @@ name: build
 on:
   push:
     branches:
-      - 'master' 
-  
+      - 'master'
+    paths-ignore:
+      - 'docker/buildx/**.Dockerfile'
+
 concurrency:
   group: ${{ github.ref }}
   cancel-in-progress: true
-  
+
 defaults:
   run:
     shell: bash
-    
+
 jobs:
   build_and_upload:
-    runs-on: 
+    runs-on:
       - self-hosted
       - ${{ matrix.arch }}
     strategy:
@@ -40,7 +42,7 @@ jobs:
           - os: centos8
             compiler: ''
           - os: ubuntu2204
-            compiler: '9.3.0' 
+            compiler: '9.3.0'
     container:
       image: reg.vesoft-inc.com/vesoft/third-party-build:${{ matrix.os }}
     steps:
@@ -65,7 +67,7 @@ jobs:
           mkdir build
         fi
         sync
-    - name: Build    
+    - name: Build
       run: |
         if [[ -n "${{ matrix.compiler }}" ]]; then
           export TOOLSET_GCC_DIR=/opt/vesoft/toolset/gcc/${{ matrix.compiler }}
@@ -76,7 +78,7 @@ jobs:
         fi
         build_package=1 ${{ env.path }}/build.sh
       working-directory: ../build/
-      
+
     - name: Setup MinIO
       uses: vesoft-inc/.github/actions/setup-minio@master
       with:

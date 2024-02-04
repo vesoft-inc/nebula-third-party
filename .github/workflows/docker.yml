@@ -43,20 +43,18 @@ jobs:
       run: |
         echo "TAG=$(echo ${{ matrix.os }} | tr -d '-')" >> $GITHUB_OUTPUT
     - uses: actions/checkout@v3
-    - uses: docker/setup-qemu-action@v2
     - uses: docker/setup-buildx-action@v2
     - uses: docker/login-action@v2
       with:
-        registry: ${{ secrets.HARBOR_REGISTRY }}
-        username: ${{ secrets.HARBOR_USERNAME }}
-        password: ${{ secrets.HARBOR_PASSWORD }}
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
     - uses: docker/build-push-action@v4
       with:
         context: .
         file: ./docker/buildx/${{ matrix.os }}.Dockerfile
         platforms: linux/${{ matrix.arch }}
         tags: |
-          ${{ secrets.HARBOR_REGISTRY }}/vesoft/third-party-build:${{ steps.vars.outputs.TAG }}-${{ matrix.arch }}
+          vesoft/third-party-build:${{ steps.vars.outputs.TAG }}-${{ matrix.arch }}
         cache-to: type=local,dest=/tmp/buildx-cache,mode=max
         push: true
 
@@ -78,13 +76,12 @@ jobs:
     - uses: docker/setup-buildx-action@v2
     - uses: docker/login-action@v2
       with:
-        registry: ${{ secrets.HARBOR_REGISTRY }}
-        username: ${{ secrets.HARBOR_USERNAME }}
-        password: ${{ secrets.HARBOR_PASSWORD }}
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
     - name: Create and push manifest
       env:
         DOCKER_CLI_EXPERIMENTAL: enabled
-        IMAGE: ${{ secrets.HARBOR_REGISTRY }}/vesoft/third-party-build:${{ matrix.os }}
+        IMAGE: vesoft/third-party-build:${{ matrix.os }}
       run: |
         docker manifest create $IMAGE --amend $IMAGE-amd64 --amend $IMAGE-arm64
         docker manifest push $IMAGE

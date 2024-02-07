@@ -3,9 +3,17 @@ name: build
 on:
   push:
     branches:
-      - 'master'
+      - master
     paths-ignore:
       - 'docker/buildx/**.Dockerfile'
+  workflow_run:
+    workflows:
+      - docker
+    branches:
+      - master
+    types:
+      - completed
+    conclusion: success
 
 concurrency:
   group: ${{ github.ref }}
@@ -78,7 +86,6 @@ jobs:
         fi
         build_package=1 ${{ env.path }}/build.sh
       working-directory: ../build/
-
     - name: Setup MinIO
       uses: vesoft-inc/.github/actions/setup-minio@master
       with:
@@ -87,3 +94,8 @@ jobs:
         secret_key: ${{ secrets.MINIO_SECRET }}
     - name: Copy dir to MinIO
       run: mc cp -r ../build/packages/ minio/rc-build/third-party/5.0/
+    - uses: peter-evans/repository-dispatch@v3
+      with:
+        token: ${{ secrets.GH_PAT }}
+        repository: vesoft-inc/nebula-dev-docker
+        event-type: nebula-third-party-build

@@ -94,6 +94,11 @@ jobs:
         secret_key: ${{ secrets.MINIO_SECRET }}
     - name: Copy dir to MinIO
       run: mc cp -r ../build/packages/ minio/rc-build/third-party/5.0/
+
+  repo-dispatch:
+    needs: build_and_upload
+    runs-on: ubuntu-latest
+    steps:
     - uses: peter-evans/repository-dispatch@v3
       with:
         token: ${{ secrets.GH_PAT }}

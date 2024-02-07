@@ -3,9 +3,17 @@ name: build
 on:
   push:
     branches:
-      - 'master'
+      - master
     paths-ignore:
       - 'docker/buildx/**.Dockerfile'
+  workflow_run:
+    workflows:
+      - docker
+    branches:
+      - master
+    types:
+      - completed
+    conclusion: success
 
 concurrency:
   group: ${{ github.ref }}

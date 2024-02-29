@@ -16,11 +16,11 @@ ExternalProject_Add(
     SOURCE_DIR ${source_dir}
     CMAKE_ARGS
         ${common_cmake_args}
+        -DUSE_SYSTEM_TZ_DB=ON
         -DBUILD_TZ_LIB=ON
         -DENABLE_DATE_TESTING=OFF
         -DBUILD_SHARED_LIBS=ON
         -DCMAKE_BUILD_TYPE=Release
-        -DCURL_NO_CURL_CMAKE=ON
     BUILD_IN_SOURCE 1
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     INSTALL_COMMAND make -s -j${BUILDING_JOBS_NUM} install

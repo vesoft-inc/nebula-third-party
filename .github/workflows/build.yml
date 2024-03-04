@@ -25,6 +25,7 @@ defaults:
 
 env:
   VERSION: 5.1
+  URL_BASE: https://minio.vesoft-inc.com/rc-build/third-party
 
 jobs:
   build_and_upload:
@@ -68,7 +69,10 @@ jobs:
         bash <(curl -Ls $URL)
         install-gcc --version=${{ matrix.compiler }}
     - name: Pre-Build
-      run: mkdir -p _build
+      run: |
+        mkdir -p _build
+        sed -i "s#^URL_BASE=.*#URL_BASE=$URL_BASE#" .env
+        sed -i "s#^VERSION=.*#VERSION=$VERSION#" .env
     - name: Build
       run: |
         if [[ -n "${{ matrix.compiler }}" ]]; then
@@ -78,7 +82,7 @@ jobs:
           export PATH=${TOOLSET_GCC_DIR}/bin:${PATH}
           export LD_LIBRARY_PATH=${TOOLSET_GCC_DIR}/lib64:$LD_LIBRARY_PATH
         fi
-        build_package=1 version=$VERSION ../build.sh
+        build_package=1 ../build.sh
       working-directory: _build/
     - name: Setup MinIO
       uses: vesoft-inc/.github/actions/setup-minio@master
@@ -95,7 +99,7 @@ jobs:
         endpoint: ${{ secrets.OSS_ENDPOINT }}
         bucket: nebula-graph
         asset-path: _build/packages/
-        target-path: third-party/$VERSION/
+        target-path: third-party/${{ env.VERSION }}
 
   repo-dispatch:
     needs: build_and_upload

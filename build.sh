@@ -65,8 +65,9 @@ function check_cxx {
 
 check_cxx
 
+source $this_dir/.env
+
 # Directories setup
-[[ -z $version ]] && version=5.1
 cur_dir=`pwd`
 source_dir=$this_dir/project
 build_root=$cur_dir
@@ -75,8 +76,8 @@ package_dir=$build_root/packages
 prefix=$1
 install_dir=${prefix:-$build_root/install}
 download_dir=$build_root/tarballs
-source_tar_name=nebula-third-party-src-$version.tgz
-source_url=https://oss-cdn.nebula-graph.com.cn/third-party/${source_tar_name}
+source_tar_name=nebula-third-party-src-$VERSION.tgz
+source_url=$URL_BASE/${source_tar_name}
 logfile=$build_root/build.log
 cxx_cmd=${CXX:-g++}
 gcc_version=$(${CXX:-g++} -dumpfullversion -dumpversion)
@@ -262,7 +263,7 @@ march=$(uname -m)
 
 cat > $install_dir/version-info <<EOF
 Package         : Nebula Third Party
-Version         : $version
+Version         : $VERSION
 Date            : $(date)
 glibc           : $libc_version
 Arch            : $march
@@ -272,7 +273,7 @@ Vendor          : VEsoft Inc.
 EOF
 
 function make_package {
-    exec_file=$package_dir/vesoft-third-party-$version-$march-libc-$libc_version-gcc-$gcc_version-abi-$abi_version.sh
+    exec_file=$package_dir/vesoft-third-party-$VERSION-$march-libc-$libc_version-gcc-$gcc_version-abi-$abi_version.sh
 
     echo "Creating self-extractable package $exec_file"
     cat > $exec_file <<EOF
@@ -282,7 +283,7 @@ set -e
 hash xz &> /dev/null || { echo "xz: Command not found"; exit 1; }
 
 [[ \$# -ne 0 ]] && prefix=\$(echo "\$@" | sed 's;.*--prefix=(\S*).*;\1;p' -rn)
-prefix=\${prefix:-/opt/vesoft/third-party/$version}
+prefix=\${prefix:-/opt/vesoft/third-party/$VERSION}
 mkdir -p \$prefix
 
 [[ -w \$prefix ]] || { echo "\$prefix: No permission to write"; exit 1; }

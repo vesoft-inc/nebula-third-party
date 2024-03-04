@@ -19,10 +19,10 @@ then
     exit $?
 fi
 
-[[ -z $version ]] && version=5.1
-[[ -z $url_base ]] && url_base=https://oss-cdn.nebula-graph.com.cn/third-party
 this_dir=$(dirname $(readlink -f $0))
 cxx_cmd=${CXX:-g++}
+
+source $this_dir/.env
 
 # We consider two derivatives: Red Hat and Debian
 # Place preset libc versions of each from newer to older
@@ -90,9 +90,9 @@ selected_gcc_version=$(select_by_version $this_gcc_version "${gcc_preset_version
     exit 1
 }
 
-selected_archive=vesoft-third-party-$version-$(uname -m)-libc-$selected_libc_version-gcc-$selected_gcc_version-abi-$this_abi_version.sh
+selected_archive=vesoft-third-party-$VERSION-$(uname -m)-libc-$selected_libc_version-gcc-$selected_gcc_version-abi-$this_abi_version.sh
 
-url=$url_base/$version/$selected_archive
+url=$URL_BASE/$VERSION/$selected_archive
 echo "Downloading $selected_archive..."
 $download_cmd $url
 [[ $? -ne 0 ]] && {

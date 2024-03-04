@@ -68,13 +68,7 @@ jobs:
         bash <(curl -Ls $URL)
         install-gcc --version=${{ matrix.compiler }}
     - name: Pre-Build
-      run: |
-        if [ -d "build" ]; then
-          find build -maxdepth 1 -mindepth 1 ! -name '*.tgz' -exec rm -rf {} +
-        else
-          mkdir build
-        fi
-      working-directory: ../
+      run: mkdir -p _build
     - name: Build
       run: |
         if [[ -n "${{ matrix.compiler }}" ]]; then
@@ -84,8 +78,8 @@ jobs:
           export PATH=${TOOLSET_GCC_DIR}/bin:${PATH}
           export LD_LIBRARY_PATH=${TOOLSET_GCC_DIR}/lib64:$LD_LIBRARY_PATH
         fi
-        build_package=1 version=$VERSION ./build.sh
-      working-directory: ../build/
+        build_package=1 version=$VERSION ../build.sh
+      working-directory: _build/
     - name: Setup MinIO
       uses: vesoft-inc/.github/actions/setup-minio@master
       with:
@@ -93,14 +87,14 @@ jobs:
         access_key: ${{ secrets.MINIO_KEY }}
         secret_key: ${{ secrets.MINIO_SECRET }}
     - name: Copy dir to MinIO
-      run: mc cp -r ../build/packages/ minio/rc-build/third-party/$VERSION/
+      run: mc cp -r _build/packages/ minio/rc-build/third-party/$VERSION/
     - uses: vesoft-inc/.github/actions/upload-to-oss@master
       with:
         key-id: ${{ secrets.OSS_ID }}
         key-secret: ${{ secrets.OSS_SECRET }}
         endpoint: ${{ secrets.OSS_ENDPOINT }}
         bucket: nebula-graph
-        asset-path: ../build/packages/
+        asset-path: _build/packages/
         target-path: third-party/$VERSION/
 
   repo-dispatch:

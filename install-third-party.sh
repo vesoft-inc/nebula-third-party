@@ -20,7 +20,7 @@ then
 fi
 
 [[ -z $version ]] && version=5.1
-url_base=https://oss-cdn.nebula-graph.com.cn/third-party/$version
+[[ -z $url_base ]] && url_base=https://oss-cdn.nebula-graph.com.cn/third-party
 this_dir=$(dirname $(readlink -f $0))
 cxx_cmd=${CXX:-g++}
 
@@ -92,7 +92,7 @@ selected_gcc_version=$(select_by_version $this_gcc_version "${gcc_preset_version
 
 selected_archive=vesoft-third-party-$version-$(uname -m)-libc-$selected_libc_version-gcc-$selected_gcc_version-abi-$this_abi_version.sh
 
-url=$url_base/$selected_archive
+url=$url_base/$version/$selected_archive
 echo "Downloading $selected_archive..."
 $download_cmd $url
 [[ $? -ne 0 ]] && {

@@ -23,6 +23,9 @@ defaults:
   run:
     shell: bash
 
+env:
+  VERSION: 5.1
+
 jobs:
   build_and_upload:
     runs-on:
@@ -56,7 +59,7 @@ jobs:
     steps:
     - uses: webiny/action-post-run@3.0.0
       with:
-        run: sh -c "find . -mindepth 1 -delete"
+        run: find . -mindepth 1 -delete
     - uses: actions/checkout@v3
     - name: Set up environment
       if: matrix.compiler != ''
@@ -64,17 +67,14 @@ jobs:
         export URL=https://raw.githubusercontent.com/vesoft-inc/nebula-gears/master/install
         bash <(curl -Ls $URL)
         install-gcc --version=${{ matrix.compiler }}
-        echo "COMPILER_VERSION=${{ matrix.compiler }}" >> $GITHUB_ENV
     - name: Pre-Build
       run: |
-        echo "path=$(pwd)" >> $GITHUB_ENV
-        cd ..
         if [ -d "build" ]; then
           find build -maxdepth 1 -mindepth 1 ! -name '*.tgz' -exec rm -rf {} +
         else
           mkdir build
         fi
-        sync
+      working-directory: ../
     - name: Build
       run: |
         if [[ -n "${{ matrix.compiler }}" ]]; then
@@ -84,7 +84,7 @@ jobs:
           export PATH=${TOOLSET_GCC_DIR}/bin:${PATH}
           export LD_LIBRARY_PATH=${TOOLSET_GCC_DIR}/lib64:$LD_LIBRARY_PATH
         fi
-        build_package=1 ${{ env.path }}/build.sh
+        build_package=1 version=$VERSION ./build.sh
       working-directory: ../build/
     - name: Setup MinIO
       uses: vesoft-inc/.github/actions/setup-minio@master
@@ -93,7 +93,15 @@ jobs:
         access_key: ${{ secrets.MINIO_KEY }}
         secret_key: ${{ secrets.MINIO_SECRET }}
     - name: Copy dir to MinIO
-      run: mc cp -r ../build/packages/ minio/rc-build/third-party/5.0/
+      run: mc cp -r ../build/packages/ minio/rc-build/third-party/$VERSION/
+    - uses: vesoft-inc/.github/actions/upload-to-oss@master
+      with:
+        key-id: ${{ secrets.OSS_ID }}
+        key-secret: ${{ secrets.OSS_SECRET }}
+        endpoint: ${{ secrets.OSS_ENDPOINT }}
+        bucket: nebula-graph
+        asset-path: ../build/packages/
+        target-path: third-party/$VERSION/
 
   repo-dispatch:
     needs: build_and_upload
@@ -104,3 +112,7 @@ jobs:
         token: ${{ secrets.GH_PAT }}
         repository: vesoft-inc/nebula-dev-docker
         event-type: nebula-third-party-build
+        client-payload: |-
+          {
+            "version": "${{ env.VERSION }}"
+          }

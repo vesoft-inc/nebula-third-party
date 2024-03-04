@@ -94,6 +94,14 @@ jobs:
         secret_key: ${{ secrets.MINIO_SECRET }}
     - name: Copy dir to MinIO
       run: mc cp -r ../build/packages/ minio/rc-build/third-party/$VERSION/
+    - uses: vesoft-inc/.github/actions/upload-to-oss@master
+      with:
+        key-id: ${{ secrets.OSS_ID }}
+        key-secret: ${{ secrets.OSS_SECRET }}
+        endpoint: ${{ secrets.OSS_ENDPOINT }}
+        bucket: nebula-graph
+        asset-path: ../build/packages/
+        target-path: third-party/$VERSION/
 
   repo-dispatch:
     needs: build_and_upload

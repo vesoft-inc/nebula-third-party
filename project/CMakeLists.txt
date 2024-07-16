@@ -242,6 +242,10 @@ set(ALL_TARGETS
     protoc-gen-go
     protoc-gen-go-grpc
     protoc-gen-grpc-java
+    faiss
+    hnswlib
+    openblas
+    annoy
 )
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
@@ -334,6 +338,7 @@ maybe_add_dependencies(arrow openssl xsimd llvm boost jemalloc zstd utf8proc pro
 maybe_add_dependencies(protobuf zlib abseil)
 maybe_add_dependencies(re2 abseil)
 maybe_add_dependencies(grpc protobuf re2 c-ares openssl)
+maybe_add_dependencies(faiss openblas)
 
 #if (EXISTS ${CMAKE_INSTALL_PREFIX}/lib64)
     #add_custom_target(

@@ -3,7 +3,7 @@ set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 
 # Detect if the current platform is x86
 if(CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64" OR CMAKE_SYSTEM_PROCESSOR STREQUAL "AMD64")
-    set(FAISS_OPT_LEVEL "-DFAISS_OPT_LEVEL=avx2")
+    set(FAISS_OPT_LEVEL "-DFAISS_OPT_LEVEL=avx512")
 else()
     set(FAISS_OPT_LEVEL "")
 endif()

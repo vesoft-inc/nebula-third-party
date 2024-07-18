@@ -37,10 +37,10 @@ RUN yum install -y epel-release && yum update -y \
 RUN if ! [ -x "$(command -v ninja)" ]; then ln -s $(which ninja-build) /usr/bin/ninja; fi
 
 # Install cmake
-RUN wget https://github.com/Kitware/CMake/releases/download/v3.20.0/cmake-3.20.0-linux-$(uname -m).sh \
-    && chmod +x cmake-3.20.0-linux-$(uname -m).sh \
-    && ./cmake-3.20.0-linux-$(uname -m).sh --skip-license --prefix=/usr/local \
-    && rm cmake-3.20.0-linux-$(uname -m).sh
+RUN wget https://github.com/Kitware/CMake/releases/download/v3.23.5/cmake-3.23.5-linux-$(uname -m).sh \
+    && chmod +x cmake-3.23.5-linux-$(uname -m).sh \
+    && ./cmake-3.23.5-linux-$(uname -m).sh --skip-license --prefix=/usr/local \
+    && rm cmake-3.23.5-linux-$(uname -m).sh
 
 # Install golang
 RUN ARCH="$(uname -m)"; \

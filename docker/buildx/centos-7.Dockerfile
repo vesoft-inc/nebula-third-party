@@ -2,7 +2,7 @@ FROM centos:7
 SHELL ["/bin/bash", "-c"]
 ARG GOLANG_VERSION=1.21.6
 RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-Base.repo && \
-    sed -i 's|#baseurl=http://mirror.centos.org|baseurl=https://vault.centos.org|g' /etc/yum.repos.d/CentOS-Base.repo && \
+    sed -i 's|#baseurl=http://mirror.centos.org/centos/$releasever|baseurl=https://vault.centos.org/7.9.2009|g' /etc/yum.repos.d/CentOS-Base.repo && \
     yum install -y epel-release && yum update -y \
  && yum install -y make \
                    git \

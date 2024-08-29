@@ -1,12 +1,14 @@
 FROM centos:7
 SHELL ["/bin/bash", "-c"]
 ARG GOLANG_VERSION=1.21.6
-RUN for file in /etc/yum.repos.d/CentOS-*.repo; do \
-        if [ "$(basename "$file")" != "CentOS-Media.repo" ]; then \
-            sed -i 's/^mirrorlist=/#mirrorlist=/g' "$file" && \
-            sed -i 's|#baseurl=http://mirror.centos.org/centos/$releasever|baseurl=https://vault.centos.org/7.9.2009|g' "$file"; \
-        fi; \
-    done && \
+
+ARG TARGETARCH
+ARG VAULT_URL=https://vault.centos.org/7.9.2009
+ARG VAULT_URL_OTHER=https://vault.centos.org/altarch/7.9.2009
+
+RUN FINAL_VAULT_URL=$([ "$TARGETARCH" = "amd64" ] || [ "$TARGETARCH" = "x86_64" ] && echo "$VAULT_URL" || echo "$VAULT_URL_OTHER") && \
+    sed -i 's/^mirrorlist=/#mirrorlist=/g' /etc/yum.repos.d/CentOS-Base.repo && \
+    sed -i "s|#baseurl=http://mirror.centos.org/centos/\$releasever|baseurl=${FINAL_VAULT_URL}|g" /etc/yum.repos.d/CentOS-Base.repo && \
     yum install -y epel-release && yum update -y \
  && yum install -y make \
                    git \

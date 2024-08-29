@@ -2,14 +2,19 @@ FROM centos:7
 SHELL ["/bin/bash", "-c"]
 ARG GOLANG_VERSION=1.21.6
 
-ARG TARGETARCH
 ARG VAULT_URL=https://vault.centos.org/7.9.2009
 ARG VAULT_URL_OTHER=https://vault.centos.org/altarch/7.9.2009
-ENV FINAL_VAULT_URL=${VAULT_URL}
 
-RUN if [ "$TARGETARCH" != "amd64" ] && [ "$TARGETARCH" != "x86_64" ]; then \
-        export FINAL_VAULT_URL=${VAULT_URL_OTHER}; \
+RUN ARCH=$(uname -m) && \
+    if [ "$ARCH" = "x86_64" ]; then \
+        FINAL_VAULT_URL="$VAULT_URL"; \
+    else \
+        FINAL_VAULT_URL="$VAULT_URL_OTHER"; \
     fi && \
+    echo "Architecture: $ARCH" && \
+    echo "Using VAULT_URL: ${FINAL_VAULT_URL}" && \
+    sed -i 's/^mirrorlist=/#mirrorlist=/g' /etc/yum.repos.d/CentOS-Base.repo && \
+    sed -i "s|#baseurl=http://mirror.centos.org/centos/\$releasever|baseurl=${FINAL_VAULT_URL}|g" /etc/yum.repos.d/CentOS-Base.repo
     yum install -y epel-release && yum update -y \
  && yum install -y make \
                    git \

@@ -5,16 +5,18 @@ ARG GOLANG_VERSION=1.21.6
 ARG VAULT_URL=https://vault.centos.org/7.9.2009
 ARG VAULT_URL_OTHER=https://vault.centos.org/altarch/7.9.2009
 
-RUN ARCH=$(uname -m) && \
-    if [ "$ARCH" = "x86_64" ]; then \
-        FINAL_VAULT_URL="$VAULT_URL"; \
+RUN arch=$(uname -m); \
+    if [ "$arch" = "x86_64" ]; then \
+        baseurl="https://vault.centos.org/7.9.2009"; \
     else \
-        FINAL_VAULT_URL="$VAULT_URL_OTHER"; \
-    fi && \
-    echo "Architecture: $ARCH" && \
-    echo "Using VAULT_URL: ${FINAL_VAULT_URL}" && \
-    sed -i 's/^mirrorlist=/#mirrorlist=/g' /etc/yum.repos.d/CentOS-Base.repo && \
-    sed -i "s|#baseurl=http://mirror.centos.org/centos/\$releasever|baseurl=${FINAL_VAULT_URL}|g" /etc/yum.repos.d/CentOS-Base.repo
+        baseurl="https://vault.centos.org/altarch/7.9.2009"; \
+    fi; \
+    sed -i 's/^mirrorlist=/#mirrorlist=/g' /etc/yum.repos.d/CentOS-Base.repo; \
+    if [ "$arch" = "x86_64" ]; then \
+        sed -i "s|^#baseurl=http://mirror.centos.org/centos/\$releasever|baseurl=${baseurl}|g" /etc/yum.repos.d/CentOS-Base.repo; \
+    else \
+        sed -i "s|^#baseurl=http://mirror.centos.org/altarch/\$releasever|baseurl=${baseurl}|g" /etc/yum.repos.d/CentOS-Base.repo; \
+    fi; \
     yum install -y epel-release && yum update -y \
  && yum install -y make \
                    git \

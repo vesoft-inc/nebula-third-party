@@ -2,20 +2,17 @@ FROM centos:7
 SHELL ["/bin/bash", "-c"]
 ARG GOLANG_VERSION=1.21.6
 
-ARG VAULT_URL=https://vault.centos.org/7.9.2009
-ARG VAULT_URL_OTHER=https://vault.centos.org/altarch/7.9.2009
-
 RUN arch=$(uname -m); \
     if [ "$arch" = "x86_64" ]; then \
         baseurl="https://vault.centos.org/7.9.2009"; \
     else \
-        baseurl="https://vault.centos.org/altarch/7.9.2009"; \
+        baseurl="https://vault.centos.org/altarch"; \
     fi; \
     sed -i 's/^mirrorlist=/#mirrorlist=/g' /etc/yum.repos.d/CentOS-Base.repo; \
     if [ "$arch" = "x86_64" ]; then \
         sed -i "s|^#baseurl=http://mirror.centos.org/centos/\$releasever|baseurl=${baseurl}|g" /etc/yum.repos.d/CentOS-Base.repo; \
     else \
-        sed -i "s|^#baseurl=http://mirror.centos.org/altarch/\$releasever|baseurl=${baseurl}|g" /etc/yum.repos.d/CentOS-Base.repo; \
+        sed -i "s|^#baseurl=http://mirror.centos.org/altarch|baseurl=${baseurl}|g" /etc/yum.repos.d/CentOS-Base.repo; \
     fi; \
     yum install -y epel-release && yum update -y \
  && yum install -y make \

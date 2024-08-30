@@ -14,8 +14,8 @@ RUN arch=$(uname -m); \
     else \
         sed -i "s|^#baseurl=http://mirror.centos.org/altarch|baseurl=${baseurl}|g" /etc/yum.repos.d/CentOS-Base.repo; \
     fi; \
-    yum install -y epel-release yum-utils &&  yum config-manager --set-enabled powertools && yum update -y \
- && yum install -y make \
+    yum install -y epel-release yum-utils &&  yum config-manager --set-enabled powertools && yum update -y && \
+    yum install -y make \
                    git \
                    m4 \
                    curl \

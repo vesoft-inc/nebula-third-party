@@ -1,10 +1,10 @@
 FROM centos:7
 SHELL ["/bin/bash", "-c"]
 ARG GOLANG_VERSION=1.21.6
-
 RUN arch=$(uname -m); \
+    full_version=$(cat /etc/centos-release | sed 's/.*release \([^ ]*\).*/\1/') \
     if [ "$arch" = "x86_64" ]; then \
-        baseurl="https://vault.centos.org/7.9.2009"; \
+        baseurl="https://vault.centos.org/$full_version"; \
     else \
         baseurl="https://vault.centos.org/altarch"; \
     fi; \
@@ -14,8 +14,8 @@ RUN arch=$(uname -m); \
     else \
         sed -i "s|^#baseurl=http://mirror.centos.org/altarch|baseurl=${baseurl}|g" /etc/yum.repos.d/CentOS-Base.repo; \
     fi; \
-    yum install -y epel-release && yum update -y \
- && yum install -y make \
+    yum install -y epel-release && yum update -y && \
+    yum install -y make \
                    git \
                    m4 \
                    curl \

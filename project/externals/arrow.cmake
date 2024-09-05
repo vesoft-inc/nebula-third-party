@@ -37,14 +37,14 @@ set(ARROW_CMAKE_ARGS
 
 ExternalProject_Add(
         ${name}
-        URL https://github.com/apache/arrow/archive/refs/tags/apache-arrow-11.0.0.tar.gz
-        URL_HASH MD5=c31335b6f5422a352e2aef5a7a469c91
-        DOWNLOAD_NAME apache-arrow-11.0.0.tar.gz
+        URL https://github.com/apache/arrow/releases/download/apache-arrow-17.0.0/apache-arrow-17.0.0.tar.gz
+        URL_HASH MD5=5517376e16c2930e842421c0f79aefc4
+        DOWNLOAD_NAME apache-arrow-17.0.0.tar.gz
         PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
         TMP_DIR ${BUILD_INFO_DIR}
         STAMP_DIR ${BUILD_INFO_DIR}
         DOWNLOAD_DIR ${DOWNLOAD_DIR}
-        PATCH_COMMAND patch -p1 < ${CMAKE_SOURCE_DIR}/patches/${name}-11.0.0.patch
+        PATCH_COMMAND patch -p1 < ${CMAKE_SOURCE_DIR}/patches/${name}-17.0.0.patch
         CONFIGURE_COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" ${ARROW_CMAKE_ARGS} ./cpp
         BUILD_COMMAND
         "${MakeEnvs}"

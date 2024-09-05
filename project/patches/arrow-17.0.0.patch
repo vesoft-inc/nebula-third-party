@@ -1,0 +1,39 @@
+diff --git a/cpp/cmake_modules/GandivaAddBitcode.cmake b/cpp/cmake_modules/GandivaAddBitcode.cmake
+index 98847f8a1..037a6bc31 100644
+--- a/cpp/cmake_modules/GandivaAddBitcode.cmake
++++ b/cpp/cmake_modules/GandivaAddBitcode.cmake
+@@ -57,7 +57,8 @@ function(gandiva_add_bitcode SOURCE)
+        ${ABSOLUTE_SOURCE}
+        -o
+        ${BC_FILE}
+-       ${ARROW_GANDIVA_PC_CXX_FLAGS})
++       ${ARROW_GANDIVA_PC_CXX_FLAGS}
++       ${LLVM_CXX_INCLUDE})
+   if(ARROW_BINARY_DIR)
+     list(APPEND PRECOMPILE_COMMAND -I${ARROW_BINARY_DIR}/src)
+   endif()
+diff --git a/cpp/src/gandiva/precompiled/CMakeLists.txt b/cpp/src/gandiva/precompiled/CMakeLists.txt
+index c092ff4fd..598afe3ca 100644
+--- a/cpp/src/gandiva/precompiled/CMakeLists.txt
++++ b/cpp/src/gandiva/precompiled/CMakeLists.txt
+@@ -28,6 +28,20 @@ set(PRECOMPILED_SRCS
+     timestamp_arithmetic.cc
+     ../../arrow/util/basic_decimal.cc)
+ set(GANDIVA_PRECOMPILED_BC_FILES)
++
++if (USE_LLVM_CXX)
++  message(STATUS "USE LLVM CXX")
++  file(GLOB_RECURSE LLVM_CXX_INCLUDE_DIR
++    "${LLVM_INCLUDE_DIRS}/*-gnu/c++/v1/__config_site")
++
++  list(GET LLVM_CXX_INCLUDE_DIR 0 LLVM_CXX_INCLUDE_DIR)
++  get_filename_component(LLVM_CXX_INCLUDE_DIR ${LLVM_CXX_INCLUDE_DIR} DIRECTORY)
++  set(LLVM_CXX_INCLUDE -I${LLVM_INCLUDE_DIRS}/c++/v1 -I${LLVM_CXX_INCLUDE_DIR})
++else()
++  message(STATUS "NOT USE LLVM CXX")
++  set(LLVM_CXX_INCLUDE "")
++endif()
++
+ foreach(SOURCE ${PRECOMPILED_SRCS})
+   gandiva_add_bitcode(${SOURCE})
+   get_filename_component(SOURCE_BASE ${SOURCE} NAME_WE)

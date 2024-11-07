@@ -2,14 +2,15 @@
 #
 # This source code is licensed under Apache 2.0 License.
 # This source code is licensed under Apache 2.0 License.
+set(name arrow)
+set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
+
 if(DISTRO_NAME STREQUAL "CentOS Linux" AND DISTRO_VERSION_ID STREQUAL "7")
     set(USE_LLVM_CXX ON)
 else()
     set(USE_LLVM_CXX OFF)
 endif()
 
-set(name arrow)
-set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 set(ARROW_CMAKE_ARGS
         -DProtobuf_SOURCE=BUNDLED
         -Dre2_SOURCE=SYSTEM
@@ -43,14 +44,14 @@ set(ARROW_CMAKE_ARGS
 
 ExternalProject_Add(
         ${name}
-        URL https://github.com/apache/arrow/archive/refs/tags/apache-arrow-11.0.0.tar.gz
-        URL_HASH MD5=c31335b6f5422a352e2aef5a7a469c91
-        DOWNLOAD_NAME apache-arrow-11.0.0.tar.gz
+        URL https://github.com/apache/arrow/archive/refs/tags/apache-arrow-18.0.0.tar.gz
+        URL_HASH MD5=4a6dfd10649ab03caf71d740edff4889
+        DOWNLOAD_NAME apache-arrow-18.0.0.tar.gz
         PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
         TMP_DIR ${BUILD_INFO_DIR}
         STAMP_DIR ${BUILD_INFO_DIR}
         DOWNLOAD_DIR ${DOWNLOAD_DIR}
-        PATCH_COMMAND patch -p1 < ${CMAKE_SOURCE_DIR}/patches/${name}-11.0.0.patch
+        PATCH_COMMAND patch -p1 < ${CMAKE_SOURCE_DIR}/patches/${name}-18.0.0.patch
         CONFIGURE_COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" ${ARROW_CMAKE_ARGS} ./cpp
         BUILD_COMMAND
         "${MakeEnvs}"

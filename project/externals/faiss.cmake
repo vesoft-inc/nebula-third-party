@@ -8,6 +8,14 @@ else()
     set(FAISS_OPT_LEVEL "")
 endif()
 
+if(CMAKE_SYSTEM_PROCESSOR MATCHES "^(aarch64|arm)")
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+        if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 9.0 AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 10.0)
+            set(CMAKE_CXX_FLAGS_RELEASE "-O1")
+        endif()
+    endif()
+endif()
+
 ExternalProject_Add(
     ${name}
     URL https://github.com/facebookresearch/faiss/archive/refs/tags/v1.8.0.tar.gz
@@ -25,6 +33,7 @@ ExternalProject_Add(
         -DBUILD_TESTING=OFF
         -DBUILD_SHARED_LIBS=ON
         -DCMAKE_BUILD_TYPE=Release
+        -DCMAKE_CXX_FLAGS_RELEASE=${CMAKE_CXX_FLAGS_RELEASE}
         ${FAISS_OPT_LEVEL}
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     BUILD_IN_SOURCE 1

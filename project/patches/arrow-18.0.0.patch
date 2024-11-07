@@ -1,0 +1,30 @@
+--- a/cpp/cmake_modules/GandivaAddBitcode.cmake	2024-10-16 09:20:06.000000000 +0000
++++ b/cpp/cmake_modules/GandivaAddBitcode.cmake	2024-11-05 10:07:31.339538160 +0000
+@@ -30,6 +30,16 @@
+          -fms-compatibility-version=${FMS_COMPATIBILITY})
+   endif()
+ 
++  if (USE_LLVM_CXX)
++    message(STATUS "USE LLVM CXX")
++    file(GLOB_RECURSE LLVM_CXX_INCLUDE_DIR
++      "${LLVM_INCLUDE_DIRS}/*-gnu/c++/v1/__config_site")
++
++    list(GET LLVM_CXX_INCLUDE_DIR 0 LLVM_CXX_INCLUDE_DIR)
++    get_filename_component(LLVM_CXX_INCLUDE_DIR ${LLVM_CXX_INCLUDE_DIR} DIRECTORY)
++    list(APPEND CLANG_OPTIONS -I${LLVM_INCLUDE_DIRS}/c++/v1 -I${LLVM_CXX_INCLUDE_DIR})
++  endif()
++
+   get_filename_component(SOURCE_BASE ${SOURCE} NAME_WE)
+   get_filename_component(ABSOLUTE_SOURCE ${SOURCE} ABSOLUTE)
+   set(BC_FILE ${CMAKE_CURRENT_BINARY_DIR}/${SOURCE_BASE}.bc)
+--- a/cpp/src/arrow/testing/process.cc	2024-11-05 08:13:47.487969501 +0000
++++ b/cpp/src/arrow/testing/process.cc	2024-11-05 09:27:42.138928785 +0000
+@@ -18,7 +18,7 @@
+ #include "arrow/testing/process.h"
+ #include "arrow/result.h"
+ 
+-#define BOOST_PROCESS_AVAILABLE
++#undef BOOST_PROCESS_AVAILABLE
+ #ifdef __EMSCRIPTEN__
+ #  undef BOOST_PROCESS_AVAILABLE
+ #endif

@@ -1,4 +1,4 @@
-FROM ubuntu:22.04
+FROM ubuntu:24.04
 SHELL ["/bin/bash", "-c"]
 ARG DEBIAN_FRONTEND=noninteractive
 ARG GOLANG_VERSION=1.21.6
@@ -14,7 +14,7 @@ RUN apt update \
                        patch \
                        python3 \
                        python3-dev \
-                       lsb-core \
+                       lsb-release \
                        zlib1g-dev \
                        build-essential \
                        libreadline-dev \
@@ -30,6 +30,8 @@ RUN apt update \
                        gperf \
                        gettext \
                        ninja-build \
+                       groff-base \
+                       texinfo \
                        libxml2-dev \
     && apt clean \
     && rm -rf /var/lib/apt/lists/*

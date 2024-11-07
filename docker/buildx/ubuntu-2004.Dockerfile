@@ -29,6 +29,7 @@ RUN apt update \
                        gperf \
                        gettext \
                        ninja-build \
+                       libxml2-dev \
     && apt clean \
     && rm -rf /var/lib/apt/lists/*
 

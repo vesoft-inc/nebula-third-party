@@ -66,7 +66,16 @@ ExternalProject_Add_Step(${name} setup-compiler
 ExternalProject_Add_Step(${name} trim
     DEPENDEES install
     COMMAND
-        rm -rf ${CMAKE_INSTALL_PREFIX}/include/boost/{wave,log,atomic,test,fusion,geometry,gil,phoenix,spirit,beast,asio,compute,polygon,proto,units,metaparse,qvm,vmd,xpressive}
+        /bin/bash -c "\
+        echo '=== Starting trim step ===' && \
+        echo 'Shell:' && echo $SHELL && \
+        echo 'PWD:' && pwd && \
+        set -x && \
+        rm -rfv ${CMAKE_INSTALL_PREFIX}/include/boost/{wave,log,atomic,test,fusion,geometry,gil,phoenix,spirit,beast,asio,compute,polygon,proto,units,metaparse,qvm,vmd,xpressive} && \
+        set +x && \
+        echo '=== Trim step finished ===' && \
+        echo 'Remaining directories:' && \
+        ls -l ${CMAKE_INSTALL_PREFIX}/include/boost/"    
     WORKING_DIRECTORY ${source_dir}
 )
 

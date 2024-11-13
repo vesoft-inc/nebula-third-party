@@ -4,7 +4,6 @@
 
 set(name libxml2)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
-set(version "2.13.4")
 
 ExternalProject_Add(
     ${name}
@@ -26,7 +25,6 @@ ExternalProject_Add(
         -DLIBXML2_WITH_ZLIB=OFF
         -DLIBXML2_WITH_PROGRAMS=OFF
         -DLIBXML2_WITH_TESTS=OFF
-        "-DCMAKE_C_FLAGS=${CMAKE_C_FLAGS} ${extra_c_flags}"
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     BUILD_IN_SOURCE 1
     INSTALL_COMMAND make -s install -j${BUILDING_JOBS_NUM}

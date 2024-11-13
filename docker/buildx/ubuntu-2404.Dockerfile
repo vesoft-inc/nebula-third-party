@@ -32,7 +32,6 @@ RUN apt update \
                        ninja-build \
                        groff-base \
                        texinfo \
-                       libxml2-dev \
     && apt clean \
     && rm -rf /var/lib/apt/lists/*
 

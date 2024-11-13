@@ -246,6 +246,7 @@ set(ALL_TARGETS
     hnswlib
     openblas
     annoy
+    libxml2
 )
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
@@ -334,7 +335,7 @@ maybe_add_dependencies(cachelib fbthrift sparsemap fizz googletest)
 # Here we build gtest after rocksdb intentionally
 maybe_add_dependencies(googletest rocksdb gflags)
 
-maybe_add_dependencies(arrow openssl xsimd llvm boost jemalloc zstd utf8proc protobuf re2)
+maybe_add_dependencies(arrow openssl xsimd llvm boost jemalloc zstd utf8proc protobuf re2 libxml2)
 maybe_add_dependencies(protobuf zlib abseil)
 maybe_add_dependencies(re2 abseil)
 maybe_add_dependencies(grpc protobuf re2 c-ares openssl)

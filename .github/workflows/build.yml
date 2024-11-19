@@ -31,6 +31,8 @@ jobs:
   build_and_upload:
     runs-on:
       - self-hosted
+      - Linux
+      - Large
       - ${{ matrix.arch }}
     strategy:
       fail-fast: false
@@ -67,7 +69,7 @@ jobs:
         cat .env
     - name: Build
       run: |
-        if [[ "${{ matrix.os }}" == "centos7" }}" ]]; then
+        if [[ "${{ matrix.os }}" == "centos7" ]]; then
           export TOOLSET_GCC_DIR=/opt/vesoft/toolset/gcc/9.5.0
           export CC=${TOOLSET_GCC_DIR}/bin/gcc
           export CXX=${TOOLSET_GCC_DIR}/bin/g++

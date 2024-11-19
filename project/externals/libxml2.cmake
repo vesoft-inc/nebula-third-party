@@ -9,7 +9,7 @@ ExternalProject_Add(
     ${name}
     URL https://github.com/GNOME/libxml2/archive/refs/tags/v2.13.4.tar.gz
     URL_HASH MD5=69d7c63c7fe5858ba7a462f303939c4a
-    DOWNLOAD_NAME libxml2-${version}.tar.gz
+    DOWNLOAD_NAME libxml2-v2.13.4.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}

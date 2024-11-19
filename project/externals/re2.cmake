@@ -6,9 +6,9 @@ set(name re2)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL https://github.com/google/re2/releases/download/2023-11-01/re2-2023-11-01.tar.gz
-    URL_HASH MD5=45925144c4da1ceba739f149a52bd555
-    DOWNLOAD_NAME re2-2023-11-01.tar.gz
+    URL https://github.com/google/re2/archive/refs/tags/2024-07-02.tar.gz
+    URL_HASH MD5=73c94c78678bd2d641beaf8d5a3fd352
+    DOWNLOAD_NAME re2-2024.07.02.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}

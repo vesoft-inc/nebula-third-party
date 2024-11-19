@@ -6,9 +6,9 @@ set(name c-ares)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL https://github.com/c-ares/c-ares/releases/download/cares-1_24_0/c-ares-1.24.0.tar.gz
-    URL_HASH MD5=25b872ee1c3bee8ff5f49b5f31307002
-    DOWNLOAD_NAME c-ares-1.24.0.tar.gz
+    URL https://github.com/c-ares/c-ares/archive/refs/tags/v1.34.5.tar.gz
+    URL_HASH MD5=ba8e0067b17fad5cba87d3b047e906d2
+    DOWNLOAD_NAME c-ares-1.34.5.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}

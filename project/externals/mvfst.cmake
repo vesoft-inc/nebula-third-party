@@ -2,13 +2,13 @@
 #
 # This source code is licensed under Apache 2.0 License.
 
-set(name glog)
+set(name mvfst)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL https://github.com/google/glog/archive/refs/tags/v0.7.1.tar.gz
-    URL_HASH MD5=128e2995cc33d794ff24f785a3060346
-    DOWNLOAD_NAME glog-0.7.1.tar.gz
+    URL https://github.com/facebook/mvfst/archive/refs/tags/v${fb_release_tag}.00.tar.gz
+    URL_HASH MD5=656046a687ca533bac65de672a88ea8e
+    DOWNLOAD_NAME mvfst-${fb_package_name_part}.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}
@@ -16,6 +16,9 @@ ExternalProject_Add(
     SOURCE_DIR ${source_dir}
     CMAKE_ARGS
         ${common_cmake_args}
+        -DBUILD_TESTS=OFF
+        -DBoost_NO_BOOST_CMAKE=ON
+        -DBUILD_EXAMPLES=OFF
         -DCMAKE_BUILD_TYPE=Release
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     BUILD_IN_SOURCE 1
@@ -31,7 +34,7 @@ ExternalProject_Add_Step(${name} clean
     DEPENDEES configure
     COMMAND make clean -j
     COMMAND rm -f ${BUILD_INFO_DIR}/${name}-build
-    WORKING_DIRECTORY ${source_dir}
+    WORKING_DIRECTORY <SOURCE_DIR>
 )
 
 ExternalProject_Add_StepTargets(${name} clean)

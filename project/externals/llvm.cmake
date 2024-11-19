@@ -11,9 +11,9 @@ set(LLVM_ENV_COMMAND
 
 ExternalProject_Add(
         ${name}
-        URL https://github.com/llvm/llvm-project/releases/download/llvmorg-15.0.7/llvm-project-15.0.7.src.tar.xz
-        URL_HASH MD5=bac436dbd5d37e38d3da75b03629053c
-        DOWNLOAD_NAME llvm-project-15.0.7.src.tar.xz
+        URL https://github.com/llvm/llvm-project/archive/refs/tags/llvmorg-20.1.4.tar.gz
+        URL_HASH MD5=f48a972e689b74df96b283a5d65698a5
+        DOWNLOAD_NAME llvm-project-20.1.4.tar.gz
         PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
         TMP_DIR ${BUILD_INFO_DIR}
         STAMP_DIR ${BUILD_INFO_DIR}
@@ -23,7 +23,7 @@ ExternalProject_Add(
                          -DCMAKE_BUILD_TYPE=Release
                          -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
                          -DLLVM_ENABLE_PROJECTS='clang'
-                         -DLLVM_ENABLE_RUNTIMES='libcxx\\$<SEMICOLON>libcxxabi'
+                         -DLLVM_ENABLE_RUNTIMES='libcxx\\$<SEMICOLON>libcxxabi\\$<SEMICOLON>libunwind'
                          -DLLVM_ENABLE_RTTI=ON
                          -DLLVM_BUILD_LLVM_DYLIB=ON
                          -DLLVM_LINK_LLVM_DYLIB=ON

@@ -6,9 +6,9 @@ set(name libcurl)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL  https://github.com/curl/curl/archive/refs/tags/curl-7_87_0.tar.gz
-    URL_HASH MD5=ade16c73e4a4d42bc526e852757660f4
-    DOWNLOAD_NAME curl-7.87.0.tar.gz
+    URL  https://github.com/curl/curl/archive/refs/tags/curl-8_12_1.tar.gz
+    URL_HASH MD5=9c2fa0d60bcf4bf9093ea365ed713f39
+    DOWNLOAD_NAME curl-8.12.1.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}
@@ -22,6 +22,7 @@ ExternalProject_Add(
         -DUSE_LIBIDN2=OFF
         -DCURL_DISABLE_LDAP=ON
         -DCURL_DISABLE_LDAPS=ON
+        -DCURL_USE_LIBPSL=OFF
     BUILD_IN_SOURCE 1
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     INSTALL_COMMAND make -s -j${BUILDING_JOBS_NUM} install

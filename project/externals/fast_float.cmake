@@ -1,14 +1,14 @@
-# Copyright (c) 2019 vesoft inc. All rights reserved.
+# Copyright (c) 2024 vesoft inc. All rights reserved.
 #
 # This source code is licensed under Apache 2.0 License.
 
-set(name glog)
+set(name fast_float)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL https://github.com/google/glog/archive/refs/tags/v0.7.1.tar.gz
-    URL_HASH MD5=128e2995cc33d794ff24f785a3060346
-    DOWNLOAD_NAME glog-0.7.1.tar.gz
+    URL https://github.com/fastfloat/fast_float/archive/refs/tags/v8.0.2.tar.gz
+    URL_HASH MD5=39fdfe888ddf705f3a2100f4b8af8b2a
+    DOWNLOAD_NAME fast_float-8.0.2.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}
@@ -17,9 +17,9 @@ ExternalProject_Add(
     CMAKE_ARGS
         ${common_cmake_args}
         -DCMAKE_BUILD_TYPE=Release
-    BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     BUILD_IN_SOURCE 1
-    INSTALL_COMMAND make -s -j${BUILDING_JOBS_NUM} install
+    BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
+    INSTALL_COMMAND make -s install -j${BUILDING_JOBS_NUM}
     LOG_CONFIGURE TRUE
     LOG_BUILD TRUE
     LOG_INSTALL TRUE

@@ -11,7 +11,8 @@ else()
     set(USE_LLVM_CXX OFF)
 endif()
 
-set(ARROW_CMAKE_ARGS
+set(arrow_cmake_args
+        ${common_cmake_args}
         -DProtobuf_SOURCE=SYSTEM
         -Dre2_SOURCE=SYSTEM
         -DBoost_ROOT=${CMAKE_INSTALL_PREFIX}
@@ -22,7 +23,7 @@ set(ARROW_CMAKE_ARGS
         -DARROW_IPC=ON
         -DARROW_JSON=ON
         -DARROW_COMPUTE=ON
-        -DARROW_GANDIVA=ON
+        -DARROW_GANDIVA=OFF
         -DARROW_TESTING=ON
         -DARROW_FILESYSTEM=ON
         -DARROW_HDFS=ON
@@ -45,20 +46,36 @@ set(ARROW_CMAKE_ARGS
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
         )
 
+set(make_envs
+    "env"
+    CMAKE_INCLUDE_PATH=${CMAKE_INSTALL_PREFIX}/include
+    "CMAKE_LIBRARY_PATH=${CMAKE_INSTALL_PREFIX}/lib:${CMAKE_INSTALL_PREFIX}/lib64"
+    )
+
+set(arrow_patch_command
+    mkdir
+    ci/patch
+    &&
+    touch
+    ci/patch/awssdk_ep.patch
+    &&
+    patch
+    -p1
+    -i
+    ${CMAKE_SOURCE_DIR}/patches/${name}-20.0.0.patch)
+
 ExternalProject_Add(
         ${name}
-        URL https://github.com/apache/arrow/archive/refs/tags/apache-arrow-18.0.0.tar.gz
-        URL_HASH MD5=4a6dfd10649ab03caf71d740edff4889
-        DOWNLOAD_NAME apache-arrow-18.0.0.tar.gz
+        URL https://github.com/apache/arrow/archive/refs/tags/apache-arrow-20.0.0.tar.gz
+        URL_HASH MD5=5b60a4efe6588455957f1eb368c7a809
+        DOWNLOAD_NAME apache-arrow-20.0.0.tar.gz
         PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
         TMP_DIR ${BUILD_INFO_DIR}
         STAMP_DIR ${BUILD_INFO_DIR}
         DOWNLOAD_DIR ${DOWNLOAD_DIR}
-        PATCH_COMMAND patch -p1 < ${CMAKE_SOURCE_DIR}/patches/${name}-18.0.0.patch
-        CONFIGURE_COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" ${ARROW_CMAKE_ARGS} ./cpp
-        BUILD_COMMAND
-        "${MakeEnvs}"
-        make -e -s -j${BUILDING_JOBS_NUM}
+        PATCH_COMMAND ${arrow_patch_command}
+        CONFIGURE_COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" ${arrow_cmake_args} ./cpp
+        BUILD_COMMAND "${make_envs}" make -e -s -j${BUILDING_JOBS_NUM}
         BUILD_IN_SOURCE 1
         INSTALL_COMMAND make install
         LOG_CONFIGURE TRUE

@@ -7,14 +7,15 @@ set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 
 ExternalProject_Add(
     ${name}
-    URL https://github.com/GNOME/libxml2/archive/refs/tags/v2.13.4.tar.gz
-    URL_HASH MD5=69d7c63c7fe5858ba7a462f303939c4a
-    DOWNLOAD_NAME libxml2-v2.13.4.tar.gz
+    URL https://github.com/GNOME/libxml2/archive/refs/tags/v2.13.6.tar.gz
+    URL_HASH MD5=c70f671f4796fb397d6e26304fa42330
+    DOWNLOAD_NAME libxml2-v2.13.6.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}
     DOWNLOAD_DIR ${DOWNLOAD_DIR}
     SOURCE_DIR ${source_dir}
+    CMAKE_COMMAND env PATH=${CMAKE_INSTALL_PREFIX}/bin:$ENV{PATH} ${CMAKE_COMMAND}
     CMAKE_ARGS
         ${common_cmake_args}
         -DCMAKE_BUILD_TYPE=Release
@@ -23,6 +24,9 @@ ExternalProject_Add(
         -DLIBXML2_WITH_LZMA=OFF
         -DLIBXML2_WITH_PYTHON=OFF
         -DLIBXML2_WITH_ZLIB=OFF
+        -DBoost_NO_BOOST_CMAKE=ON
+        -Denable_tests=OFF
+        -DOPENSSL_ROOT_DIR=${CMAKE_INSTALL_PREFIX}
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     BUILD_IN_SOURCE 1
     INSTALL_COMMAND make -s install -j${BUILDING_JOBS_NUM}

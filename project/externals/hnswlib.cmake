@@ -4,6 +4,7 @@ ExternalProject_Add(
     ${name}
     URL               https://github.com/nmslib/hnswlib/archive/refs/tags/v0.8.0.zip
     URL_HASH          MD5=7d162011152e7cb68dfee85f7347abda
+    DOWNLOAD_NAME     ${name}-0.8.0.zip
     PREFIX            ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR           ${BUILD_INFO_DIR}
     STAMP_DIR         ${BUILD_INFO_DIR}

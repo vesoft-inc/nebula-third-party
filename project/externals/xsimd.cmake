@@ -6,9 +6,9 @@ set(name xsimd)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL https://github.com/xtensor-stack/xsimd/archive/refs/tags/10.0.0.tar.gz
-    URL_HASH MD5=e0dfed5da51b0d34d02b42f5b2ddf830
-    DOWNLOAD_NAME xsimd-10.0.0.tar.gz
+    URL https://github.com/xtensor-stack/xsimd/archive/refs/tags/13.1.0.tar.gz
+    URL_HASH MD5=37a90bdd437882bf2c233f9b60c40bed
+    DOWNLOAD_NAME xsimd-13.1.0.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}

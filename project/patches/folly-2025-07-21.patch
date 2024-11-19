@@ -1,0 +1,30 @@
+diff -ur a/folly/debugging/exception_tracer/ExceptionTracerLib.cpp b/folly/debugging/exception_tracer/ExceptionTracerLib.cpp
+--- a/folly/debugging/exception_tracer/ExceptionTracerLib.cpp  2025-05-05 12:36:28.259719798 +0800
++++ b/folly/debugging/exception_tracer/ExceptionTracerLib.cpp  2025-05-05 12:36:52.909713564 +0800
+@@ -226,6 +226,7 @@
+
+ namespace std {
+
++#if 0
+ __attribute__((__noreturn__)) void rethrow_exception(std::exception_ptr ep) {
+   // Mangled name for std::rethrow_exception
+   // TODO(tudorb): Dicey, as it relies on the fact that std::exception_ptr
+@@ -237,6 +238,7 @@
+   orig_rethrow_exception(std::move(ep));
+   __builtin_unreachable(); // orig_rethrow_exception never returns
+ }
++#endif
+
+ } // namespace std
+ #endif
+--- a/folly/CMakeLists.txt  2025-07-22 12:19:48.414335851 +0800
++++ b/folly/CMakeLists.txt  2025-07-22 12:19:53.906335925 +0800
+@@ -29,7 +29,7 @@
+ )
+
+ add_subdirectory(debugging/exception_tracer)
+-add_subdirectory(logging/example)
++#add_subdirectory(logging/example)
+
+ if (PYTHON_EXTENSIONS)
+   # Create tree of symbolic links in structure required for successful

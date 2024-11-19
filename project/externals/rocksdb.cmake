@@ -6,15 +6,14 @@ set(name rocksdb)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL https://github.com/facebook/rocksdb/archive/refs/tags/v7.8.3.tar.gz
-    URL_HASH MD5=745d3b15e57e31670b5ea607c5bb82ff
-    DOWNLOAD_NAME rocksdb-7.8.3.tar.gz
+    URL https://github.com/facebook/rocksdb/archive/refs/tags/v10.4.2.tar.gz
+    URL_HASH MD5=e25ca054e377a66f61dee81a18e41dd3
+    DOWNLOAD_NAME rocksdb-10.4.2.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}
     DOWNLOAD_DIR ${DOWNLOAD_DIR}
     SOURCE_DIR ${source_dir}
-    PATCH_COMMAND patch -p1 < ${CMAKE_SOURCE_DIR}/patches/${name}-7.8.3.patch
     UPDATE_COMMAND ""
     CMAKE_ARGS
         ${common_cmake_args}
@@ -33,8 +32,8 @@ ExternalProject_Add(
         -DFAIL_ON_WARNINGS=OFF
         -DCMAKE_BUILD_TYPE=Release
         "-DCMAKE_EXE_LINKER_FLAGS=${extra_lib_dirs} -lbz2 -lsnappy -lzstd"
-        "-DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS} -D NPERF_CONTEXT ${ISA_FLAGS}"
         "-DCMAKE_SHARED_LINKER_FLAGS=${extra_lib_dirs} -Wl,-rpath=\$ORIGIN:\$ORIGIN/../3rd"
+        "-DCMAKE_CXX_FLAGS=${default_cxx_flags} -DNPERF_CONTEXT"
     BUILD_IN_SOURCE 1
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     INSTALL_COMMAND ""

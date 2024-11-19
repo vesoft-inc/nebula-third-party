@@ -8,6 +8,10 @@ if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.16")
     cmake_policy(SET CMP0097 NEW)
 endif()
 
+if(POLICY CMP0135) #Since cmake 3.24 it will make some download warning
+    cmake_policy(SET CMP0135 NEW)
+endif()
+
 project("Nebula Third Party" C CXX)
 
 set(CXX_STANDARD 17)

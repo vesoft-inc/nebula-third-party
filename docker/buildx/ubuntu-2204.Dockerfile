@@ -33,6 +33,12 @@ RUN apt update \
     && apt clean \
     && rm -rf /var/lib/apt/lists/*
 
+# Install cmake
+RUN wget https://github.com/Kitware/CMake/releases/download/v3.23.5/cmake-3.23.5-linux-$(uname -m).sh \
+    && chmod +x cmake-3.23.5-linux-$(uname -m).sh \
+    && ./cmake-3.23.5-linux-$(uname -m).sh --skip-license --prefix=/usr/local \
+    && rm cmake-3.23.5-linux-$(uname -m).sh
+
 # Install golang
 RUN ARCH="$(uname -m)"; \
     case "${ARCH}" in \

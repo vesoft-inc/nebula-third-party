@@ -12,7 +12,8 @@ else()
 endif()
 
 set(ARROW_CMAKE_ARGS
-        -DProtobuf_SOURCE=BUNDLED
+        ${common_cmake_args}
+        -DProtobuf_SOURCE=SYSTEM
         -Dre2_SOURCE=SYSTEM
         -DBoost_ROOT=${CMAKE_INSTALL_PREFIX}
         -DGTest_ROOT=${CMAKE_INSTALL_PREFIX}

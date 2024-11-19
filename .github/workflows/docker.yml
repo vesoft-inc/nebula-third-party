@@ -27,6 +27,7 @@ jobs:
           - centos-8
           - ubuntu-2004
           - ubuntu-2204
+          - ubuntu-2404
     steps:
     - name: Setup environment variables
       id: vars

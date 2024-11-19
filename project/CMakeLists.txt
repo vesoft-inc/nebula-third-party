@@ -8,7 +8,7 @@ if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.16")
     cmake_policy(SET CMP0097 NEW)
 endif()
 
-if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.24")
+if(POLICY CMP0135)
     cmake_policy(SET CMP0135 NEW)
 endif()
 

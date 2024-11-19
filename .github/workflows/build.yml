@@ -54,7 +54,7 @@ jobs:
         run: find . -mindepth 1 -delete
     - uses: actions/checkout@v4
     - name: Set up environment
-      if: matrix.os = 'centos7'
+      if: matrix.os == 'centos7'
       run: |
         export URL=https://raw.githubusercontent.com/vesoft-inc/nebula-gears/master/install
         bash <(curl -Ls $URL)

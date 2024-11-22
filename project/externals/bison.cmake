@@ -15,8 +15,8 @@ ExternalProject_Add(
     SOURCE_DIR ${source_dir}
     CONFIGURE_COMMAND
         ${common_configure_envs}
-        ./configure ${common_configure_args}
-                    --quiet
+        ./configure ${common_configure_args} --quiet
+    PATCH_COMMAND autoreconf -fvi
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     BUILD_IN_SOURCE 1
     INSTALL_COMMAND make -s install -j${BUILDING_JOBS_NUM}

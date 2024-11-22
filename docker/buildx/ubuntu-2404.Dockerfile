@@ -29,9 +29,11 @@ RUN apt update \
                        flex \
                        gperf \
                        gettext \
+                       autopoint \
                        ninja-build \
                        groff-base \
                        texinfo \
+                       pkg-config \
     && apt clean \
     && rm -rf /var/lib/apt/lists/*
 

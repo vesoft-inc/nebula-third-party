@@ -25,6 +25,8 @@ RUN apt update \
                        autoconf \
                        autoconf-archive \
                        autotools-dev \
+                       bison \
+                       flex \
                        gperf \
                        gettext \
                        autopoint \

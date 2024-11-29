@@ -17,7 +17,7 @@ ExternalProject_Add(
         ${common_configure_envs}
         ./configure ${common_configure_args}
                     --enable-static --disable-shared
-    BUILD_COMMAND make -s
+    BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     BUILD_IN_SOURCE 1
     INSTALL_COMMAND make -s install
     LOG_CONFIGURE TRUE

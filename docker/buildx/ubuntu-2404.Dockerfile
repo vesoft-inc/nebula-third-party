@@ -33,7 +33,6 @@ RUN apt update \
                        ninja-build \
                        groff-base \
                        texinfo \
-                       pkg-config \
     && apt clean \
     && rm -rf /var/lib/apt/lists/*
 

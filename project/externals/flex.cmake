@@ -17,7 +17,6 @@ ExternalProject_Add(
         ${common_configure_envs}
         ./configure ${common_configure_args}
                     --enable-static --disable-shared
-    PATCH_COMMAND autoreconf -fvi
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     BUILD_IN_SOURCE 1
     INSTALL_COMMAND make -s install

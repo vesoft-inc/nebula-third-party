@@ -11,3 +11,13 @@ diff -ur a/src/client/linux/handler/exception_handler.cc b/src/client/linux/hand
    // Only set an alternative stack if there isn't already one, or if the current
    // one is too small.
 
+--- a/src/processor/exploitability_linux.cc	2024-12-02 17:23:40.947034921 +0800
++++ b/src/processor/exploitability_linux.cc	2024-12-02 17:24:17.319406329 +0800
+@@ -514,7 +514,6 @@
+            raw_bytes_tmpfile);
+   FILE* objdump_fp = popen(cmd, "r");
+   if (!objdump_fp) {
+-    fclose(objdump_fp);
+     unlink(raw_bytes_tmpfile);
+     BPLOG(ERROR) << "Failed to call objdump.";
+     return false;

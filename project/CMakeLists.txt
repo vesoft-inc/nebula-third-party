@@ -7,18 +7,17 @@
 option(ENABLE_ROCKSDB_CLOUD "Enable rocksdb cloud" OFF)
 
 cmake_minimum_required(VERSION 3.14.0)
-if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.19")
+if(POLICY CMP0114)
   cmake_policy(SET CMP0114 OLD)
 endif()
 
 # Not to pull submodules when an empty string is given
-if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.16")
+if(POLICY CMP0097)
     cmake_policy(SET CMP0097 NEW)
 endif()
 
-# Avoid warning about DOWNLOAD_EXTRACT_TIMESTAMP in CMake 3.24:
-if (CMAKE_VERSION VERSION_GREATER_EQUAL "3.24.0")
-    cmake_policy(SET CMP0135 NEW)
+if(POLICY CMP0135) #Since cmake 3.24 it will make some download warning
+    cmake_policy(SET CMP0135 OLD)
 endif()
 
 project("Nebula Third Party" C CXX)

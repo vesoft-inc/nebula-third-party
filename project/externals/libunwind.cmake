@@ -19,6 +19,7 @@ ExternalProject_Add(
         ./configure ${common_configure_args}
                     --disable-minidebuginfo
                     --disable-shared --enable-static
+                    --disable-minidebuginfo --disable-zlibdebuginfo
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     BUILD_IN_SOURCE 1
     INSTALL_COMMAND make -s install -j${BUILDING_JOBS_NUM}

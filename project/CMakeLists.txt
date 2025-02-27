@@ -135,7 +135,7 @@ endif()
 
 set(ISA_FLAGS "")
 if (NOT ${USE_ISA} STREQUAL "" AND NOT ${USE_ISA} STREQUAL "generic")
-    set(ISA_FLAGS "-march=${USE_ISA} -mtune=${USE_ISA}")
+    set(ISA_FLAGS "-march=${USE_ISA}")
 endif()
 
 if(GLIBC_VERSION VERSION_LESS 2.17)

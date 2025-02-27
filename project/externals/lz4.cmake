@@ -19,7 +19,7 @@ ExternalProject_Add(
     BUILD_IN_SOURCE 1
     INSTALL_COMMAND
         make install -s
-             MOREFLAGS=-fPIC
+             "MOREFLAGS=-fPIC ${ISA_FLAGS}"
              "LN_S=ln -sf"
              BUILD_STATIC=no
              -j${BUILDING_JOBS_NUM}

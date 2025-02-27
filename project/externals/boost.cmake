@@ -43,7 +43,7 @@ ExternalProject_Add(
             --disable-icu
             include=${CMAKE_INSTALL_PREFIX}/include
             linkflags=-L${CMAKE_INSTALL_PREFIX}/lib
-            "cxxflags=-fPIC ${extra_cpp_flags}"
+            "cxxflags=-fPIC ${extra_cpp_flags} ${ISA_FLAGS}"
             runtime-link=shared
             link=shared
             variant=release

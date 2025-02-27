@@ -11,7 +11,7 @@ start_time=$(date +%s)
 
 # Always use bash
 shell=$(basename $(readlink /proc/$$/exe))
-if [ ! x$shell = x"bash" ] && [[ x$shell != x"qemu-aarch64"* ]]
+if [ ! x$shell = x"bash" ] && [ x$shell != x"qemu-aarch64"* ]
 then
     bash $0 $@
     exit $?
@@ -186,8 +186,11 @@ cd $build_dir
 
 echo "Starting building third-party libraries"
 
+[[ -z ${isa} ]] && isa=generic
+
 $cmake_cmd  -DDOWNLOAD_DIR=$download_dir              \
             -DCMAKE_INSTALL_PREFIX=$install_dir       \
+            -DUSE_ISA=${isa}                          \
             ${C_COMPILER_ARG} ${CXX_COMPILER_ARG}     \
             ${DISABLE_CXX11_ABI}                      \
             $source_dir |& tee $logfile
@@ -259,14 +262,14 @@ done
 # Remove CMake configs of boost
 rm -rf $install_dir/lib/cmake/[Bb]oost*
 
-march=$(uname -m)
+march=${isa:-$(uname -m)}
 
 cat > $install_dir/version-info <<EOF
 Package         : Nebula Third Party
 Version         : $VERSION
 Date            : $(date)
 glibc           : $libc_version
-Arch            : $march
+Arch            : $(uname -m)($march)
 Compiler        : GCC $gcc_version
 C++ ABI         : $abi_version
 Vendor          : VEsoft Inc.
@@ -283,7 +286,12 @@ set -e
 hash xz &> /dev/null || { echo "xz: Command not found"; exit 1; }
 
 [[ \$# -ne 0 ]] && prefix=\$(echo "\$@" | sed 's;.*--prefix=(\S*).*;\1;p' -rn)
-prefix=\${prefix:-/opt/vesoft/third-party/$VERSION}
+if [[ $isa = "generic" ]]
+then
+    prefix=\${prefix:-/opt/vesoft/third-party/$VERSION}
+else
+    prefix=\${prefix:-/opt/vesoft/third-party/$isa/$VERSION}
+fi
 mkdir -p \$prefix
 
 [[ -w \$prefix ]] || { echo "\$prefix: No permission to write"; exit 1; }

@@ -133,6 +133,11 @@ else()
     set(extra_cpp_flags "-D_GLIBCXX_USE_CXX11_ABI=1")
 endif()
 
+set(ISA_FLAGS "")
+if (NOT ${USE_ISA} STREQUAL "" AND NOT ${USE_ISA} STREQUAL "generic")
+    set(ISA_FLAGS "-march=${USE_ISA} -mtune=${USE_ISA}")
+endif()
+
 if(GLIBC_VERSION VERSION_LESS 2.17)
     set(extra_link_libs "${extra_link_libs} -lrt")
 endif()
@@ -141,8 +146,8 @@ set(common_cmake_args
     -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
     "-DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}"
     "-DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}"
-    "-DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS} -fno-omit-frame-pointer -fPIC ${extra_cpp_flags}"
-    "-DCMAKE_C_FLAGS=${CMAKE_C_FLAGS} -fno-omit-frame-pointer -fPIC"
+    "-DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS} -fno-omit-frame-pointer -fPIC ${extra_cpp_flags} ${ISA_FLAGS}"
+    "-DCMAKE_C_FLAGS=${CMAKE_C_FLAGS} -fno-omit-frame-pointer -fPIC ${ISA_FLAGS}"
     "-DCMAKE_EXE_LINKER_FLAGS=${extra_link_libs} -Wl,-rpath=\$ORIGIN/../lib:\$ORIGIN/../lib64"
     -DCMAKE_SHARED_LINKER_FLAGS=-Wl,-rpath=\$ORIGIN:\$ORIGIN/../3rd:\$ORIGIN/../lib64:\$ORIGIN/../lib
     -DCMAKE_INCLUDE_PATH=${CMAKE_INSTALL_PREFIX}/include
@@ -180,8 +185,8 @@ set(common_configure_envs
     "env"
     "CC=${CMAKE_C_COMPILER}"
     "CXX=${CMAKE_CXX_COMPILER}"
-    "CFLAGS=${CMAKE_C_FLAGS} -fcommon -fno-omit-frame-pointer -fPIC -O2 -D_DEFAULT_SOURCE -D_GNU_SOURCE ${extra_cpp_flags}"
-    "CXXFLAGS=${CMAKE_CXX_FLAGS} -fcommon -fno-omit-frame-pointer -fPIC -O2 -D_DEFAULT_SOURCE -D_GNU_SOURCE ${extra_cpp_flags}"
+    "CFLAGS=${CMAKE_C_FLAGS} -fcommon -fno-omit-frame-pointer -fPIC -O2 -D_DEFAULT_SOURCE -D_GNU_SOURCE ${extra_cpp_flags} ${ISA_FLAGS}"
+    "CXXFLAGS=${CMAKE_CXX_FLAGS} -fcommon -fno-omit-frame-pointer -fPIC -O2 -D_DEFAULT_SOURCE -D_GNU_SOURCE ${extra_cpp_flags} ${ISA_FLAGS}"
     "CPPFLAGS=-isystem ${CMAKE_INSTALL_PREFIX}/include -I${BERKELEYDB_INCLUDE_DIR} ${extra_cpp_flags}"
     "LDFLAGS=-Wl,-rpath=\\\\$\\$ORIGIN ${ld_flags}"
     "LD_LIBRARY_PATH=$$LD_LIBRARY_PATH:${CMAKE_INSTALL_PREFIX}/lib:${CMAKE_INSTALL_PREFIX}/lib64"
@@ -196,13 +201,12 @@ set(ALL_TARGETS
     boost
     #breakpad
     bzip2
-    cachelib
+    #cachelib
     cyrus-sasl
     date
     double-conversion
     duckdb
     fatal
-    fbthrift
     fizz
     flex
     fmt
@@ -330,7 +334,6 @@ maybe_add_dependencies(s2geometry googletest glog openssl abseil)
 maybe_add_dependencies(folly glog boost double-conversion openssl libevent lzma zstd snappy lz4 libunwind fmt sodium jemalloc libdwarf)
 maybe_add_dependencies(fizz folly)
 maybe_add_dependencies(wangle folly fizz)
-maybe_add_dependencies(fbthrift folly bison flex mstch zlib zstd wangle fatal)
 maybe_add_dependencies(proxygen wangle libunwind gperf)
 maybe_add_dependencies(rocksdb snappy zlib zstd bzip2 lz4 lzma libunwind)
 maybe_add_dependencies(cachelib fbthrift sparsemap fizz googletest)
@@ -344,24 +347,6 @@ maybe_add_dependencies(protobuf zlib abseil)
 maybe_add_dependencies(re2 abseil)
 maybe_add_dependencies(grpc protobuf re2 c-ares openssl)
 maybe_add_dependencies(faiss openblas)
-
-#if (EXISTS ${CMAKE_INSTALL_PREFIX}/lib64)
-    #add_custom_target(
-        #strip-archives ALL
-        #COMMAND
-            #strip --strip-unneeded ${CMAKE_INSTALL_PREFIX}/lib/*.a
-        #COMMAND
-            #strip --strip-unneeded ${CMAKE_INSTALL_PREFIX}/lib64/*.a
-        #DEPENDS ${ALL_TARGETS}
-    #)
-#else()
-    #add_custom_target(
-        #strip-archives ALL
-        #COMMAND
-            #strip --strip-unneeded ${CMAKE_INSTALL_PREFIX}/lib/*.a
-        #DEPENDS ${ALL_TARGETS}
-    #)
-#endif()
 
 add_custom_target(
     clean-all

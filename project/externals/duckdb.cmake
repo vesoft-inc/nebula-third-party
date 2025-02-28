@@ -18,7 +18,7 @@ ExternalProject_Add(
     DOWNLOAD_DIR ${DOWNLOAD_DIR}
     SOURCE_DIR ${source_dir}
     PATCH_COMMAND patch -p1 < ${CMAKE_SOURCE_DIR}/patches/${name}-0.6.1.patch
-    CONFIGURE_COMMAND ""
+    CONFIGURE_COMMAND sed -i "s/DBUILD_JEMALLOC_EXTENSION=1/DBUILD_JEMALLOC_EXTENSION=0/" ${source_dir}/Makefile
     BUILD_COMMAND
         "${make_envs}"
         make -e -s -j${BUILDING_JOBS_NUM}

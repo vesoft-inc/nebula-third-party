@@ -6,7 +6,7 @@
 
 set(name duckdb)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
-set(make_envs "env" "GEN=ninja")
+set(make_envs "env" "GEN=ninja" "BUILD_JEMALLOC=1")
 ExternalProject_Add(
     ${name}
     URL https://github.com/duckdb/duckdb/archive/refs/tags/v0.6.1.tar.gz

@@ -47,7 +47,6 @@ ExternalProject_Add_Step(${name} custom-install
     COMMAND cp build/release/third_party/fsst/libduckdb_fsst.a ${CMAKE_INSTALL_PREFIX}/lib/
     COMMAND cp build/release/third_party/mbedtls/libduckdb_mbedtls.a ${CMAKE_INSTALL_PREFIX}/lib/
     COMMAND cp build/release/extension/parquet/libparquet_extension.a ${CMAKE_INSTALL_PREFIX}/lib/
-    COMMAND cp build/release/extension/jemalloc/libjemalloc_extension.a ${CMAKE_INSTALL_PREFIX}/lib/
     WORKING_DIRECTORY ${source_dir}
     LOG TRUE
 )

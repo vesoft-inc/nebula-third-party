@@ -186,8 +186,6 @@ cd $build_dir
 
 echo "Starting building third-party libraries"
 
-[[ -z ${isa} ]] && isa=generic
-
 $cmake_cmd  -DDOWNLOAD_DIR=$download_dir              \
             -DCMAKE_INSTALL_PREFIX=$install_dir       \
             -DUSE_ISA=${isa}                          \

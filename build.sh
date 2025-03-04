@@ -186,6 +186,8 @@ cd $build_dir
 
 echo "Starting building third-party libraries"
 
+[[ -z ${isa} ]] && isa=generic
+
 $cmake_cmd  -DDOWNLOAD_DIR=$download_dir              \
             -DCMAKE_INSTALL_PREFIX=$install_dir       \
             -DUSE_ISA=${isa}                          \
@@ -260,7 +262,11 @@ done
 # Remove CMake configs of boost
 rm -rf $install_dir/lib/cmake/[Bb]oost*
 
-march=${isa:-$(uname -m)}
+if [[ $isa == "generic" ]]; then
+    march=$(uname -m)
+else
+    march=$isa
+fi
 
 cat > $install_dir/version-info <<EOF
 Package         : Nebula Third Party

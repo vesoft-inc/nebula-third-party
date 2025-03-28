@@ -1,0 +1,34 @@
+--- a/thirdparty/thirdparty-external.cmake
++++ b/thirdparty/thirdparty-external.cmake
+@@ -38,19 +38,10 @@
+ find_hdr_package(variant-lite nonstd/variant.hpp)
+ find_hdr_package(optional-lite nonstd/optional.hpp)
+ find_hdr_package(string-view-lite nonstd/string_view.hpp)
+-find_hdr_package(fmt-header-only fmt/format.h)
++find_hdr_package(fmt fmt/format.h)
+ 
+-find_package(RapidJSON)
+-add_library(RapidJson INTERFACE)
+-target_include_directories(RapidJson
+-    INTERFACE
+-        $<BUILD_INTERFACE:${RapidJSON_INCLUDE_DIR}>
+-        $<INSTALL_INTERFACE:include>
+-    )
+-
+-if (TARGET fmt-header-only)
+-    target_compile_definitions(fmt-header-only INTERFACE FMT_HEADER_ONLY=1)
+-    add_library(fmt ALIAS fmt-header-only)
++if (TARGET fmt)
++    target_compile_definitions(fmt INTERFACE FMT_HEADER_ONLY=0)
+ endif ()
+ 
+ if(JINJA2CPP_INSTALL)
+@@ -62,7 +53,7 @@
+             PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/nonstd
+             )
+ 
+-    install(TARGETS fmt-header-only
++    install(TARGETS fmt
+             EXPORT InstallTargets
+             RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+             LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}

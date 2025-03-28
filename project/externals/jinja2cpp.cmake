@@ -14,12 +14,14 @@ ExternalProject_Add(
     STAMP_DIR ${BUILD_INFO_DIR}
     DOWNLOAD_DIR ${DOWNLOAD_DIR}
     SOURCE_DIR ${source_dir}
+    PATCH_COMMAND patch -p1 < ${CMAKE_SOURCE_DIR}/patches/${name}-1.3.2.patch
     CMAKE_ARGS
         ${common_cmake_args}
         -DJINJA2CPP_WITH_JSON_BINDINGS=boost
         -DJINJA2CPP_DEPS_MODE=external
         -DJINJA2CPP_BUILD_TESTS=OFF
         -DJINJA2CPP_BUILD_SHARED=ON
+        -DJINJA2CPP_INSTALL=OFF
         -DCMAKE_BUILD_TYPE=Release
     BUILD_IN_SOURCE 1
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}

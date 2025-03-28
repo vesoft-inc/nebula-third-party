@@ -19,6 +19,7 @@
  * googletest
  * gperf
  * jemalloc
+ * jinja2cpp
  * ldap
  * libcurl
  * libdwarf
@@ -27,6 +28,10 @@
  * lz4
  * lzma
  * mstch
+ * nonstd::expected-lite
+ * nonstd::optional-lite
+ * nonstd::string-view-lite
+ * nonstd::variant-lite
  * openssl
  * proxygen
  * rocksdb
@@ -34,6 +39,7 @@
  * simdjson
  * snappy
  * sodium
+ * valijson
  * wangle
  * zlib
  * zstd

@@ -217,6 +217,7 @@ set(ALL_TARGETS
     googletest
     gperf
     jemalloc
+    jinja2cpp
     ldap
     libcurl
     libdwarf
@@ -240,6 +241,7 @@ set(ALL_TARGETS
     zlib
     zstd
     utf8proc
+    valijson
     llvm
     arrow
     datasketches
@@ -255,6 +257,10 @@ set(ALL_TARGETS
     openblas
     annoy
     libxml2
+    expected-lite
+    optional-lite
+    string-view-lite
+    variant-lite
 )
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
@@ -347,6 +353,10 @@ maybe_add_dependencies(protobuf zlib abseil)
 maybe_add_dependencies(re2 abseil)
 maybe_add_dependencies(grpc protobuf re2 c-ares openssl)
 maybe_add_dependencies(faiss openblas)
+
+# JSON
+maybe_add_dependencies(valijson boost)
+maybe_add_dependencies(jinja2cpp boost fmt expected-lite string-view-lite optional-lite variant-lite)
 
 add_custom_target(
     clean-all

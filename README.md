@@ -18,8 +18,8 @@
  * googlebenchmark
  * googletest
  * gperf
+ * inja
  * jemalloc
- * jinja2cpp
  * ldap
  * libcurl
  * libdwarf
@@ -28,10 +28,7 @@
  * lz4
  * lzma
  * mstch
- * nonstd::expected-lite
- * nonstd::optional-lite
- * nonstd::string-view-lite
- * nonstd::variant-lite
+ * nlohmann/json
  * openssl
  * proxygen
  * rocksdb

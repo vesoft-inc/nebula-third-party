@@ -1,14 +1,14 @@
 # Copyright (c) 2025 vesoft inc. All rights reserved.
 #
-# This source code is licensed under BSL-1.0 License.
+# This source code is licensed under MIT License.
 
-set(name variant-lite)
+set(name inja)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL https://github.com/martinmoene/variant-lite/archive/7e3bce818adb69bab27ccb982ea1b6779c2e379e.zip
-    URL_HASH MD5=b127526ab077edd2ba1f16ff2cc426f2
-    DOWNLOAD_NAME ${name}-master.zip
+    URL https://github.com/pantor/inja/archive/34514c2658f809404b9a165591f242ee10250519.zip
+    URL_HASH MD5=f537dae8df3993c89f2d677953d2b08a
+    DOWNLOAD_NAME ${name}-master-2025-03-19.zip
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}
@@ -16,9 +16,9 @@ ExternalProject_Add(
     SOURCE_DIR ${source_dir}
     CMAKE_ARGS
         ${common_cmake_args}
-        -DVARIANT_LITE_OPT_BUILD_TESTS=OFF
-        -DVARIANT_LITE_OPT_BUILD_EXAMPLES=OFF
-        -DVARIANT_LITE_OPT_SELECT_STD=ON
+        -DINJA_USE_EMBEDDED_JSON=OFF
+        -DBUILD_TESTING=OFF
+        -DBUILD_BENCHMARK=OFF
         -DCMAKE_BUILD_TYPE=Release
     BUILD_IN_SOURCE 1
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}

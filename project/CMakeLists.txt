@@ -216,8 +216,8 @@ set(ALL_TARGETS
     googlebenchmark
     googletest
     gperf
+    inja
     jemalloc
-    jinja2cpp
     ldap
     libcurl
     libdwarf
@@ -227,6 +227,7 @@ set(ALL_TARGETS
     lz4
     lzma
     mstch
+    nlohmann-json
     openssl
     proxygen
     robin-hood-hashing
@@ -257,10 +258,6 @@ set(ALL_TARGETS
     openblas
     annoy
     libxml2
-    expected-lite
-    optional-lite
-    string-view-lite
-    variant-lite
 )
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
@@ -355,8 +352,8 @@ maybe_add_dependencies(grpc protobuf re2 c-ares openssl)
 maybe_add_dependencies(faiss openblas)
 
 # JSON
-maybe_add_dependencies(valijson boost)
-maybe_add_dependencies(jinja2cpp boost fmt expected-lite string-view-lite optional-lite variant-lite)
+maybe_add_dependencies(valijson nlohmann-json)
+maybe_add_dependencies(inja nlohmann-json)
 
 add_custom_target(
     clean-all

@@ -16,6 +16,7 @@ ExternalProject_Add(
     SOURCE_DIR ${source_dir}
     CMAKE_ARGS
         ${common_cmake_args}
+        -Dvalijson_USE_EXCEPTIONS=ON
         -Dvalijson_BUILD_EXAMPLES=OFF
         -Dvalijson_BUILD_TESTS=OFF
         -DCMAKE_BUILD_TYPE=Release

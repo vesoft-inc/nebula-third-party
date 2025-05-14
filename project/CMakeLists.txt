@@ -216,7 +216,9 @@ set(ALL_TARGETS
     googlebenchmark
     googletest
     gperf
+    inja
     jemalloc
+    jwt-cpp
     ldap
     libcurl
     libdwarf
@@ -226,6 +228,7 @@ set(ALL_TARGETS
     lz4
     lzma
     mstch
+    nlohmann-json
     openssl
     proxygen
     robin-hood-hashing
@@ -240,6 +243,7 @@ set(ALL_TARGETS
     zlib
     zstd
     utf8proc
+    valijson
     llvm
     arrow
     datasketches
@@ -347,6 +351,12 @@ maybe_add_dependencies(protobuf zlib abseil)
 maybe_add_dependencies(re2 abseil)
 maybe_add_dependencies(grpc protobuf re2 c-ares openssl)
 maybe_add_dependencies(faiss openblas)
+
+# JSON
+maybe_add_dependencies(valijson nlohmann-json)
+maybe_add_dependencies(inja nlohmann-json)
+
+maybe_add_dependencies(jwt-cpp openssl)
 
 add_custom_target(
     clean-all

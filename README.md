@@ -18,7 +18,9 @@
  * googlebenchmark
  * googletest
  * gperf
+ * inja
  * jemalloc
+ * jwt-cpp
  * ldap
  * libcurl
  * libdwarf
@@ -27,6 +29,7 @@
  * lz4
  * lzma
  * mstch
+ * nlohmann-json
  * openssl
  * proxygen
  * rocksdb
@@ -34,6 +37,7 @@
  * simdjson
  * snappy
  * sodium
+ * valijson
  * wangle
  * zlib
  * zstd

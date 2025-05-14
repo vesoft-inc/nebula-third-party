@@ -218,6 +218,7 @@ set(ALL_TARGETS
     gperf
     inja
     jemalloc
+    jwt-cpp
     ldap
     libcurl
     libdwarf
@@ -354,6 +355,8 @@ maybe_add_dependencies(faiss openblas)
 # JSON
 maybe_add_dependencies(valijson nlohmann-json)
 maybe_add_dependencies(inja nlohmann-json)
+
+maybe_add_dependencies(jwt-cpp openssl)
 
 add_custom_target(
     clean-all

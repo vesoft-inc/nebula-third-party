@@ -20,6 +20,7 @@
  * gperf
  * inja
  * jemalloc
+ * jwt-cpp
  * ldap
  * libcurl
  * libdwarf
@@ -28,7 +29,7 @@
  * lz4
  * lzma
  * mstch
- * nlohmann/json
+ * nlohmann-json
  * openssl
  * proxygen
  * rocksdb

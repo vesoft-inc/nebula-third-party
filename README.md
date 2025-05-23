@@ -39,6 +39,7 @@
  * sodium
  * valijson
  * wangle
+ * yaml-cpp
  * zlib
  * zstd
  * robin-hood-hashing

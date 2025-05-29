@@ -261,6 +261,8 @@ set(ALL_TARGETS
     yaml-cpp
     zlib
     zstd
+    pkgconf
+    liboauth2
 )
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
@@ -313,6 +315,8 @@ endmacro()
 maybe_add_dependencies(autoconf-archive autoconf)
 maybe_add_dependencies(automake autoconf autoconf-archive)
 maybe_add_dependencies(libtool automake)
+maybe_add_dependencies(pkgconf automake)
+maybe_add_dependencies(liboauth2 pkgconf)
 
 maybe_add_dependencies(glog libtool libunwind)
 maybe_add_dependencies(gettext libtool)

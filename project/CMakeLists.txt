@@ -259,7 +259,6 @@ set(ALL_TARGETS
     openblas
     annoy
     libxml2
-    yaml-cpp
 )
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)

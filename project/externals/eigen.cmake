@@ -2,7 +2,7 @@
 #
 # This source code is licensed under MIT License.
 
-set(name yaml-cpp)
+set(name eigen)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}

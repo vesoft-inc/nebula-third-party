@@ -7,7 +7,7 @@ set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
     URL https://github.com/jbeder/yaml-cpp/archive/2f86d13775d119edbb69af52e5f566fd65c6953b.zip
-    URL_HASH MD5=d402b60e57c14fcb30138c5b28a333d1
+    URL_HASH MD5=8cba45665536adf41356e964b07d04f2
     DOWNLOAD_NAME ${name}-master.zip
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}

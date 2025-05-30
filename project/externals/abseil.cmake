@@ -6,9 +6,9 @@ set(name abseil)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL https://github.com/abseil/abseil-cpp/archive/refs/tags/20230802.1.tar.gz
-    URL_HASH MD5=84665b6daa5dda7c9082b1a00057457a
-    DOWNLOAD_NAME abseil-2022.06.23.1.tar.gz
+    URL https://github.com/abseil/abseil-cpp/archive/refs/tags/20250127.1.tar.gz
+    URL_HASH MD5=fe7e1d15e6a67b379e3a646f1ba9aae0
+    DOWNLOAD_NAME abseil-2025.01.27.1.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}
@@ -17,6 +17,7 @@ ExternalProject_Add(
     CMAKE_ARGS
         ${common_cmake_args}
         -DCMAKE_BUILD_TYPE=Release
+        -DABSL_ENABLE_VLOG=ON
     BUILD_IN_SOURCE 1
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     INSTALL_COMMAND make -s install -j${BUILDING_JOBS_NUM}

@@ -6,15 +6,14 @@ set(name s2geometry)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL  https://github.com/google/s2geometry/archive/v0.10.0.tar.gz
-    URL_HASH MD5=c68f3c5d326dde9255681b9201393a9f
-    DOWNLOAD_NAME ${name}-0.10.0.tar.gz
+    URL  https://github.com/google/s2geometry/archive/v0.12.0.tar.gz
+    URL_HASH MD5=00b4a1de87e11c1577afe24a362e8f53
+    DOWNLOAD_NAME ${name}-0.12.0.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}
     DOWNLOAD_DIR ${DOWNLOAD_DIR}
     SOURCE_DIR ${source_dir}
-    PATCH_COMMAND patch -p1 < ${CMAKE_SOURCE_DIR}/patches/${name}-0.10.0.patch
     CMAKE_ARGS
         ${common_cmake_args}
         -DCMAKE_BUILD_TYPE=Release
@@ -22,6 +21,7 @@ ExternalProject_Add(
         -DWITH_GLOG=ON
         -DWITH_GFLAGS=ON
         -DBUILD_SHARED_LIBS=ON
+        -DBUILD_TESTS=OFF
 
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     BUILD_IN_SOURCE 1

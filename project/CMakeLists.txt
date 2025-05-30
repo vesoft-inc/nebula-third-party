@@ -259,6 +259,7 @@ set(ALL_TARGETS
     openblas
     annoy
     libxml2
+    liboauth2
 )
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)

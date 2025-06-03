@@ -6,9 +6,9 @@ set(name cppjieba)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL https://github.com/yanyiwu/cppjieba/archive/refs/tags/v5.3.1.tar.gz
-    URL_HASH MD5=c0db3fb7cd52acd4099fdd4b311c8f1c
-    DOWNLOAD_NAME ${name}-5.3.1.tar.gz
+    URL https://github.com/yanyiwu/cppjieba/archive/refs/tags/v5.6.0.zip
+    URL_HASH MD5=75a5d2fd598460e4d5c864df2fbb9688
+    DOWNLOAD_NAME ${name}-5.6.0.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}

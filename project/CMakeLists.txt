@@ -204,6 +204,7 @@ set(ALL_TARGETS
     #breakpad
     bzip2
     #cachelib
+    cjose
     cyrus-sasl
     c-ares
     datasketches
@@ -223,8 +224,10 @@ set(ALL_TARGETS
     googletest
     gperf
     grpc
+    hiredis
     hnswlib
     inja
+    jansson
     jemalloc
     jwt-cpp
     ldap
@@ -232,6 +235,8 @@ set(ALL_TARGETS
     libdwarf
     libev
     libevent
+    liboauth2
+    libpcre2-8
     libunwind
     libxml2
     llvm
@@ -241,6 +246,7 @@ set(ALL_TARGETS
     nlohmann-json
     openblas
     openssl
+    pkgconf
     protobuf
     protoc-gen-go
     protoc-gen-go-grpc
@@ -261,8 +267,6 @@ set(ALL_TARGETS
     yaml-cpp
     zlib
     zstd
-    pkgconf
-    liboauth2
 )
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
@@ -316,7 +320,7 @@ maybe_add_dependencies(autoconf-archive autoconf)
 maybe_add_dependencies(automake autoconf autoconf-archive)
 maybe_add_dependencies(libtool automake)
 maybe_add_dependencies(pkgconf automake)
-maybe_add_dependencies(liboauth2 pkgconf)
+maybe_add_dependencies(liboauth2 pkgconf jansson cjose libpcre2-8 hiredis)
 
 maybe_add_dependencies(glog libtool libunwind)
 maybe_add_dependencies(gettext libtool)

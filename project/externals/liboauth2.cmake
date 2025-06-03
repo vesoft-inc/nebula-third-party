@@ -16,13 +16,15 @@ ExternalProject_Add(
     SOURCE_DIR ${source_dir}
     CONFIGURE_COMMAND
         ${common_configure_envs}
+        "PKG_CONFIG=${CMAKE_CURRENT_BINARY_DIR}/../install/bin/pkgconf"
+        "PKG_CONFIG_PATH=${CMAKE_CURRENT_BINARY_DIR}/../install/lib/pkgconfig:$ENV{PKG_CONFIG_PATH}"
         ./configure ${common_configure_args}
-                    --without-nginx
                     --without-apache
                     --without-memcache
                     --with-redis
                     --enable-shared
                     --disable-static
+                    --prefix=${CMAKE_INSTALL_PREFIX}
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     BUILD_IN_SOURCE 1
     INSTALL_COMMAND make -s -j${BUILDING_JOBS_NUM} install

@@ -1,14 +1,14 @@
-# Copyright (c) 2019 vesoft inc. All rights reserved.
+# Copyright (c) 2025 vesoft inc. All rights reserved.
 #
 # This source code is licensed under Apache 2.0 License.
 
-set(name pkgconf)
+set(name cjose)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL https://distfiles.dereferenced.org/pkgconf/pkgconf-2.3.0.tar.gz
-    URL_HASH MD5=ca0f43e6c08da98591d297a0ca815487
-    DOWNLOAD_NAME pkgconf-2.3.0.tar.gz
+    URL https://github.com/OpenIDC/cjose/releases/download/v0.6.2/cjose-0.6.2.tar.gz
+    URL_HASH MD5=432101978640ca3f6c56ab5b488dcdd0
+    DOWNLOAD_NAME cjose-0.6.2.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}

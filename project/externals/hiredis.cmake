@@ -1,23 +1,23 @@
-# Copyright (c) 2019 vesoft inc. All rights reserved.
+# Copyright (c) 2025 vesoft inc. All rights reserved.
 #
 # This source code is licensed under Apache 2.0 License.
 
-set(name pkgconf)
+set(name hiredis)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL https://distfiles.dereferenced.org/pkgconf/pkgconf-2.3.0.tar.gz
-    URL_HASH MD5=ca0f43e6c08da98591d297a0ca815487
-    DOWNLOAD_NAME pkgconf-2.3.0.tar.gz
+    URL https://github.com/redis/hiredis/archive/refs/tags/v1.3.0.tar.gz 
+    URL_HASH MD5=1ce9871bd6c045321f95b2c4357e0d37
+    DOWNLOAD_NAME hiredis-1.3.0.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}
     DOWNLOAD_DIR ${DOWNLOAD_DIR}
     SOURCE_DIR ${source_dir}
-    CONFIGURE_COMMAND
-        ${common_configure_envs}
-        ./configure ${common_configure_args}
-        --prefix=${CMAKE_INSTALL_PREFIX}
+    CMAKE_ARGS
+        ${common_cmake_args}
+        -DCMAKE_BUILD_TYPE=Release
+        -DUSE_SSL=1
     BUILD_IN_SOURCE 1
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     INSTALL_COMMAND make -s -j${BUILDING_JOBS_NUM} install

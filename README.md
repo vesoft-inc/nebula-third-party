@@ -48,6 +48,8 @@
  * duckdb
  * utf8proc
  * apache-arrow
+ * cppjieba
+ * limonp
 
 # How to Build
 

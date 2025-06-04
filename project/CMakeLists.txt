@@ -261,6 +261,8 @@ set(ALL_TARGETS
     yaml-cpp
     zlib
     zstd
+    cppjieba
+    limonp
 )
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
@@ -359,6 +361,8 @@ maybe_add_dependencies(valijson nlohmann-json)
 maybe_add_dependencies(inja nlohmann-json)
 
 maybe_add_dependencies(jwt-cpp openssl)
+
+maybe_add_dependencies(cppjieba limonp)
 
 add_custom_target(
     clean-all

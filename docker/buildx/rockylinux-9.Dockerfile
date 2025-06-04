@@ -36,7 +36,7 @@ RUN dnf install -y make \
                    libstdc++-devel \
                    libstdc++-static \
                    ninja-build \
-                   textinfo \
+                   texinfo \
                    file \
    && dnf clean all && rm -rf /var/cache/dnf
 

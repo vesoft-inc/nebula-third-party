@@ -40,6 +40,7 @@ jobs:
         os:
           - centos7
           - centos8
+          - rockylinux9
           #- ubuntu1604
           #- ubuntu1804
           - ubuntu2004

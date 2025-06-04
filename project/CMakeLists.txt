@@ -321,6 +321,7 @@ maybe_add_dependencies(automake autoconf autoconf-archive)
 maybe_add_dependencies(libtool automake)
 maybe_add_dependencies(pkgconf automake)
 maybe_add_dependencies(liboauth2 pkgconf jansson cjose libpcre2-8 hiredis)
+maybe_add_dependencies(cjose jansson)
 
 maybe_add_dependencies(glog libtool libunwind)
 maybe_add_dependencies(gettext libtool)

@@ -26,8 +26,8 @@ source $this_dir/.env
 
 # We consider two derivatives: Red Hat and Debian
 # Place preset libc versions of each from newer to older
-libc_preset_versions=( 2.39 2.35 2.31 2.28 2.17 )
-gcc_preset_versions=( 13.3.0 11.4.0 9.5.0 9.4.0 8.5.0 )
+libc_preset_versions=( 2.39 2.35 2.34 2.31 2.28 2.17 )
+gcc_preset_versions=( 13.3.0 11.5.0 11.4.0 9.5.0 9.4.0 8.5.0 )
 
 selected_libc_version=
 selected_gcc_version=

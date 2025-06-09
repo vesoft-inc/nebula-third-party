@@ -204,6 +204,7 @@ set(ALL_TARGETS
     #breakpad
     bzip2
     #cachelib
+    cppjieba
     cyrus-sasl
     c-ares
     datasketches
@@ -234,6 +235,7 @@ set(ALL_TARGETS
     libevent
     libunwind
     libxml2
+    limonp
     llvm
     lz4
     lzma
@@ -261,8 +263,6 @@ set(ALL_TARGETS
     yaml-cpp
     zlib
     zstd
-    cppjieba
-    limonp
 )
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)

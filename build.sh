@@ -10,12 +10,12 @@
 start_time=$(date +%s)
 
 # Always use bash
-shell=$(basename $(readlink /proc/$$/exe))
-if [ ! x$shell = x"bash" ] && [ x$shell != x"qemu-aarch64"* ]
-then
-    bash $0 $@
-    exit $?
-fi
+#shell=$(basename $(readlink /proc/$$/exe))
+#if [ ! x$shell = x"bash" ] && [ x$shell != x"qemu-aarch64"* ]
+#then
+#    bash $0 $@
+#    exit $?
+#fi
 
 this_dir=$(dirname $(readlink -f $0))
 

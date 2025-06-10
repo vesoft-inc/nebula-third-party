@@ -254,6 +254,7 @@ set(ALL_TARGETS
     snappy
     sodium
     sparsemap
+    toml11
     utf8proc
     valijson
     wangle

@@ -10,12 +10,12 @@
 start_time=$(date +%s)
 
 # Always use bash
-shell=$(basename $(readlink /proc/$$/exe))
-if [ ! x$shell = x"bash" ] && [ x$shell != x"qemu-aarch64"* ]
-then
-    bash $0 $@
-    exit $?
-fi
+#shell=$(basename $(readlink /proc/$$/exe))
+#if [ ! x$shell = x"bash" ] && [ x$shell != x"qemu-aarch64"* ]
+#then
+#    bash $0 $@
+#    exit $?
+#fi
 
 this_dir=$(dirname $(readlink -f $0))
 
@@ -81,7 +81,7 @@ source_url=$URL_BASE/${source_tar_name}
 logfile=$build_root/build.log
 cxx_cmd=${CXX:-g++}
 gcc_version=$(${CXX:-g++} -dumpfullversion -dumpversion)
-abi_version=$($this_dir/cxx-compiler-abi-version.sh)
+abi_version=$(exec $this_dir/cxx-compiler-abi-version.sh)
 libc_version=$(ldd --version | head -1 | cut -d ' ' -f4 | cut -d '-' -f1)
 
 export PATH=$install_dir/bin:$PATH

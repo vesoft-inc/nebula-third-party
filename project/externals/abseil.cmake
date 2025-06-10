@@ -18,6 +18,7 @@ ExternalProject_Add(
         ${common_cmake_args}
         -DCMAKE_BUILD_TYPE=Release
         -DABSL_ENABLE_VLOG=ON
+        -DCMAKE_POSITION_INDEPENDENT_CODE=ON
     BUILD_IN_SOURCE 1
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     INSTALL_COMMAND make -s install -j${BUILDING_JOBS_NUM}

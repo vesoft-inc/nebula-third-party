@@ -196,6 +196,8 @@ set(common_configure_envs
 
 set(ALL_TARGETS
     abseil
+    annoy
+    arrow
     berkeleydb
     bison
     boost
@@ -203,9 +205,13 @@ set(ALL_TARGETS
     bzip2
     #cachelib
     cyrus-sasl
+    c-ares
+    datasketches
     date
     double-conversion
     duckdb
+    eigen
+    faiss
     fatal
     fizz
     flex
@@ -216,18 +222,31 @@ set(ALL_TARGETS
     googlebenchmark
     googletest
     gperf
+    grpc
+    hnswlib
+    inja
     jemalloc
+    jwt-cpp
     ldap
     libcurl
     libdwarf
     libev
     libevent
     libunwind
+    libxml2
+    llvm
     lz4
     lzma
     mstch
+    nlohmann-json
+    openblas
     openssl
+    protobuf
+    protoc-gen-go
+    protoc-gen-go-grpc
+    protoc-gen-grpc-java
     proxygen
+    re2
     robin-hood-hashing
     rocksdb
     s2geometry
@@ -235,26 +254,13 @@ set(ALL_TARGETS
     snappy
     sodium
     sparsemap
+    utf8proc
+    valijson
     wangle
     xsimd
+    yaml-cpp
     zlib
     zstd
-    utf8proc
-    llvm
-    arrow
-    datasketches
-    c-ares
-    protobuf
-    re2
-    grpc
-    protoc-gen-go
-    protoc-gen-go-grpc
-    protoc-gen-grpc-java
-    faiss
-    hnswlib
-    openblas
-    annoy
-    libxml2
 )
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
@@ -342,11 +348,17 @@ maybe_add_dependencies(cachelib fbthrift sparsemap fizz googletest)
 # Here we build gtest after rocksdb intentionally
 maybe_add_dependencies(googletest rocksdb gflags)
 
-maybe_add_dependencies(arrow openssl xsimd llvm boost jemalloc zstd utf8proc protobuf re2 libxml2)
+maybe_add_dependencies(arrow openssl xsimd llvm boost jemalloc zstd utf8proc protobuf re2 libxml2 libcurl googletest)
 maybe_add_dependencies(protobuf zlib abseil)
 maybe_add_dependencies(re2 abseil)
 maybe_add_dependencies(grpc protobuf re2 c-ares openssl)
 maybe_add_dependencies(faiss openblas)
+
+# JSON
+maybe_add_dependencies(valijson nlohmann-json)
+maybe_add_dependencies(inja nlohmann-json)
+
+maybe_add_dependencies(jwt-cpp openssl)
 
 add_custom_target(
     clean-all

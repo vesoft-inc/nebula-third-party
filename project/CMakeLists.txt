@@ -204,6 +204,7 @@ set(ALL_TARGETS
     #breakpad
     bzip2
     #cachelib
+    cppjieba
     cyrus-sasl
     c-ares
     datasketches
@@ -234,6 +235,7 @@ set(ALL_TARGETS
     libevent
     libunwind
     libxml2
+    limonp
     llvm
     lz4
     lzma
@@ -359,6 +361,8 @@ maybe_add_dependencies(valijson nlohmann-json)
 maybe_add_dependencies(inja nlohmann-json)
 
 maybe_add_dependencies(jwt-cpp openssl)
+
+maybe_add_dependencies(cppjieba limonp)
 
 add_custom_target(
     clean-all

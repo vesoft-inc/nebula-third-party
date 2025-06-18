@@ -14,7 +14,7 @@ ExternalProject_Add(
     STAMP_DIR ${BUILD_INFO_DIR}
     DOWNLOAD_DIR ${DOWNLOAD_DIR}
     SOURCE_DIR ${source_dir}
-    UPDATE_COMMAND git submodule update --init --recursive
+    #UPDATE_COMMAND git submodule update --init --recursive
     CMAKE_ARGS
         ${common_cmake_args}
         -DTOML11_PRECOMPILE=ON

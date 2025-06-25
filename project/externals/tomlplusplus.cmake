@@ -14,11 +14,10 @@ ExternalProject_Add(
     STAMP_DIR ${BUILD_INFO_DIR}
     DOWNLOAD_DIR ${DOWNLOAD_DIR}
     SOURCE_DIR ${source_dir}
-    CMAKE_ARGS
-        ${common_cmake_args}
+    BUILD_COMMAND ""
+    INSTALL_COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_INSTALL_PREFIX}/include/toml++
+            COMMAND ${CMAKE_COMMAND} -E copy_directory ${source_dir}/include/toml++ ${CMAKE_INSTALL_PREFIX}/include/toml++
     BUILD_IN_SOURCE 1
-    BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
-    INSTALL_COMMAND make -s -j${BUILDING_JOBS_NUM} install
     LOG_CONFIGURE TRUE
     LOG_BUILD TRUE
     LOG_INSTALL TRUE

@@ -37,6 +37,7 @@
  * simdjson
  * snappy
  * sodium
+ * tomlplusplus
  * valijson
  * wangle
  * yaml-cpp

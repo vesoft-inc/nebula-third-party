@@ -40,8 +40,7 @@ jobs:
         os:
           - centos7
           - centos8
-          #- ubuntu1604
-          #- ubuntu1804
+          - rockylinux9
           - ubuntu2004
           - ubuntu2204
           - ubuntu2404
@@ -55,12 +54,6 @@ jobs:
       with:
         run: find . -mindepth 1 -delete
     - uses: actions/checkout@v4
-    - name: Set up environment
-      if: matrix.os == 'centos7'
-      run: |
-        export URL=https://raw.githubusercontent.com/vesoft-inc/nebula-gears/master/install
-        bash <(curl -Ls $URL)
-        install-gcc --version=9.5.0
     - name: Pre-Build
       run: |
         mkdir -p _build
@@ -68,15 +61,7 @@ jobs:
         sed -i "s#^VERSION=.*#VERSION=$VERSION#" .env
         cat .env
     - name: Build
-      run: |
-        if [[ "${{ matrix.os }}" == "centos7" ]]; then
-          export TOOLSET_GCC_DIR=/opt/vesoft/toolset/gcc/9.5.0
-          export CC=${TOOLSET_GCC_DIR}/bin/gcc
-          export CXX=${TOOLSET_GCC_DIR}/bin/g++
-          export PATH=${TOOLSET_GCC_DIR}/bin:${PATH}
-          export LD_LIBRARY_PATH=${TOOLSET_GCC_DIR}/lib64:$LD_LIBRARY_PATH
-        fi
-        build_package=1 ../build.sh
+      run: build_package=1 ../build.sh
       working-directory: _build/
     - name: Setup MinIO
       uses: vesoft-inc/.github/actions/setup-minio@master

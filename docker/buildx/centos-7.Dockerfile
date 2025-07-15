@@ -38,6 +38,17 @@ RUN sed -i 's/^mirrorlist=/#mirrorlist=/g' /etc/yum.repos.d/CentOS-Base.repo && 
                 && rm -rf /var/cache/yum
 RUN if ! [ -x "$(command -v ninja)" ]; then ln -s $(which ninja-build) /usr/bin/ninja; fi
 
+# Install GCC 9.5.0
+RUN export URL=https://raw.githubusercontent.com/vesoft-inc/nebula-gears/master/install && \
+    bash <(curl -Ls $URL) && \
+    install-gcc --version=9.5.0
+
+ENV TOOLSET_GCC_DIR=/opt/vesoft/toolset/gcc/9.5.0
+ENV CC=${TOOLSET_GCC_DIR}/bin/gcc
+ENV CXX=${TOOLSET_GCC_DIR}/bin/g++
+ENV PATH=${TOOLSET_GCC_DIR}/bin:${PATH}
+ENV LD_LIBRARY_PATH=${TOOLSET_GCC_DIR}/lib64:${LD_LIBRARY_PATH}
+
 # Install cmake
 RUN wget https://github.com/Kitware/CMake/releases/download/v3.23.5/cmake-3.23.5-linux-$(uname -m).sh \
     && chmod +x cmake-3.23.5-linux-$(uname -m).sh \

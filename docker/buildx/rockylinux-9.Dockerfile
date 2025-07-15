@@ -1,15 +1,15 @@
-FROM centos:8
+FROM rockylinux:9
 SHELL ["/bin/bash", "-c"]
 ARG GOLANG_VERSION=1.21.6
-RUN cd /etc/yum.repos.d/ && \
-    sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-* && \
-    sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
 
-RUN yum install -y epel-release yum-utils &&  yum config-manager --set-enabled powertools && yum update -y \
- && yum install -y make \
+RUN dnf install -y epel-release && \
+    dnf config-manager --set-enabled crb && \
+    dnf update -y
+
+# Install development tools and dependencies
+RUN dnf install -y make \
                    git \
                    m4 \
-                   curl \
                    wget \
                    unzip \
                    which \
@@ -17,9 +17,9 @@ RUN yum install -y epel-release yum-utils &&  yum config-manager --set-enabled p
                    patch \
                    python3 \
                    python3-devel \
-                   redhat-lsb-core \
                    perl-Data-Dumper \
                    perl-Thread-Queue \
+                   perl-FindBin \
                    readline-devel \
                    ncurses-devel \
                    zlib-devel \
@@ -35,19 +35,11 @@ RUN yum install -y epel-release yum-utils &&  yum config-manager --set-enabled p
                    gettext \
                    libstdc++-devel \
                    libstdc++-static \
-   && yum --enablerepo=powertools install -y ninja-build \
-   && yum clean all && rm -rf /var/cache/yum
-
-# Install GCC 9.5.0
-RUN export URL=https://raw.githubusercontent.com/vesoft-inc/nebula-gears/master/install && \
-    bash <(curl -Ls $URL) && \
-    install-gcc --version=9.5.0
-
-ENV TOOLSET_GCC_DIR=/opt/vesoft/toolset/gcc/9.5.0
-ENV CC=${TOOLSET_GCC_DIR}/bin/gcc
-ENV CXX=${TOOLSET_GCC_DIR}/bin/g++
-ENV PATH=${TOOLSET_GCC_DIR}/bin:${PATH}
-ENV LD_LIBRARY_PATH=${TOOLSET_GCC_DIR}/lib64:${LD_LIBRARY_PATH}
+                   ninja-build \
+                   texinfo \
+                   file \
+                   lsb-release \
+   && dnf clean all && rm -rf /var/cache/dnf
 
 # Install cmake
 RUN wget https://github.com/Kitware/CMake/releases/download/v3.23.5/cmake-3.23.5-linux-$(uname -m).sh \
@@ -82,4 +74,3 @@ RUN if [ "$(uname -m)" = "aarch64" ]; then \
 ENV PACKAGE_DIR=/usr/src/third-party    
 RUN mkdir -p ${PACKAGE_DIR}
 WORKDIR ${PACKAGE_DIR}
-

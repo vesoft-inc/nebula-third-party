@@ -7,7 +7,7 @@ set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
     URL https://github.com/facebook/mvfst/archive/refs/tags/v${fb_release_tag}.00.tar.gz
-    URL_HASH MD5=656046a687ca533bac65de672a88ea8e
+    URL_HASH MD5=f6859111507acf76aa15a655e583f951
     DOWNLOAD_NAME mvfst-${fb_package_name_part}.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}

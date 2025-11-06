@@ -9,9 +9,9 @@ set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 set(make_envs "env" "GEN=ninja" "BUILD_JEMALLOC=1")
 ExternalProject_Add(
     ${name}
-    URL https://github.com/duckdb/duckdb/archive/refs/tags/v1.2.2.tar.gz
-    URL_HASH MD5=1a9385eb521fba73b245716e9cd3dab9
-    DOWNLOAD_NAME duckdb-1.2.2.tar.gz
+    URL https://github.com/duckdb/duckdb/archive/refs/tags/v1.4.1.tar.gz
+    URL_HASH MD5=2e8fb18d6a77bf07e7cc355d9bfa8f89
+    DOWNLOAD_NAME duckdb-1.4.1.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}

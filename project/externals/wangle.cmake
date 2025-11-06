@@ -7,7 +7,7 @@ set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
     URL https://github.com/facebook/wangle/archive/refs/tags/v${fb_release_tag}.00.tar.gz
-    URL_HASH MD5=8cb4cc2313a953e8688ba8bdd7320861
+    URL_HASH MD5=535c4b223e2e9ec91538d09f42fe0a70
     DOWNLOAD_NAME wangle-${fb_package_name_part}.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}

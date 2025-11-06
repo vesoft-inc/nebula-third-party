@@ -7,9 +7,9 @@ set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 
 ExternalProject_Add(
     ${name}
-    URL https://github.com/GNOME/libxml2/archive/refs/tags/v2.13.6.tar.gz
-    URL_HASH MD5=c70f671f4796fb397d6e26304fa42330
-    DOWNLOAD_NAME libxml2-v2.13.6.tar.gz
+    URL https://github.com/GNOME/libxml2/archive/refs/tags/v2.15.1.tar.gz
+    URL_HASH MD5=90e02b4846ed856dfc098586e1bd71ab
+    DOWNLOAD_NAME libxml2-v2.15.1.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}

@@ -8,7 +8,7 @@ set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
     URL https://github.com/facebook/proxygen/archive/refs/tags/v${fb_release_tag}.00.tar.gz
-    URL_HASH MD5=c847d1f83193d46e029a79abf616b2d3
+    URL_HASH MD5=e0c5fc5397a0d5f754d3529f53a05549
     DOWNLOAD_NAME proxygen-${fb_package_name_part}.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}

@@ -199,7 +199,7 @@ set(common_configure_envs
     "ACLOCAL_PATH=${ACLOCAL_PATH}"
 )
 
-set(fb_release_tag "2025.07.21")
+set(fb_release_tag "2025.11.03")
 string(REPLACE "." "-" fb_package_name_part ${fb_release_tag})
 
 set(ALL_TARGETS

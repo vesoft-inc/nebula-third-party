@@ -6,9 +6,9 @@ set(name sparsemap)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL https://github.com/Tessil/sparse-map/archive/refs/tags/v0.6.2.tar.gz
-    URL_HASH MD5=cb91789500a0b2f14c4550ce814c4463
-    DOWNLOAD_NAME sparse-map-0.6.2.tar.gz
+    URL https://github.com/Tessil/sparse-map/archive/refs/tags/v0.7.0.tar.gz
+    URL_HASH MD5=a361fa30bde607a09e3422670be9c82e
+    DOWNLOAD_NAME sparse-map-0.7.0.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}

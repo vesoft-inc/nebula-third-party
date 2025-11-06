@@ -6,7 +6,7 @@ set(name pkgconf)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     pkgconf
-    URL https://github.com/pkgconf/pkgconf/archive/refs/tags/${name}-2.3.0.tar.gz
+    URL https://github.com/pkgconf/pkgconf/archive/refs/tags/${name}-2.5.1.tar.gz
     URL_HASH MD5=eb873bebfdf2d89f50e8f1a7608ebdab
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/pkgconf
     TMP_DIR ${BUILD_INFO_DIR}

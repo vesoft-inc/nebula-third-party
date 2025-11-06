@@ -6,9 +6,9 @@ set(name fast_float)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL https://github.com/fastfloat/fast_float/archive/refs/tags/v8.0.2.tar.gz
-    URL_HASH MD5=39fdfe888ddf705f3a2100f4b8af8b2a
-    DOWNLOAD_NAME fast_float-8.0.2.tar.gz
+    URL https://github.com/fastfloat/fast_float/archive/refs/tags/v8.1.0.tar.gz
+    URL_HASH MD5=0df58800f5ca3abf43ef5d7af4889d3d
+    DOWNLOAD_NAME fast_float-8.1.0.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}

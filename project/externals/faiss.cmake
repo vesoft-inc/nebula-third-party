@@ -10,9 +10,9 @@ endif()
 
 ExternalProject_Add(
     ${name}
-    URL https://github.com/facebookresearch/faiss/archive/refs/tags/v1.12.0.tar.gz
-    URL_HASH MD5=cad83faab8d19607b52f4613bdeeb073
-    DOWNLOAD_NAME faiss-1.12.0.tar.gz
+    URL https://github.com/facebookresearch/faiss/archive/refs/tags/v1.13.2.tar.gz
+    URL_HASH MD5=980ac68e45ddae0efefcc7d2382c73cd
+    DOWNLOAD_NAME faiss-1.13.2.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}

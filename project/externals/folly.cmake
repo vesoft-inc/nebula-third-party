@@ -7,7 +7,7 @@ set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
     URL https://github.com/facebook/folly/archive/refs/tags/v${fb_release_tag}.00.tar.gz
-    URL_HASH MD5=7b3340c9c66ef59973caac78e3219d37
+    URL_HASH MD5=636157ede962b5d0562633ff6b9c3749
     DOWNLOAD_NAME folly-${fb_package_name_part}.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}

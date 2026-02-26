@@ -24,7 +24,7 @@ set(arrow_cmake_args
         -DARROW_JSON=ON
         -DARROW_COMPUTE=ON
         -DARROW_GANDIVA=OFF
-        -DARROW_TESTING=ON
+        -DARROW_TESTING=OFF
         -DARROW_FILESYSTEM=ON
         -DARROW_HDFS=ON
         -DARROW_S3=ON
@@ -52,28 +52,15 @@ set(make_envs
     "CMAKE_LIBRARY_PATH=${CMAKE_INSTALL_PREFIX}/lib:${CMAKE_INSTALL_PREFIX}/lib64"
     )
 
-set(arrow_patch_command
-    mkdir
-    ci/patch
-    &&
-    touch
-    ci/patch/awssdk_ep.patch
-    &&
-    patch
-    -p1
-    -i
-    ${CMAKE_SOURCE_DIR}/patches/${name}-20.0.0.patch)
-
 ExternalProject_Add(
         ${name}
-        URL https://github.com/apache/arrow/archive/refs/tags/apache-arrow-20.0.0.tar.gz
-        URL_HASH MD5=5b60a4efe6588455957f1eb368c7a809
-        DOWNLOAD_NAME apache-arrow-20.0.0.tar.gz
+        URL https://github.com/apache/arrow/archive/refs/tags/apache-arrow-23.0.1.tar.gz
+        URL_HASH MD5=ea64d1a1a12f5b6b674db59e2efb2260
+        DOWNLOAD_NAME apache-arrow-23.0.1.tar.gz
         PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
         TMP_DIR ${BUILD_INFO_DIR}
         STAMP_DIR ${BUILD_INFO_DIR}
         DOWNLOAD_DIR ${DOWNLOAD_DIR}
-        PATCH_COMMAND ${arrow_patch_command}
         CONFIGURE_COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" ${arrow_cmake_args} ./cpp
         BUILD_COMMAND "${make_envs}" make -e -s -j${BUILDING_JOBS_NUM}
         BUILD_IN_SOURCE 1

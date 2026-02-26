@@ -1,0 +1,19 @@
+diff -ur a/folly/debugging/exception_tracer/ExceptionTracerLib.cpp b/folly/debugging/exception_tracer/ExceptionTracerLib.cpp
+--- a/folly/debugging/exception_tracer/ExceptionTracerLib.cpp     2026-02-23 23:23:23.000000000 +0800
++++ b/folly/debugging/exception_tracer/ExceptionTracerLib.cpp     2026-02-26 17:11:10.111120945 +0800
+@@ -233,6 +233,7 @@
+
+ namespace std {
+
++#if 0
+ __attribute__((__noreturn__)) void rethrow_exception(std::exception_ptr ep) {
+   // Mangled name for std::rethrow_exception
+   // TODO(tudorb): Dicey, as it relies on the fact that std::exception_ptr
+@@ -244,6 +245,7 @@
+   orig_rethrow_exception(std::move(ep));
+   __builtin_unreachable(); // orig_rethrow_exception never returns
+ }
++#endif
+
+ } // namespace std
+ #endif

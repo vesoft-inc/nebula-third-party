@@ -4,6 +4,7 @@
 
 set(name boost)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
+
 execute_process(
     COMMAND
         ${CMAKE_CXX_COMPILER} -print-file-name=libstdc++.so
@@ -20,9 +21,9 @@ endif()
 
 ExternalProject_Add(
     ${name}
-    URL https://archives.boost.io/release/1.87.0/source/boost_1_87_0.tar.gz
-    URL_HASH MD5=f435e8ae57edb203a1165cdb99cfb2a3
-    DOWNLOAD_NAME boost-1.87.0.tar.gz
+    URL https://github.com/boostorg/boost/releases/download/boost-1.85.0/boost-1.85.0-cmake.tar.gz
+    URL_HASH MD5=b21c059b592a041e90ae328fc5a8861b
+    DOWNLOAD_NAME boost-1.85.0-cmake.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}
@@ -31,7 +32,7 @@ ExternalProject_Add(
     CONFIGURE_COMMAND
         ./bootstrap.sh
             --without-icu
-            --with-libraries=random,context,thread,system,filesystem,graph,program_options,regex,iostreams,date_time,python,chrono,asio
+            --with-libraries=random,context,thread,system,filesystem,graph,program_options,regex,iostreams,date_time,python,chrono
             --prefix=${CMAKE_INSTALL_PREFIX}
 #--without-libraries=wave,nowide,chrono,atomic,fiber,type_erasure,exception,timer,contract,math,locale,json,test,stacktrace,mpi,log,graph,graph_parallel
     BUILD_COMMAND
@@ -66,7 +67,7 @@ ExternalProject_Add_Step(${name} setup-compiler
 ExternalProject_Add_Step(${name} trim
     DEPENDEES install
     COMMAND
-        bash -c "rm -rf ${CMAKE_INSTALL_PREFIX}/include/boost/{wave,log,atomic,test,fusion,geometry,gil,phoenix,spirit,beast,asio,compute,polygon,proto,units,metaparse,qvm,vmd,xpressive}"
+        bash -c "rm -rf ${CMAKE_INSTALL_PREFIX}/include/boost/{wave,log,atomic,test,fusion,geometry,gil,phoenix,spirit,beast,compute,polygon,proto,units,metaparse,qvm,vmd,xpressive}"
     WORKING_DIRECTORY ${source_dir}
 )
 

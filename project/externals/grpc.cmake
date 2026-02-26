@@ -6,17 +6,19 @@ set(name grpc)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL https://github.com/grpc/grpc/archive/refs/tags/v1.73.1.tar.gz
-    URL_HASH MD5=7402a1c2df9135750dc3d64e13ae8818
-    DOWNLOAD_NAME grpc-1.73.1.tar.gz
+    URL https://github.com/grpc/grpc/archive/refs/tags/v1.78.1.tar.gz
+    URL_HASH MD5=9f22f0daeb0f0d75c8206654e4fc79b3
+    DOWNLOAD_NAME grpc-1.78.1.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}
     DOWNLOAD_DIR ${DOWNLOAD_DIR}
     SOURCE_DIR ${source_dir}
+    PATCH_COMMAND patch -p1 < ${CMAKE_SOURCE_DIR}/patches/${name}-1.78.1.patch
     CMAKE_ARGS
         ${common_cmake_args}
         -DCMAKE_BUILD_TYPE=Release
+        "-D_gRPC_C_CXX_FLAGS=-Wno-error=incompatible-pointer-types"
         -DgRPC_ZLIB_PROVIDER=package
         -DgRPC_CARES_PROVIDER=package
         -DgRPC_RE2_PROVIDER=package
@@ -30,6 +32,20 @@ ExternalProject_Add(
     LOG_CONFIGURE TRUE
     LOG_BUILD TRUE
     LOG_INSTALL TRUE
+)
+
+ExternalProject_Add_Step(${name} hide-upb
+    DEPENDEES configure
+    DEPENDERS build
+    COMMAND mv ${CMAKE_INSTALL_PREFIX}/include/upb ${CMAKE_INSTALL_PREFIX}/include/_upb || true
+    WORKING_DIRECTORY ${source_dir}
+)
+
+ExternalProject_Add_Step(${name} restore-upb
+    DEPENDEES build
+    DEPENDERS install
+    COMMAND mv ${CMAKE_INSTALL_PREFIX}/include/_upb ${CMAKE_INSTALL_PREFIX}/include/upb || true
+    WORKING_DIRECTORY ${source_dir}
 )
 
 ExternalProject_Add_Step(${name} clean

@@ -8,7 +8,7 @@ set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
     URL https://github.com/facebook/proxygen/archive/refs/tags/v${fb_release_tag}.00.tar.gz
-    URL_HASH MD5=e0c5fc5397a0d5f754d3529f53a05549
+    URL_HASH MD5=659bbff57bacfd5415f388141bdee206
     DOWNLOAD_NAME proxygen-${fb_package_name_part}.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
@@ -17,10 +17,13 @@ ExternalProject_Add(
     SOURCE_DIR ${source_dir}
     CMAKE_ARGS
         ${common_cmake_args}
-		-DBoost_NO_BOOST_CMAKE=ON
+		    -DBoost_NO_BOOST_CMAKE=ON
         -DCMAKE_BUILD_TYPE=Release
         -DBUILD_TESTS=OFF
         -DBUILD_SAMPLES=OFF
+        -DBUILD_SHARED_LIBS=OFF
+        "-DCMAKE_CXX_FLAGS=${default_cxx_flags} -I${source_dir}/../../mvfst/source -I${source_dir}/../../wangle/source"
+        "-DCMAKE_C_FLAGS=${default_c_flags} -I${source_dir}/../../mvfst/source -I${source_dir}/../../wangle/source"
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     BUILD_IN_SOURCE 1
     INSTALL_COMMAND make -s -j${BUILDING_JOBS_NUM} install

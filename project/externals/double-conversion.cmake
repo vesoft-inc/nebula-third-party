@@ -6,9 +6,9 @@ set(name double-conversion)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL https://github.com/google/double-conversion/archive/refs/tags/v3.3.1.tar.gz
-    URL_HASH MD5=7bbcf4bd2e1a96ef9d2a6fa60e887276
-    DOWNLOAD_NAME double-conversion-3.3.1.tar.gz
+    URL https://github.com/google/double-conversion/archive/refs/tags/v3.4.0.tar.gz
+    URL_HASH MD5=cb2e555c32614f680ba928e962dda9be
+    DOWNLOAD_NAME double-conversion-3.4.0.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}

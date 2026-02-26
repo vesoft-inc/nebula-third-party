@@ -1,0 +1,12 @@
+diff -ur a/src/core/ext/upb-gen/google/protobuf/descriptor.upb_minitable.c b/src/core/ext/upb-gen/google/protobuf/descriptor.upb_minitable.c
+--- a/src/core/ext/upb-gen/google/protobuf/descriptor.upb_minitable.c   2026-02-27 11:55:56.552535993 +0800
++++ b/src/core/ext/upb-gen/google/protobuf/descriptor.upb_minitable.c   2026-02-27 11:52:18.502349780 +0800
+@@ -8,7 +8,7 @@
+
+ #include <stddef.h>
+ #include "upb/generated_code_support.h"
+-#include "google/protobuf/descriptor.upb_minitable.h"
++#include "descriptor.upb_minitable.h"
+
+ // Must be last.
+ #include "upb/port/def.inc"

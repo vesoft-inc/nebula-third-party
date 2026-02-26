@@ -199,7 +199,7 @@ set(common_configure_envs
     "ACLOCAL_PATH=${ACLOCAL_PATH}"
 )
 
-set(fb_release_tag "2025.11.03")
+set(fb_release_tag "2026.02.23")
 string(REPLACE "." "-" fb_package_name_part ${fb_release_tag})
 
 set(ALL_TARGETS
@@ -242,7 +242,7 @@ set(ALL_TARGETS
     #libdwarf
     libev
     libevent
-    #libunwind
+    libunwind
     libxml2
     limonp
     #llvm
@@ -328,8 +328,7 @@ maybe_add_dependencies(autoconf-archive autoconf)
 maybe_add_dependencies(automake autoconf autoconf-archive)
 maybe_add_dependencies(libtool automake)
 
-#maybe_add_dependencies(glog libtool libunwind)
-maybe_add_dependencies(glog libtool)
+maybe_add_dependencies(glog libtool libunwind)
 maybe_add_dependencies(gettext libtool)
 maybe_add_dependencies(bison gettext libtool)
 maybe_add_dependencies(flex libtool)
@@ -344,7 +343,7 @@ maybe_add_dependencies(gperf libtool)
 #maybe_add_dependencies(ldap libtool openssl cyrus-sasl)
 maybe_add_dependencies(ldap libtool openssl)
 
-maybe_add_dependencies(boost zlib bzip2 lzma)
+maybe_add_dependencies(boost openssl zlib bzip2 lzma)
 maybe_add_dependencies(mstch boost)
 
 maybe_add_dependencies(glog gflags)
@@ -353,22 +352,18 @@ maybe_add_dependencies(googlebenchmark googletest)
 
 maybe_add_dependencies(s2geometry googletest glog openssl abseil)
 
-#maybe_add_dependencies(folly glog boost double-conversion openssl libevent lzma zstd snappy lz4 libunwind fmt sodium jemalloc libdwarf fast_float)
-maybe_add_dependencies(folly glog boost double-conversion openssl libevent lzma zstd snappy lz4 fmt sodium jemalloc fast_float)
+maybe_add_dependencies(folly glog boost double-conversion openssl libevent lzma zstd snappy lz4 libunwind fmt sodium jemalloc fast_float)
 maybe_add_dependencies(fizz folly)
 maybe_add_dependencies(wangle folly fizz)
-maybe_add_dependencies(mvfst fizz)
-#maybe_add_dependencies(proxygen wangle libunwind gperf)
-maybe_add_dependencies(proxygen wangle gperf)
-#maybe_add_dependencies(rocksdb snappy zlib zstd bzip2 lz4 lzma libunwind)
-maybe_add_dependencies(rocksdb snappy zlib zstd bzip2 lz4 lzma)
+maybe_add_dependencies(mvfst fizz libunwind)
+maybe_add_dependencies(proxygen mvfst wangle libunwind gperf)
+maybe_add_dependencies(rocksdb snappy zlib zstd bzip2 lz4 lzma libunwind)
 #maybe_add_dependencies(cachelib fbthrift sparsemap fizz googletest)
 
 # RocksDB has its own copy of gtest, which may conflict with ours
 # Here we build gtest after rocksdb intentionally
 maybe_add_dependencies(googletest rocksdb gflags)
 
-#maybe_add_dependencies(arrow openssl xsimd llvm boost jemalloc zstd utf8proc protobuf re2 libxml2 libcurl googletest)
 maybe_add_dependencies(arrow openssl xsimd boost jemalloc zstd utf8proc protobuf re2 libxml2 libcurl googletest)
 maybe_add_dependencies(protobuf zlib abseil)
 maybe_add_dependencies(re2 abseil)

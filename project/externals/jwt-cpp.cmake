@@ -6,9 +6,9 @@ set(name jwt-cpp)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL https://github.com/Thalhammer/jwt-cpp/releases/download/v0.7.1/${name}-v0.7.1.zip
-    URL_HASH MD5=b14a16c45c5000b69be9d888d5d03cb2
-    DOWNLOAD_NAME ${name}-v0.7.1.zip
+    URL https://github.com/Thalhammer/jwt-cpp/releases/download/v0.7.2/${name}-v0.7.2.zip
+    URL_HASH MD5=bb24d936980f674072936aba4becddd9
+    DOWNLOAD_NAME ${name}-v0.7.2.zip
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}

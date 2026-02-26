@@ -6,8 +6,8 @@ set(name gperf)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL http://ftpmirror.gnu.org/gperf/gperf-3.1.tar.gz
-    URL_HASH MD5=9e251c0a618ad0824b51117d5d9db87e
+    URL http://ftp.gnu.org/gnu/gperf/gperf-3.3.tar.gz
+    URL_HASH MD5=31753b021ea78a21f154bf9eecb8b079
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}

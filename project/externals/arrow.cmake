@@ -24,7 +24,7 @@ set(arrow_cmake_args
         -DARROW_JSON=ON
         -DARROW_COMPUTE=ON
         -DARROW_GANDIVA=OFF
-        -DARROW_TESTING=OFF
+        -DARROW_TESTING=ON
         -DARROW_FILESYSTEM=ON
         -DARROW_HDFS=ON
         -DARROW_S3=ON

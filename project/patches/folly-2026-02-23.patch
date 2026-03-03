@@ -17,3 +17,47 @@ diff -ur a/folly/debugging/exception_tracer/ExceptionTracerLib.cpp b/folly/debug
 
  } // namespace std
  #endif
+diff -ur a/folly/SharedMutex.h b/folly/SharedMutex.h
+--- a/folly/SharedMutex.h   2026-03-03 14:02:01.366390295 +0800
++++ b/folly/SharedMutex.h   2026-03-03 14:13:27.474247275 +0800
+@@ -30,6 +30,7 @@
+ #include <folly/CPortability.h>
+ #include <folly/CppAttributes.h>
+ #include <folly/Likely.h>
++#include <folly/LockHolder.h>
+ #include <folly/chrono/Hardware.h>
+ #include <folly/concurrency/CacheLocality.h>
+ #include <folly/detail/Futex.h>
+@@ -360,6 +361,10 @@
+
+   typedef SharedMutexToken Token;
+
++  using ReadHolder = ReadHolderImpl<SharedMutexImpl>;
++  using WriteHolder = WriteHolderImpl<SharedMutexImpl>;
++  using UpgradedHolder = UpgradedHolderImpl<SharedMutexImpl>;
++
+   constexpr SharedMutexImpl() noexcept : state_(0) {}
+
+   SharedMutexImpl(const SharedMutexImpl&) = delete;
+diff -ur a/folly/synchronization/RWSpinLock.h b/folly/synchronization/RWSpinLock.h
+--- a/folly/synchronization/RWSpinLock.h    2026-03-03 14:15:48.598220463 +0800
++++ b/folly/synchronization/RWSpinLock.h    2026-03-03 14:17:12.706211809 +0800
+@@ -100,6 +100,7 @@
+ #include <thread>
+
+ #include <folly/Likely.h>
++#include <folly/LockHolder.h>
+ #include <folly/synchronization/Lock.h>
+
+ namespace folly {
+@@ -123,6 +124,10 @@
+   enum : int32_t { SHARED = 4, UPGRADE = 2, EXCLUSIVE = 1 };
+
+  public:
++  using ReadHolder = ReadHolderImpl<RWSpinLock>;
++  using WriteHolder = WriteHolderImpl<RWSpinLock>;
++  using UpgradedHolder = UpgradedHolderImpl<RWSpinLock>;
++
+   constexpr RWSpinLock() : bits_(0) {}
+
+   RWSpinLock(RWSpinLock const&) = delete;

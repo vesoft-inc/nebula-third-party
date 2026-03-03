@@ -29,6 +29,13 @@ ExternalProject_Add(
     LOG_INSTALL TRUE
 )
 
+ExternalProject_Add_Step(${name} copy-lockholder
+    DEPENDEES download
+    DEPENDERS patch
+    COMMAND cp ${CMAKE_SOURCE_DIR}/patches/folly-LockHolder.h ${source_dir}/folly/LockHolder.h
+    WORKING_DIRECTORY ${source_dir}
+)
+
 ExternalProject_Add_Step(${name} clean
     EXCLUDE_FROM_MAIN TRUE
     ALWAYS TRUE

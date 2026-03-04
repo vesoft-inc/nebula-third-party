@@ -22,8 +22,6 @@ ExternalProject_Add(
         -DBUILD_TESTS=OFF
         -DBUILD_SAMPLES=OFF
         -DBUILD_SHARED_LIBS=OFF
-        "-DCMAKE_CXX_FLAGS=${default_cxx_flags} -I${source_dir}/../../mvfst/source -I${source_dir}/../../wangle/source"
-        "-DCMAKE_C_FLAGS=${default_c_flags} -I${source_dir}/../../mvfst/source -I${source_dir}/../../wangle/source"
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     BUILD_IN_SOURCE 1
     INSTALL_COMMAND make -s -j${BUILDING_JOBS_NUM} install

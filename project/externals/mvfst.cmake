@@ -28,6 +28,63 @@ ExternalProject_Add(
     LOG_INSTALL TRUE
 )
 
+ExternalProject_Add_Step(${name} copy-headers
+    DEPENDEES build
+    DEPENDERS install
+    COMMAND mkdir -p ${CMAKE_INSTALL_PREFIX}/include/quic/common
+    COMMAND mkdir -p ${CMAKE_INSTALL_PREFIX}/include/quic/common/third-party
+    COMMAND mkdir -p ${CMAKE_INSTALL_PREFIX}/include/quic/common/udpsocket
+    COMMAND mkdir -p ${CMAKE_INSTALL_PREFIX}/include/quic/common/events
+    COMMAND mkdir -p ${CMAKE_INSTALL_PREFIX}/include/quic/fizz/handshake
+    COMMAND mkdir -p ${CMAKE_INSTALL_PREFIX}/include/quic/fizz/client/handshake
+    COMMAND mkdir -p ${CMAKE_INSTALL_PREFIX}/include/quic/codec
+    COMMAND mkdir -p ${CMAKE_INSTALL_PREFIX}/include/quic/state
+    COMMAND mkdir -p ${CMAKE_INSTALL_PREFIX}/include/quic/api
+    COMMAND mkdir -p ${CMAKE_INSTALL_PREFIX}/include/quic/logging
+    COMMAND mkdir -p ${CMAKE_INSTALL_PREFIX}/include/quic/folly_utils
+    COMMAND mkdir -p ${CMAKE_INSTALL_PREFIX}/include/quic/priority
+    COMMAND mkdir -p ${CMAKE_INSTALL_PREFIX}/include/quic/congestion_control
+    COMMAND mkdir -p ${CMAKE_INSTALL_PREFIX}/include/quic/handshake
+    COMMAND mkdir -p ${CMAKE_INSTALL_PREFIX}/include/quic/datagram
+    COMMAND mkdir -p ${CMAKE_INSTALL_PREFIX}/include/quic/observer
+    COMMAND mkdir -p ${CMAKE_INSTALL_PREFIX}/include/quic/flowcontrol
+    COMMAND mkdir -p ${CMAKE_INSTALL_PREFIX}/include/quic/loss
+    COMMAND mkdir -p ${CMAKE_INSTALL_PREFIX}/include/quic/client
+    COMMAND mkdir -p ${CMAKE_INSTALL_PREFIX}/include/quic/client/handshake
+    COMMAND mkdir -p ${CMAKE_INSTALL_PREFIX}/include/quic/client/state
+    COMMAND mkdir -p ${CMAKE_INSTALL_PREFIX}/include/quic/server
+    COMMAND mkdir -p ${CMAKE_INSTALL_PREFIX}/include/quic/server/handshake
+    COMMAND mkdir -p ${CMAKE_INSTALL_PREFIX}/include/quic/server/state
+    COMMAND mkdir -p ${CMAKE_INSTALL_PREFIX}/include/quic/server/async_tran
+    COMMAND bash -c "cp ${source_dir}/quic/common/*.h ${CMAKE_INSTALL_PREFIX}/include/quic/common/."
+    COMMAND bash -c "cp ${source_dir}/quic/common/third-party/*.h ${CMAKE_INSTALL_PREFIX}/include/quic/common/third-party/."
+    COMMAND bash -c "cp ${source_dir}/quic/common/third-party/*.hpp ${CMAKE_INSTALL_PREFIX}/include/quic/common/third-party/."
+    COMMAND bash -c "cp ${source_dir}/quic/common/udpsocket/*.h ${CMAKE_INSTALL_PREFIX}/include/quic/common/udpsocket/."
+    COMMAND bash -c "cp ${source_dir}/quic/common/events/*.h ${CMAKE_INSTALL_PREFIX}/include/quic/common/events/."
+    COMMAND bash -c "cp ${source_dir}/quic/fizz/handshake/*.h ${CMAKE_INSTALL_PREFIX}/include/quic/fizz/handshake/."
+    COMMAND bash -c "cp ${source_dir}/quic/fizz/client/handshake/*.h ${CMAKE_INSTALL_PREFIX}/include/quic/fizz/client/handshake/."
+    COMMAND bash -c "cp ${source_dir}/quic/codec/*.h ${CMAKE_INSTALL_PREFIX}/include/quic/codec/."
+    COMMAND bash -c "cp ${source_dir}/quic/state/*.h ${CMAKE_INSTALL_PREFIX}/include/quic/state/."
+    COMMAND bash -c "cp ${source_dir}/quic/api/*.h ${CMAKE_INSTALL_PREFIX}/include/quic/api/."
+    COMMAND bash -c "cp ${source_dir}/quic/logging/*.h ${CMAKE_INSTALL_PREFIX}/include/quic/logging/."
+    COMMAND bash -c "cp ${source_dir}/quic/folly_utils/*.h ${CMAKE_INSTALL_PREFIX}/include/quic/folly_utils/."
+    COMMAND bash -c "cp ${source_dir}/quic/priority/*.h ${CMAKE_INSTALL_PREFIX}/include/quic/priority/."
+    COMMAND bash -c "cp ${source_dir}/quic/congestion_control/*.h ${CMAKE_INSTALL_PREFIX}/include/quic/congestion_control/."
+    COMMAND bash -c "cp ${source_dir}/quic/handshake/*.h ${CMAKE_INSTALL_PREFIX}/include/quic/handshake/."
+    COMMAND bash -c "cp ${source_dir}/quic/datagram/*.h ${CMAKE_INSTALL_PREFIX}/include/quic/datagram/."
+    COMMAND bash -c "cp ${source_dir}/quic/observer/*.h ${CMAKE_INSTALL_PREFIX}/include/quic/observer/."
+    COMMAND bash -c "cp ${source_dir}/quic/flowcontrol/*.h ${CMAKE_INSTALL_PREFIX}/include/quic/flowcontrol/."
+    COMMAND bash -c "cp ${source_dir}/quic/loss/*.h ${CMAKE_INSTALL_PREFIX}/include/quic/loss/."
+    COMMAND bash -c "cp ${source_dir}/quic/client/*.h ${CMAKE_INSTALL_PREFIX}/include/quic/client/."
+    COMMAND bash -c "cp ${source_dir}/quic/client/handshake/*.h ${CMAKE_INSTALL_PREFIX}/include/quic/client/handshake/."
+    COMMAND bash -c "cp ${source_dir}/quic/client/state/*.h ${CMAKE_INSTALL_PREFIX}/include/quic/client/state/."
+    COMMAND bash -c "cp ${source_dir}/quic/server/*.h ${CMAKE_INSTALL_PREFIX}/include/quic/server/."
+    COMMAND bash -c "cp ${source_dir}/quic/server/handshake/*.h ${CMAKE_INSTALL_PREFIX}/include/quic/server/handshake/."
+    COMMAND bash -c "cp ${source_dir}/quic/server/state/*.h ${CMAKE_INSTALL_PREFIX}/include/quic/server/state/."
+    COMMAND bash -c "cp ${source_dir}/quic/server/async_tran/*.h ${CMAKE_INSTALL_PREFIX}/include/quic/server/async_tran/."
+    WORKING_DIRECTORY <SOURCE_DIR>
+)
+
 ExternalProject_Add_Step(${name} clean
     EXCLUDE_FROM_MAIN TRUE
     ALWAYS TRUE

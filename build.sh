@@ -135,7 +135,7 @@ if ! check_cmake; then
     echo "Need to build cmake"
     mkdir -p $build_dir/build-info
     cmake_log_file=$build_dir/build-info/cmake-build.log
-    cmake_source_tar=$build_root/tarballs/cmake-v3.29.9.tar.gz
+    cmake_source_tar=$build_root/tarballs/cmake-3.29.9.tar.gz
     # Check the downloaded source tarball
     if [[ -f $cmake_source_tar ]]; then
         cmake_checksum=$(md5sum $cmake_source_tar | cut -d ' ' -f 1)
@@ -160,7 +160,7 @@ if ! check_cmake; then
     echo -n "Extracting cmake source into $build_root/build/cmake/source..." 1>&2
     mkdir -p $build_root/build/cmake
     cd $build_root/build/cmake
-    if ! mkdir -p source && tar -xzf $cmake_source_tar -C ./source --strip-components=1; then
+    if ! (mkdir -p source && tar -xzf $cmake_source_tar -C ./source --strip-components=1); then
         echo "corrupted" 1>&2
         exit 1
     fi

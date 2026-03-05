@@ -71,7 +71,7 @@ ExternalProject_Add(
 )
 
 ExternalProject_Add_Step(${name} post-install
-        DEPENDEES build
+        DEPENDEES install
         COMMAND cp ${source_dir}/arrow/cpp/src/arrow/util/counting_semaphore_internal.h ${CMAKE_INSTALL_PREFIX}/include/arrow/util/.
         WORKING_DIRECTORY ${source_dir}
         )

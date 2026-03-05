@@ -3,7 +3,7 @@
 # This source code is licensed under Apache 2.0 License.
 # This source code is licensed under Apache 2.0 License.
 set(name arrow)
-set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
+set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/src)
 
 if(DISTRO_NAME STREQUAL "CentOS Linux" AND DISTRO_VERSION_ID STREQUAL "7")
     set(USE_LLVM_CXX ON)
@@ -69,6 +69,12 @@ ExternalProject_Add(
         LOG_BUILD TRUE
         LOG_INSTALL TRUE
 )
+
+ExternalProject_Add_Step(${name} post-install
+        DEPENDEES build
+        COMMAND cp ${source_dir}/arrow/cpp/src/arrow/util/counting_semaphore_internal.h ${CMAKE_INSTALL_PREFIX}/include/arrow/util/.
+        WORKING_DIRECTORY ${source_dir}
+        )
 
 ExternalProject_Add_Step(${name} clean
         EXCLUDE_FROM_MAIN TRUE

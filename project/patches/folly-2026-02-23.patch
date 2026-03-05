@@ -34,7 +34,7 @@ diff -ur a/folly/SharedMutex.h b/folly/SharedMutex.h
 
 +  using ReadHolder = ReadHolderImpl<SharedMutexImpl>;
 +  using WriteHolder = WriteHolderImpl<SharedMutexImpl>;
-+  using UpgradedHolder = UpgradedHolderImpl<SharedMutexImpl>;
++  using UpgradeHolder = UpgradeHolderImpl<SharedMutexImpl>;
 +
    constexpr SharedMutexImpl() noexcept : state_(0) {}
 
@@ -56,8 +56,41 @@ diff -ur a/folly/synchronization/RWSpinLock.h b/folly/synchronization/RWSpinLock
   public:
 +  using ReadHolder = ReadHolderImpl<RWSpinLock>;
 +  using WriteHolder = WriteHolderImpl<RWSpinLock>;
-+  using UpgradedHolder = UpgradedHolderImpl<RWSpinLock>;
++  using UpgradeHolder = UpgradeHolderImpl<RWSpinLock>;
 +
    constexpr RWSpinLock() : bits_(0) {}
 
    RWSpinLock(RWSpinLock const&) = delete;
+diff -ur a/folly/fibers/TimedMutex.h b/folly/fibers/TimedMutex.h
+--- a/folly/fibers/TimedMutex.h    2026-03-04 15:28:31.855602154 +0800
++++ b/folly/fibers/TimedMutex.h    2026-03-04 15:30:58.915579085 +0800
+@@ -18,6 +18,7 @@
+
+ #include <folly/IntrusiveList.h>
+ #include <folly/Portability.h>
++#include <folly/LockHolder.h>
+ #include <folly/SpinLock.h>
+ #include <folly/fibers/GenericBaton.h>
+
+@@ -72,6 +73,10 @@
+     bool stealing_ = true;
+   };
+
++  using ReadHolder = ReadHolderImpl<TimedMutex>;
++  using WriteHolder = WriteHolderImpl<TimedMutex>;
++  using UpgradeHolder = UpgradeHolderImpl<TimedMutex>;
++
+   TimedMutex(Options options = Options()) noexcept
+       : options_(std::move(options)) {}
+
+@@ -145,6 +150,10 @@
+ template <bool ReaderPriority, typename BatonType>
+ class TimedRWMutexImpl {
+  public:
++  using ReadHolder = ReadHolderImpl<TimedRWMutexImpl>;
++  using WriteHolder = WriteHolderImpl<TimedRWMutexImpl>;
++  using UpgradeHolder = UpgradeHolderImpl<TimedRWMutexImpl>;
++
+   TimedRWMutexImpl() = default;
+   ~TimedRWMutexImpl() = default;
+

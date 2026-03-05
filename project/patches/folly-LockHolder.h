@@ -1,6 +1,7 @@
 #ifndef FOLLY_LOCKHOLDER_H_
 #define FOLLY_LOCKHOLDER_H_
 
+#include <cassert>
 #include <utility>
 #include <folly/Portability.h>
 
@@ -63,7 +64,7 @@ public:
   }
 
   void unlock() {
-      CHECK_NE(lock_, nullptr);
+      assert(lock_ != nullptr);
       lock_->unlock_shared();
       lock_ = nullptr;
   }
@@ -117,7 +118,7 @@ public:
   }
 
   void unlock() {
-      CHECK_NE(lock_, nullptr);
+      assert(lock_ != nullptr);
       lock_->unlock_upgrade();
       lock_ = nullptr;
   }
@@ -168,7 +169,7 @@ public:
   }
 
   void unlock() {
-      CHECK_NE(lock_, nullptr);
+      assert(lock_ != nullptr);
       lock_->unlock();
       lock_ = nullptr;
   }

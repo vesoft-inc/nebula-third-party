@@ -39,7 +39,7 @@ function version_cmp {
 function check_cmake {
     hash cmake &> /dev/null || { echo "No cmake found." 1>&2 ; return 1; }
     local cmake_version=$(cmake --version | head -1 | cut -d ' ' -f 3)
-    local least_cmake_version=3.14.0
+    local least_cmake_version=3.29.0
     if [[ $(version_cmp $cmake_version $least_cmake_version) -lt 0 ]]
     then
         echo "cmake $least_cmake_version or higher required, but only found $cmake_version" 1>&2
@@ -109,7 +109,7 @@ then
 fi
 
 # NOTE Please adjust the expected checksum once the source tarball changed
-if [[ ! $checksum = 39153b75e8b3e07a04102773b8aa7361 ]]
+if [[ ! $checksum = 633fc6c7ee69ce99cf5f8f97561fad9d ]]
 then
     rm -f $source_tar_name
     hash wget &> /dev/null && download_cmd="wget -c"
@@ -135,15 +135,15 @@ if ! check_cmake; then
     echo "Need to build cmake"
     mkdir -p $build_dir/build-info
     cmake_log_file=$build_dir/build-info/cmake-build.log
-    cmake_source_tar=$build_root/tarballs/cmake-v3.21.4.tar.gz
+    cmake_source_tar=$build_root/tarballs/cmake-v3.29.9.tar.gz
     # Check the downloaded source tarball
     if [[ -f $cmake_source_tar ]]; then
         cmake_checksum=$(md5sum $cmake_source_tar | cut -d ' ' -f 1)
     fi
-    if [[ ! $cmake_checksum = 3747c1a51d4a7ad61f08862481437264 ]]; then
+    if [[ ! $cmake_checksum = 9f19aefd896905781e87544bb5e2ca17 ]]; then
         # Try to download cmake tar ball
         hash wget &> /dev/null && download_cmd="wget -c"
-        cmake_source_url="https://gitlab.kitware.com/cmake/cmake/-/archive/v3.21.4/cmake-v3.21.4.tar.gz"
+        cmake_source_url="https://cmake.org/files/v3.29/cmake-3.29.9.tar.gz"
         mkdir -p $build_root/tarballs
         cd $build_root/tarballs
         if [[ -z $download_cmd ]]; then

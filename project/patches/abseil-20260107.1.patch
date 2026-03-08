@@ -1,0 +1,13 @@
+diff -ur a/absl/base/attributes.h  b/absl/base/attributes.h
+--- a/absl/base/attributes.h	2026-02-11 23:34:48.000000000 +0800
++++ b/absl/base/attributes.h	2026-03-08 15:03:06.437474613 +0800
+@@ -1072,7 +1072,8 @@
+ //
+ // See https://clang.llvm.org/docs/AttributeReference.html#warn-unused and
+ // https://gcc.gnu.org/onlinedocs/gcc/C_002b_002b-Attributes.html#index-warn_005funused-type-attribute
+-#if ABSL_HAVE_CPP_ATTRIBUTE(gnu::warn_unused)
++//#if ABSL_HAVE_CPP_ATTRIBUTE(gnu::warn_unused)
++#if 0
+ #define ABSL_ATTRIBUTE_WARN_UNUSED [[gnu::warn_unused]]
+ #else
+ #define ABSL_ATTRIBUTE_WARN_UNUSED

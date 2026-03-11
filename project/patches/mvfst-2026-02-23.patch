@@ -1,0 +1,72 @@
+diff -ur a/quic/xsk/BaseXskContainer.cpp b/quic/xsk/BaseXskContainer.cpp
+--- a/quic/xsk/BaseXskContainer.cpp    2026-03-11 21:49:33.484610498 +0800
++++ b/quic/xsk/BaseXskContainer.cpp    2026-03-11 21:50:16.254631553 +0800
+@@ -5,7 +5,7 @@
+  * LICENSE file in the root directory of this source tree.
+  */
+
+-#if defined(__linux__) && !defined(ANDROID)
++#if defined(__linux__) && !defined(__linux_too_old) && !defined(ANDROID)
+
+ #include <linux/ethtool.h>
+ #include <linux/sockios.h>
+diff -ur a/quic/xsk/ThreadLocalXskContainer.cpp b/quic/xsk/ThreadLocalXskContainer.cpp
+--- a/quic/xsk/ThreadLocalXskContainer.cpp     2026-03-11 21:53:26.322837182 +0800
++++ b/quic/xsk/ThreadLocalXskContainer.cpp     2026-03-11 21:54:01.436212503 +0800
+@@ -5,7 +5,7 @@
+  * LICENSE file in the root directory of this source tree.
+  */
+
+-#if defined(__linux__) && !defined(ANDROID)
++#if defined(__linux__) && !defined(__linux_too_old) && !defined(ANDROID)
+
+ #include <quic/common/MvfstLogging.h>
+ #include <quic/xsk/ThreadLocalXskContainer.h>
+diff -ur a/quic/xsk/HashingXskContainer.cpp b/quic/xsk/HashingXskContainer.cpp
+--- a/quic/xsk/HashingXskContainer.cpp 2026-03-11 21:56:31.530267713 +0800
++++ b/quic/xsk/HashingXskContainer.cpp 2026-03-11 21:57:00.640920776 +0800
+@@ -5,7 +5,7 @@
+  * LICENSE file in the root directory of this source tree.
+  */
+
+-#if defined(__linux__) && !defined(ANDROID)
++#if defined(__linux__) && !defined(__linux_too_old) && !defined(ANDROID)
+
+ #include <quic/xsk/HashingXskContainer.h>
+
+diff -ur a/quic/xsk/xsk_lib.cpp b/quic/xsk/xsk_lib.cpp
+--- a/quic/xsk/xsk_lib.cpp     2026-03-11 21:59:16.658627300 +0800
++++ b/quic/xsk/xsk_lib.cpp     2026-03-11 22:00:04.635407438 +0800
+@@ -5,7 +5,7 @@
+  * LICENSE file in the root directory of this source tree.
+  */
+
+-#if defined(__linux__) && !defined(ANDROID)
++#if defined(__linux__) && !defined(__linux_too_old) && !defined(ANDROID)
+
+ #include <net/if.h>
+ #include <quic/xsk/xsk_lib.h>
+diff -ur a/quic/xsk/packet_utils.cpp  b/quic/xsk/packet_utils.cpp
+--- a/quic/xsk/packet_utils.cpp        2026-03-11 22:02:03.584903696 +0800
++++ b/quic/xsk/packet_utils.cpp        2026-03-11 22:02:34.704463811 +0800
+@@ -5,7 +5,7 @@
+  * LICENSE file in the root directory of this source tree.
+  */
+
+-#if defined(__linux__) && !defined(ANDROID)
++#if defined(__linux__) && !defined(__linux_too_old) && !defined(ANDROID)
+
+ #include <folly/Benchmark.h>
+ #include <netinet/udp.h>
+diff -ur a/quic/xsk/XskSender.cpp b/quic/xsk/XskSender.cpp
+--- a/quic/xsk/XskSender.cpp   2026-03-11 22:04:29.854135882 +0800
++++ b/quic/xsk/XskSender.cpp   2026-03-11 22:05:01.740660510 +0800
+@@ -5,7 +5,7 @@
+  * LICENSE file in the root directory of this source tree.
+  */
+
+-#if defined(__linux__) && !defined(ANDROID)
++#if defined(__linux__) && !defined(__linux_too_old) && !defined(ANDROID)
+
+ #include <folly/Benchmark.h>
+ #include <quic/common/StringUtils.h>

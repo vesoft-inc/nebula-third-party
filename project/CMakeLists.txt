@@ -31,6 +31,12 @@ elseif ("${CMAKE_HOST_SYSTEM_PROCESSOR}" STREQUAL "aarch64" OR "${CMAKE_HOST_SYS
     cmake_host_system_information(RESULT num_cores QUERY NUMBER_OF_LOGICAL_CORES)
 endif()
 cmake_host_system_information(RESULT available_memory_mb QUERY AVAILABLE_PHYSICAL_MEMORY)
+execute_process(
+    OUTPUT_VARIABLE kernel_version
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+    COMMAND "uname" "-r"
+    COMMAND "cut" "-d" "-" "-f1"
+)
 
 execute_process(
     COMMAND ldd --version
@@ -65,6 +71,7 @@ endif()
 message(STATUS "Number of online physcial CPU cores: ${num_cores}")
 message(STATUS "Available physical memory: ${available_memory_mb} MB")
 message(STATUS "Building third party with ${BUILDING_JOBS_NUM} jobs")
+message(STATUS "Kernal version: ${kernel_version}")
 message(STATUS "Glibc version: ${GLIBC_VERSION}")
 message(STATUS "Linux distribution name: ${DISTRO_NAME}")
 message(STATUS "Linux distribution version ID: ${DISTRO_VERSION_ID}")
@@ -309,6 +316,11 @@ if (NOT Gettext_FOUND)
     list(APPEND ALL_TARGETS gettext)
 endif()
 
+find_package(Ninja 1.9.0 QUIET)
+if (NOT Ninja_FOUND)
+    list(APPEND ALL_TARGETS ninja)
+endif()
+
 foreach(target ${ALL_TARGETS})
     include(externals/${target}.cmake)
     list(APPEND CLEAN_TARGETS ${target}-clean)
@@ -349,6 +361,8 @@ maybe_add_dependencies(mstch boost)
 maybe_add_dependencies(glog gflags)
 
 maybe_add_dependencies(googlebenchmark googletest)
+
+maybe_add_dependencies(duckdb ninja)
 
 maybe_add_dependencies(s2geometry googletest glog openssl abseil)
 

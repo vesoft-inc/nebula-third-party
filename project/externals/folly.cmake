@@ -4,6 +4,13 @@
 
 set(name folly)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
+
+if (kernel_version VERSION_LESS "4.12")
+    set(folly_extra_cxx_flags "-D__linux_too_old")
+else()
+    set(folly_extra_cxx_flags "")
+endif()
+
 ExternalProject_Add(
     ${name}
     URL https://github.com/facebook/folly/archive/refs/tags/v${fb_release_tag}.00.tar.gz
@@ -19,7 +26,7 @@ ExternalProject_Add(
         ${common_cmake_args}
         -DCMAKE_BUILD_TYPE=Release
         -DBoost_NO_BOOST_CMAKE=ON
-        "-DCMAKE_CXX_FLAGS=${default_cxx_flags} -D__STDC_FORMAT_MACROS=1 -DFOLLY_HAVE_CLOCK_GETTIME -D__USE_POSIX199309"
+        "-DCMAKE_CXX_FLAGS=${default_cxx_flags} ${folly_extra_cxx_flags} -D__STDC_FORMAT_MACROS=1 -DFOLLY_HAVE_CLOCK_GETTIME -D__USE_POSIX199309"
         -DFOLLY_CXX_FLAGS=-Wno-error
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     BUILD_IN_SOURCE 1

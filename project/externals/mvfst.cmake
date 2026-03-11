@@ -4,6 +4,13 @@
 
 set(name mvfst)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
+
+if (kernel_version VERSION_LESS "4.18")
+    set(mvfst_extra_cxx_flags "-D__linux_too_old")
+else()
+    set(mvfst_extra_cxx_flags "")
+endif()
+
 ExternalProject_Add(
     ${name}
     URL https://github.com/facebook/mvfst/archive/refs/tags/v${fb_release_tag}.00.tar.gz
@@ -14,8 +21,10 @@ ExternalProject_Add(
     STAMP_DIR ${BUILD_INFO_DIR}
     DOWNLOAD_DIR ${DOWNLOAD_DIR}
     SOURCE_DIR ${source_dir}
+    PATCH_COMMAND patch -p1 < ${CMAKE_SOURCE_DIR}/patches/${name}-${fb_package_name_part}.patch
     CMAKE_ARGS
         ${common_cmake_args}
+        "-DCMAKE_CXX_FLAGS=${default_cxx_flags} ${mvfst_extra_cxx_flags}"
         -DBUILD_TESTS=OFF
         -DBoost_NO_BOOST_CMAKE=ON
         -DBUILD_EXAMPLES=OFF

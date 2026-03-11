@@ -169,7 +169,7 @@ if ! check_cmake; then
     # Building the cmake
     echo "Building cmake from the source code..." 1>&2
     cd source
-    if ! bash -c "./bootstrap --prefix=$install_dir -- -DCMAKE_USE_OPENSSL=OFF && make -j install" 2&> $cmake_log_file; then
+    if ! bash -c "./bootstrap --prefix=$install_dir -- -DCMAKE_USE_OPENSSL=ON && make -j install" 2&> $cmake_log_file; then
         echo "Failed to build cmake"
         echo "  -- Please check $cmake_log_file for detail"
         exit 1

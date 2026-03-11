@@ -32,7 +32,7 @@ ExternalProject_Add(
         -DROCKSDB_SKIP_THIRDPARTY=ON
         -DUSE_RTTI=ON
         -DFAIL_ON_WARNINGS=OFF
-        "-DCMAKE_EXE_LINKER_FLAGS=${extra_lib_dirs} -lbz2 -lsnappy -lzstd"
+        "-DCMAKE_EXE_LINKER_FLAGS=${extra_lib_dirs} -lbz2 -llz4 -lsnappy -lzstd"
         "-DCMAKE_CXX_FLAGS=${default_cxx_flags} -DNPERF_CONTEXT"
     BUILD_IN_SOURCE 1
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}

@@ -362,7 +362,9 @@ maybe_add_dependencies(glog gflags)
 
 maybe_add_dependencies(googlebenchmark googletest)
 
-maybe_add_dependencies(duckdb ninja)
+if (NOT Ninja_FOUND)
+    maybe_add_dependencies(duckdb ninja)
+endif()
 
 maybe_add_dependencies(s2geometry googletest glog openssl abseil)
 

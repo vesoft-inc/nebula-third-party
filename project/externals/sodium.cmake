@@ -6,9 +6,9 @@ set(name sodium)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL https://download.libsodium.org/libsodium/releases/libsodium-1.0.18.tar.gz
-    URL_HASH MD5=3ca9ebc13b6b4735acae0a6a4c4f9a95
-    DOWNLOAD_NAME libsodium-1.0.18.tar.gz
+    URL https://download.libsodium.org/libsodium/releases/libsodium-1.0.20.tar.gz
+    URL_HASH MD5=597f2c7811f84e63e45e2277dfb5da46
+    DOWNLOAD_NAME libsodium-1.0.20.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}

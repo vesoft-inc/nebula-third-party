@@ -6,9 +6,9 @@ set(name datasketches)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL https://github.com/apache/datasketches-cpp/archive/refs/tags/4.1.0.tar.gz
-    URL_HASH MD5=d2b8d5ab5f379f1afd5fbf86ac5cfaf1
-    DOWNLOAD_NAME ${name}-4.1.0.tar.gz
+    URL https://github.com/apache/datasketches-cpp/archive/refs/tags/5.2.0.tar.gz
+    URL_HASH MD5=f6d606295cac2bdd6231ee0e8cf00313
+    DOWNLOAD_NAME ${name}-5.2.0.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}

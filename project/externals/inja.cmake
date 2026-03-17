@@ -6,9 +6,9 @@ set(name inja)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL https://github.com/pantor/inja/archive/34514c2658f809404b9a165591f242ee10250519.zip
-    URL_HASH MD5=f537dae8df3993c89f2d677953d2b08a
-    DOWNLOAD_NAME ${name}-master-2025-03-19.zip
+    URL https://github.com/pantor/inja/archive/refs/tags/v3.5.0.tar.gz
+    URL_HASH MD5=7c3ed6913747a13e2d9b22e48f380546
+    DOWNLOAD_NAME ${name}-3.5.0.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}

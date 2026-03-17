@@ -6,9 +6,9 @@ set(name libunwind)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL http://download.savannah.nongnu.org/releases/libunwind/libunwind-1.6.2.tar.gz
-    URL_HASH MD5=f625b6a98ac1976116c71708a73dc44a
-    DOWNLOAD_NAME libunwind-1.6.2.tar.gz
+    URL https://github.com/libunwind/libunwind/archive/refs/tags/v1.8.3.tar.gz
+    URL_HASH MD5=f49a7a52fb694a6dbe75c0f5db0f9c7d
+    DOWNLOAD_NAME libunwind-1.8.3.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}
@@ -17,14 +17,28 @@ ExternalProject_Add(
     CONFIGURE_COMMAND
         ${common_configure_envs}
         ./configure ${common_configure_args}
+                    --disable-tests
                     --disable-minidebuginfo
-                    --enable-shared --disable-static
+                    --enable-shared
+                    --disable-static
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     BUILD_IN_SOURCE 1
     INSTALL_COMMAND make -s install -j${BUILDING_JOBS_NUM}
     LOG_CONFIGURE TRUE
     LOG_BUILD TRUE
     LOG_INSTALL TRUE
+)
+
+
+# Starting from v1.8.1, the source code package does not include the configure command,
+# so we need to rerun autoconfig before we can run configure
+ExternalProject_Add_Step(${name} pre-configure
+    DEPENDEES patch
+    DEPENDERS configure
+    ALWAYS FALSE
+    COMMAND
+        autoreconf -ivf
+    WORKING_DIRECTORY ${source_dir}
 )
 
 ExternalProject_Add_Step(${name} clean

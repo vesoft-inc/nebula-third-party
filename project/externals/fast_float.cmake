@@ -1,14 +1,14 @@
-# Copyright (c) 2019 vesoft inc. All rights reserved.
+# Copyright (c) 2024 vesoft inc. All rights reserved.
 #
 # This source code is licensed under Apache 2.0 License.
 
-set(name s2geometry)
+set(name fast_float)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL  https://github.com/google/s2geometry/archive/v0.13.1.tar.gz
-    URL_HASH MD5=a29fa1952e9f96935d55363117ec2b81
-    DOWNLOAD_NAME ${name}-0.13.1.tar.gz
+    URL https://github.com/fastfloat/fast_float/archive/refs/tags/v8.2.3.tar.gz
+    URL_HASH MD5=ceed9d13d075cb98f844d3af993bdbfc
+    DOWNLOAD_NAME fast_float-8.2.3.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}
@@ -17,16 +17,9 @@ ExternalProject_Add(
     CMAKE_ARGS
         ${common_cmake_args}
         -DCMAKE_BUILD_TYPE=Release
-        -DS2_USE_GLOG=ON
-        -DBUILD_EXAMPLES=OFF
-        -DBUILD_TESTS=OFF
-        -DWITH_GLOG=ON
-        -DWITH_GFLAGS=ON
-        -DBUILD_SHARED_LIBS=ON
-        -DCMAKE_CXX_STANDARD=17
-    BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     BUILD_IN_SOURCE 1
-    INSTALL_COMMAND make -s -j${BUILDING_JOBS_NUM} install
+    BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
+    INSTALL_COMMAND make -s install -j${BUILDING_JOBS_NUM}
     LOG_CONFIGURE TRUE
     LOG_BUILD TRUE
     LOG_INSTALL TRUE

@@ -11,15 +11,15 @@ endif()
 
 ExternalProject_Add(
     ${name}
-    URL http://github.com/google/breakpad/archive/refs/tags/v2022.07.12.tar.gz
+    URL http://github.com/google/breakpad/archive/refs/tags/v2023.06.01.tar.gz
     URL_HASH MD5=d5bcfd3f7b361ef5bda96123c3abdd0a
-    DOWNLOAD_NAME breakpad-2022.07.12.tar.gz
+    DOWNLOAD_NAME breakpad-2023.06.01.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}
     DOWNLOAD_DIR ${DOWNLOAD_DIR}
     SOURCE_DIR ${source_dir}
-    PATCH_COMMAND bash -c "${patch_command}"
+#    PATCH_COMMAND bash -c "${patch_command}"
     CONFIGURE_COMMAND
         ${common_configure_envs}
         ./configure ${common_configure_args}
@@ -35,14 +35,14 @@ ExternalProject_Add(
 # The original repo for lss is https://chromium.googlesource.com/linux-syscall-support
 # For the well-known reason, you cannot download it successfully every time. Because
 # the code is not changing frequently, we pack it so that we don't have to download.
-ExternalProject_Add_Step(${name} post-download
-    DEPENDEES download
-    DEPENDERS update
-    ALWAYS FALSE
-    COMMAND
-        tar -C src/third_party/. -zxf ${CMAKE_SOURCE_DIR}/patches/lss-2021-12-20.tgz
-    WORKING_DIRECTORY ${source_dir}
-)
+#ExternalProject_Add_Step(${name} post-download
+#    DEPENDEES download
+#    DEPENDERS update
+#    ALWAYS FALSE
+#    COMMAND
+#        tar -C src/third_party/. -zxf ${CMAKE_SOURCE_DIR}/patches/lss-2021-12-20.tgz
+#    WORKING_DIRECTORY ${source_dir}
+#)
 
 ExternalProject_Add_Step(${name} clean
     EXCLUDE_FROM_MAIN TRUE

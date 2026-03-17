@@ -2,13 +2,13 @@
 #
 # This source code is licensed under Apache 2.0 License.
 
-set(name s2geometry)
+set(name ninja)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL  https://github.com/google/s2geometry/archive/v0.13.1.tar.gz
-    URL_HASH MD5=a29fa1952e9f96935d55363117ec2b81
-    DOWNLOAD_NAME ${name}-0.13.1.tar.gz
+    URL https://github.com/ninja-build/ninja/archive/refs/tags/v1.13.2.tar.gz
+    URL_HASH MD5=76c00637fde44909cd7d56f8d73f2042
+    DOWNLOAD_NAME ninja-1.13.2.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}
@@ -17,19 +17,7 @@ ExternalProject_Add(
     CMAKE_ARGS
         ${common_cmake_args}
         -DCMAKE_BUILD_TYPE=Release
-        -DS2_USE_GLOG=ON
-        -DBUILD_EXAMPLES=OFF
-        -DBUILD_TESTS=OFF
-        -DWITH_GLOG=ON
-        -DWITH_GFLAGS=ON
-        -DBUILD_SHARED_LIBS=ON
-        -DCMAKE_CXX_STANDARD=17
-    BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     BUILD_IN_SOURCE 1
-    INSTALL_COMMAND make -s -j${BUILDING_JOBS_NUM} install
-    LOG_CONFIGURE TRUE
-    LOG_BUILD TRUE
-    LOG_INSTALL TRUE
 )
 
 ExternalProject_Add_Step(${name} clean

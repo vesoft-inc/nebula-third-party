@@ -6,18 +6,18 @@
 
 set(name duckdb)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
-set(make_envs "env" "GEN=ninja" "BUILD_JEMALLOC=1")
+set(make_envs "env" "GEN=ninja" "BUILD_JEMALLOC=1" "STATIC_LIBCPP=1" "DUCKDB_PLATFORM=${CMAKE_HOST_SYSTEM_PROCESSOR}")
 ExternalProject_Add(
     ${name}
-    URL https://github.com/duckdb/duckdb/archive/refs/tags/v0.6.1.tar.gz
-    URL_HASH MD5=a1498ddceed95e448b9eb5a1f99fe467
-    DOWNLOAD_NAME duckdb-0.6.1.tar.gz
+    URL https://github.com/duckdb/duckdb/archive/refs/tags/v1.4.1.tar.gz
+    URL_HASH MD5=2e8fb18d6a77bf07e7cc355d9bfa8f89
+    DOWNLOAD_NAME duckdb-1.4.1.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}
     DOWNLOAD_DIR ${DOWNLOAD_DIR}
     SOURCE_DIR ${source_dir}
-    PATCH_COMMAND patch -p1 < ${CMAKE_SOURCE_DIR}/patches/${name}-0.6.1.patch
+    PATCH_COMMAND patch -p1 < ${CMAKE_SOURCE_DIR}/patches/${name}-1.4.1.patch
     CONFIGURE_COMMAND sed -i "s/DBUILD_JEMALLOC_EXTENSION=1/DBUILD_JEMALLOC_EXTENSION=0/" ${source_dir}/Makefile
     BUILD_COMMAND
         "${make_envs}"
@@ -46,7 +46,12 @@ ExternalProject_Add_Step(${name} custom-install
     COMMAND cp build/release/third_party/libpg_query/libduckdb_pg_query.a ${CMAKE_INSTALL_PREFIX}/lib/
     COMMAND cp build/release/third_party/fsst/libduckdb_fsst.a ${CMAKE_INSTALL_PREFIX}/lib/
     COMMAND cp build/release/third_party/mbedtls/libduckdb_mbedtls.a ${CMAKE_INSTALL_PREFIX}/lib/
+    COMMAND cp build/release/third_party/zstd/libduckdb_zstd.a ${CMAKE_INSTALL_PREFIX}/lib/
+    COMMAND cp build/release/third_party/yyjson/libduckdb_yyjson.a ${CMAKE_INSTALL_PREFIX}/lib/
+    COMMAND cp build/release/third_party/skiplist/libduckdb_skiplistlib.a ${CMAKE_INSTALL_PREFIX}/lib/
     COMMAND cp build/release/extension/parquet/libparquet_extension.a ${CMAKE_INSTALL_PREFIX}/lib/
+    COMMAND cp build/release/extension/jemalloc/libjemalloc_extension.a ${CMAKE_INSTALL_PREFIX}/lib/
+    COMMAND cp build/release/extension/core_functions/libcore_functions_extension.a ${CMAKE_INSTALL_PREFIX}/lib/
     WORKING_DIRECTORY ${source_dir}
     LOG TRUE
 )

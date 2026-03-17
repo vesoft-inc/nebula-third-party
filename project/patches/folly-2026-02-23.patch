@@ -1,0 +1,108 @@
+diff -ur a/folly/debugging/exception_tracer/ExceptionTracerLib.cpp b/folly/debugging/exception_tracer/ExceptionTracerLib.cpp
+--- a/folly/debugging/exception_tracer/ExceptionTracerLib.cpp     2026-02-23 23:23:23.000000000 +0800
++++ b/folly/debugging/exception_tracer/ExceptionTracerLib.cpp     2026-02-26 17:11:10.111120945 +0800
+@@ -233,6 +233,7 @@
+
+ namespace std {
+
++#if 0
+ __attribute__((__noreturn__)) void rethrow_exception(std::exception_ptr ep) {
+   // Mangled name for std::rethrow_exception
+   // TODO(tudorb): Dicey, as it relies on the fact that std::exception_ptr
+@@ -244,6 +245,7 @@
+   orig_rethrow_exception(std::move(ep));
+   __builtin_unreachable(); // orig_rethrow_exception never returns
+ }
++#endif
+
+ } // namespace std
+ #endif
+diff -ur a/folly/SharedMutex.h b/folly/SharedMutex.h
+--- a/folly/SharedMutex.h   2026-03-03 14:02:01.366390295 +0800
++++ b/folly/SharedMutex.h   2026-03-03 14:13:27.474247275 +0800
+@@ -30,6 +30,7 @@
+ #include <folly/CPortability.h>
+ #include <folly/CppAttributes.h>
+ #include <folly/Likely.h>
++#include <folly/LockHolder.h>
+ #include <folly/chrono/Hardware.h>
+ #include <folly/concurrency/CacheLocality.h>
+ #include <folly/detail/Futex.h>
+@@ -360,6 +361,10 @@
+
+   typedef SharedMutexToken Token;
+
++  using ReadHolder = ReadHolderImpl<SharedMutexImpl>;
++  using WriteHolder = WriteHolderImpl<SharedMutexImpl>;
++  using UpgradeHolder = UpgradeHolderImpl<SharedMutexImpl>;
++
+   constexpr SharedMutexImpl() noexcept : state_(0) {}
+
+   SharedMutexImpl(const SharedMutexImpl&) = delete;
+diff -ur a/folly/synchronization/RWSpinLock.h b/folly/synchronization/RWSpinLock.h
+--- a/folly/synchronization/RWSpinLock.h    2026-03-03 14:15:48.598220463 +0800
++++ b/folly/synchronization/RWSpinLock.h    2026-03-03 14:17:12.706211809 +0800
+@@ -100,6 +100,7 @@
+ #include <thread>
+
+ #include <folly/Likely.h>
++#include <folly/LockHolder.h>
+ #include <folly/synchronization/Lock.h>
+
+ namespace folly {
+@@ -123,6 +124,10 @@
+   enum : int32_t { SHARED = 4, UPGRADE = 2, EXCLUSIVE = 1 };
+
+  public:
++  using ReadHolder = ReadHolderImpl<RWSpinLock>;
++  using WriteHolder = WriteHolderImpl<RWSpinLock>;
++  using UpgradeHolder = UpgradeHolderImpl<RWSpinLock>;
++
+   constexpr RWSpinLock() : bits_(0) {}
+
+   RWSpinLock(RWSpinLock const&) = delete;
+diff -ur a/folly/fibers/TimedMutex.h b/folly/fibers/TimedMutex.h
+--- a/folly/fibers/TimedMutex.h    2026-03-04 15:28:31.855602154 +0800
++++ b/folly/fibers/TimedMutex.h    2026-03-04 15:30:58.915579085 +0800
+@@ -18,6 +18,7 @@
+
+ #include <folly/IntrusiveList.h>
+ #include <folly/Portability.h>
++#include <folly/LockHolder.h>
+ #include <folly/SpinLock.h>
+ #include <folly/fibers/GenericBaton.h>
+
+@@ -72,6 +73,10 @@
+     bool stealing_ = true;
+   };
+
++  using ReadHolder = ReadHolderImpl<TimedMutex>;
++  using WriteHolder = WriteHolderImpl<TimedMutex>;
++  using UpgradeHolder = UpgradeHolderImpl<TimedMutex>;
++
+   TimedMutex(Options options = Options()) noexcept
+       : options_(std::move(options)) {}
+
+@@ -145,6 +150,10 @@
+ template <bool ReaderPriority, typename BatonType>
+ class TimedRWMutexImpl {
+  public:
++  using ReadHolder = ReadHolderImpl<TimedRWMutexImpl>;
++  using WriteHolder = WriteHolderImpl<TimedRWMutexImpl>;
++  using UpgradeHolder = UpgradeHolderImpl<TimedRWMutexImpl>;
++
+   TimedRWMutexImpl() = default;
+   ~TimedRWMutexImpl() = default;
+
+diff -ur a/folly/io/async/AsyncSocketTransport.cpp b/folly/io/async/AsyncSocketTransport.cpp
+--- a/folly/io/async/AsyncSocketTransport.cpp   2026-03-11 20:35:27.773311693 +0800
++++ b/folly/io/async/AsyncSocketTransport.cpp   2026-03-11 20:37:09.412608892 +0800
+@@ -25,7 +25,7 @@
+ }
+
+ int AsyncSocketTransport::getNapiId() const {
+-#if defined(__linux__)
++#if defined(__linux__) && !defined(__linux_too_old)
+   int id = -1;
+   socklen_t len = sizeof(id);
+   auto ret = ::getsockopt(

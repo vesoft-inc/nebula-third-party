@@ -39,7 +39,7 @@ function version_cmp {
 function check_cmake {
     hash cmake &> /dev/null || { echo "No cmake found." 1>&2 ; return 1; }
     local cmake_version=$(cmake --version | head -1 | cut -d ' ' -f 3)
-    local least_cmake_version=3.14.0
+    local least_cmake_version=3.29.0
     if [[ $(version_cmp $cmake_version $least_cmake_version) -lt 0 ]]
     then
         echo "cmake $least_cmake_version or higher required, but only found $cmake_version" 1>&2
@@ -109,7 +109,7 @@ then
 fi
 
 # NOTE Please adjust the expected checksum once the source tarball changed
-if [[ ! $checksum = d466687c0f2946fd300e8c2bca42a5d7 ]]
+if [[ ! $checksum = 71ed553fdc6d956c30e7230ae59e6a2f ]]
 then
     rm -f $source_tar_name
     hash wget &> /dev/null && download_cmd="wget -c"
@@ -135,15 +135,15 @@ if ! check_cmake; then
     echo "Need to build cmake"
     mkdir -p $build_dir/build-info
     cmake_log_file=$build_dir/build-info/cmake-build.log
-    cmake_source_tar=$build_root/tarballs/cmake-v3.21.4.tar.gz
+    cmake_source_tar=$build_root/tarballs/cmake-3.29.9.tar.gz
     # Check the downloaded source tarball
     if [[ -f $cmake_source_tar ]]; then
         cmake_checksum=$(md5sum $cmake_source_tar | cut -d ' ' -f 1)
     fi
-    if [[ ! $cmake_checksum = 3747c1a51d4a7ad61f08862481437264 ]]; then
+    if [[ ! $cmake_checksum = 9f19aefd896905781e87544bb5e2ca17 ]]; then
         # Try to download cmake tar ball
         hash wget &> /dev/null && download_cmd="wget -c"
-        cmake_source_url="https://gitlab.kitware.com/cmake/cmake/-/archive/v3.21.4/cmake-v3.21.4.tar.gz"
+        cmake_source_url="https://cmake.org/files/v3.29/cmake-3.29.9.tar.gz"
         mkdir -p $build_root/tarballs
         cd $build_root/tarballs
         if [[ -z $download_cmd ]]; then
@@ -160,7 +160,7 @@ if ! check_cmake; then
     echo -n "Extracting cmake source into $build_root/build/cmake/source..." 1>&2
     mkdir -p $build_root/build/cmake
     cd $build_root/build/cmake
-    if ! mkdir -p source && tar -xzf $cmake_source_tar -C ./source --strip-components=1; then
+    if ! (mkdir -p source && tar -xzf $cmake_source_tar -C ./source --strip-components=1); then
         echo "corrupted" 1>&2
         exit 1
     fi
@@ -169,7 +169,7 @@ if ! check_cmake; then
     # Building the cmake
     echo "Building cmake from the source code..." 1>&2
     cd source
-    if ! bash -c "./bootstrap --prefix=$install_dir -- -DCMAKE_USE_OPENSSL=OFF && make -j install" 2&> $cmake_log_file; then
+    if ! bash -c "./bootstrap --prefix=$install_dir CXXFLAGS=\"-static-libstdc++ -static-libgcc\" -- -DCMAKE_USE_OPENSSL=ON && make -j install" 2&> $cmake_log_file; then
         echo "Failed to build cmake"
         echo "  -- Please check $cmake_log_file for detail"
         exit 1
@@ -209,7 +209,7 @@ end_time=$(date +%s)
 find $install_dir -name '*.la' | xargs rm -f
 
 # Remove big unneeded binaries
-binaries+=(openssl gss-client dump_syms_mac)
+binaries+=(gss-client dump_syms_mac)
 binaries+=(uuclient sim_client)
 binaries+=(sclient compile_et)
 binaries+=(c_rehash gflags_completions.sh)

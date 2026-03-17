@@ -47,7 +47,7 @@ jobs:
           - ubuntu2404
         arch:
           - x64
-          - arm64
+          #- arm64
     container:
       image: vesoft/third-party-build:${{ matrix.os }}
     steps:

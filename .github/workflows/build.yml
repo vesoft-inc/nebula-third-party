@@ -24,7 +24,7 @@ defaults:
     shell: bash
 
 env:
-  VERSION: 5.1
+  VERSION: 20260226
   URL_BASE: https://minio.vesoft-inc.com/rc-build/third-party
 
 jobs:
@@ -60,7 +60,7 @@ jobs:
       run: |
         export URL=https://raw.githubusercontent.com/vesoft-inc/nebula-gears/master/install
         bash <(curl -Ls $URL)
-        install-gcc --version=9.5.0
+        install-gcc --version=13.4.0
     - name: Pre-Build
       run: |
         mkdir -p _build
@@ -70,7 +70,7 @@ jobs:
     - name: Build
       run: |
         if [[ "${{ matrix.os }}" == "centos7" ]]; then
-          export TOOLSET_GCC_DIR=/opt/vesoft/toolset/gcc/9.5.0
+          export TOOLSET_GCC_DIR=/opt/vesoft/toolset/gcc/13.4.0
           export CC=${TOOLSET_GCC_DIR}/bin/gcc
           export CXX=${TOOLSET_GCC_DIR}/bin/g++
           export PATH=${TOOLSET_GCC_DIR}/bin:${PATH}

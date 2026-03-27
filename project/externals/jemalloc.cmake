@@ -23,7 +23,9 @@ ExternalProject_Add(
     CONFIGURE_COMMAND
         ${common_configure_envs}
         ./autogen.sh ${common_configure_args}
-                    --enable-stats --enable-prof
+                    --enable-stats
+                    --enable-prof
+                    --disable-cxx
                     --with-version=5.3.0-0-gdeadbeaf    # jemalloc relies on this option to set various version related macros
                     ${page_size_opts}
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}

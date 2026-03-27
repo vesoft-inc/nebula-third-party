@@ -131,7 +131,7 @@ get_filename_component(LIB_GCC_DIR ${libgcc_path} DIRECTORY CACHE)
 message(STATUS "MIPS_LINK_FLAGS: ${MIPS_LINK_FLAGS}")
 
 set(extra_lib_dirs "-L${CMAKE_INSTALL_PREFIX}/lib -L${CMAKE_INSTALL_PREFIX}/lib64")
-set(extra_link_libs "${MIPS_LINK_FLAGS} ${extra_lib_dirs} -static-libstdc++ -static-libgcc -pthread -ldl")
+set(extra_link_libs "${MIPS_LINK_FLAGS} ${extra_lib_dirs} -pthread -ldl")
 if (${DISABLE_CXX11_ABI})
     set(extra_cpp_flags "-D_GLIBCXX_USE_CXX11_ABI=0")
 else()
@@ -162,7 +162,7 @@ set(common_cmake_args
     "-DCMAKE_EXE_LINKER_FLAGS=${extra_link_libs} -Wl,-rpath=\$ORIGIN/../lib:\$ORIGIN/../lib64"
     "-DCMAKE_SHARED_LINKER_FLAGS=${extra_link_libs} -Wl,-rpath=\$ORIGIN:\$ORIGIN/../3rd:\$ORIGIN/../lib64:\$ORIGIN/../lib"
     -DCMAKE_INCLUDE_PATH=${CMAKE_INSTALL_PREFIX}/include
-    "-DCMAKE_LIBRARY_PATH=${CMAKE_INSTALL_PREFIX}/lib:${CMAKE_INSTALL_PREFIX}/lib64"
+    "-DCMAKE_LIBRARY_PATH=${CMAKE_INSTALL_PREFIX}/lib;${CMAKE_INSTALL_PREFIX}/lib64"
     -DBUILD_SHARED_LIBS=ON
 )
 

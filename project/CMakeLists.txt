@@ -340,7 +340,7 @@ maybe_add_dependencies(autoconf-archive autoconf)
 maybe_add_dependencies(automake autoconf autoconf-archive)
 maybe_add_dependencies(libtool automake)
 
-maybe_add_dependencies(glog libtool libunwind)
+maybe_add_dependencies(glog gflags libtool libunwind)
 maybe_add_dependencies(gettext libtool)
 maybe_add_dependencies(bison gettext libtool)
 maybe_add_dependencies(flex libtool)
@@ -357,8 +357,6 @@ maybe_add_dependencies(ldap libtool openssl)
 
 maybe_add_dependencies(boost openssl zlib bzip2 lzma)
 maybe_add_dependencies(mstch boost)
-
-maybe_add_dependencies(glog gflags)
 
 maybe_add_dependencies(googlebenchmark googletest)
 

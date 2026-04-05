@@ -200,7 +200,7 @@ set(common_configure_envs
     "CFLAGS=${CMAKE_C_FLAGS} -fcommon -fno-omit-frame-pointer -fPIC -fpermissive -Wno-error=implicit-function-declaration -O2 -D_DEFAULT_SOURCE -D_GNU_SOURCE ${extra_cpp_flags} ${ISA_FLAGS}"
     "CXXFLAGS=${default_cxx_flags} -fcommon -fpermissive -Wno-error=implicit-function-declaration -O2 -D_DEFAULT_SOURCE -D_GNU_SOURCE"
     "CPPFLAGS=-isystem ${CMAKE_INSTALL_PREFIX}/include ${extra_cpp_flags}"
-    "LDFLAGS=-Wl,-rpath=\\\\$\\$ORIGIN:\\\\$\\$ORIGIN/../3rd ${ld_flags}"
+    "LDFLAGS=-Wl,-rpath=\\\\$\\$ORIGIN:\\\\$\\$ORIGIN/../3rd:\\\\$\\$ORIGIN/../lib:\\\\$\\$ORIGIN/../lib64 ${ld_flags}"
     "LD_LIBRARY_PATH=$$LD_LIBRARY_PATH:${CMAKE_INSTALL_PREFIX}/lib:${CMAKE_INSTALL_PREFIX}/lib64"
     "PATH=${BUILDING_PATH}"
     "ACLOCAL_PATH=${ACLOCAL_PATH}"

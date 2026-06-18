@@ -6,9 +6,9 @@ set(name rocksdb)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL https://github.com/facebook/rocksdb/archive/refs/tags/v10.10.1.tar.gz
-    URL_HASH MD5=a3010c81c78438908bd6ba92a295c2cb
-    DOWNLOAD_NAME rocksdb-10.10.1.tar.gz
+    URL https://github.com/facebook/rocksdb/archive/refs/tags/v11.1.1.tar.gz
+    URL_HASH MD5=47e6e90678637d47a46308f89f3f73a1
+    DOWNLOAD_NAME rocksdb-11.1.1.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}

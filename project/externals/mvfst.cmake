@@ -14,7 +14,7 @@ endif()
 ExternalProject_Add(
     ${name}
     URL https://github.com/facebook/mvfst/archive/refs/tags/v${fb_release_tag}.00.tar.gz
-    URL_HASH MD5=e513ea3dd7252d16ba7dfbb2dae14f06
+    URL_HASH MD5=681d9036597eff4941a0715390e1d936
     DOWNLOAD_NAME mvfst-${fb_package_name_part}.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}

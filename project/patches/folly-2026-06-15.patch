@@ -17,6 +17,17 @@ diff -ur a/folly/debugging/exception_tracer/ExceptionTracerLib.cpp b/folly/debug
 
  } // namespace std
  #endif
+diff -ur a/folly/lang/Exception.h b/folly/lang/Exception.h
+--- a/folly/lang/Exception.h    2026-06-17 20:51:55.566157932 +0800
++++ b/folly/lang/Exception.h    2026-06-17 20:46:49.864921031 +0800
+@@ -20,6 +20,7 @@
+ #include <exception>
+ #include <functional>
+ #include <string>
++#include <cstring>
+ #include <type_traits>
+ #include <utility>
+
 diff -ur a/folly/SharedMutex.h b/folly/SharedMutex.h
 --- a/folly/SharedMutex.h   2026-03-03 14:02:01.366390295 +0800
 +++ b/folly/SharedMutex.h   2026-03-03 14:13:27.474247275 +0800

@@ -6,9 +6,9 @@ set(name s2geometry)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL  https://github.com/google/s2geometry/archive/v0.13.1.tar.gz
-    URL_HASH MD5=a29fa1952e9f96935d55363117ec2b81
-    DOWNLOAD_NAME ${name}-0.13.1.tar.gz
+    URL  https://github.com/google/s2geometry/archive/v0.14.0.tar.gz
+    URL_HASH MD5=ec35ce84f5b5ac1f0a8a685afa82b80f
+    DOWNLOAD_NAME ${name}-0.14.0.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}

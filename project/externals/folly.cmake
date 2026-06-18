@@ -14,7 +14,7 @@ endif()
 ExternalProject_Add(
     ${name}
     URL https://github.com/facebook/folly/archive/refs/tags/v${fb_release_tag}.00.tar.gz
-    URL_HASH MD5=636157ede962b5d0562633ff6b9c3749
+    URL_HASH MD5=d83be6983a5eba991e46da04dfd31593
     DOWNLOAD_NAME folly-${fb_package_name_part}.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
@@ -26,7 +26,7 @@ ExternalProject_Add(
         ${common_cmake_args}
         -DCMAKE_BUILD_TYPE=Release
         -DBoost_NO_BOOST_CMAKE=ON
-        "-DCMAKE_CXX_FLAGS=${default_cxx_flags} ${folly_extra_cxx_flags} -D__STDC_FORMAT_MACROS=1 -DFOLLY_HAVE_CLOCK_GETTIME -D__USE_POSIX199309"
+        "-DCMAKE_CXX_FLAGS=${default_cxx_flags} ${folly_extra_cxx_flags} -fpermissive -D__STDC_FORMAT_MACROS=1 -DFOLLY_HAVE_CLOCK_GETTIME -D__USE_POSIX199309"
         -DFOLLY_CXX_FLAGS=-Wno-error
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     BUILD_IN_SOURCE 1

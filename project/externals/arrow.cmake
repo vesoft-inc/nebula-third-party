@@ -44,7 +44,7 @@ set(arrow_cmake_args
         -DUSE_LLVM_CXX=${USE_LLVM_CXX}
         -DCMAKE_SHARED_LINKER_FLAGS=-Wl,-rpath=\$ORIGIN:\$ORIGIN/../3rd
         "-DCMAKE_CXX_FLAGS=${default_cxx_flags} -fpermissive"
-        "-DCMAKE_C_FLAGS=${default_c_flags} -fpermissive"
+        "-DCMAKE_C_FLAGS=${default_c_flags}"
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
         )
 

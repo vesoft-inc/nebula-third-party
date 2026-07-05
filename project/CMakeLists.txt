@@ -197,7 +197,7 @@ set(common_configure_envs
     "env"
     "CC=${CMAKE_C_COMPILER}"
     "CXX=${CMAKE_CXX_COMPILER}"
-    "CFLAGS=${CMAKE_C_FLAGS} -fcommon -fno-omit-frame-pointer -fPIC -fpermissive -Wno-error=implicit-function-declaration -O2 -D_DEFAULT_SOURCE -D_GNU_SOURCE ${extra_cpp_flags} ${ISA_FLAGS}"
+    "CFLAGS=${CMAKE_C_FLAGS} -fcommon -fno-omit-frame-pointer -fPIC -Wno-error=implicit-function-declaration -O2 -D_DEFAULT_SOURCE -D_GNU_SOURCE ${extra_cpp_flags} ${ISA_FLAGS}"
     "CXXFLAGS=${default_cxx_flags} -fcommon -fpermissive -Wno-error=implicit-function-declaration -O2 -D_DEFAULT_SOURCE -D_GNU_SOURCE"
     "CPPFLAGS=-isystem ${CMAKE_INSTALL_PREFIX}/include ${extra_cpp_flags}"
     "LDFLAGS=-Wl,-rpath=\\\\$\\$ORIGIN:\\\\$\\$ORIGIN/../3rd:\\\\$\\$ORIGIN/../lib:\\\\$\\$ORIGIN/../lib64 ${ld_flags}"

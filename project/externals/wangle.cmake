@@ -6,9 +6,9 @@ set(name wangle)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL https://github.com/facebook/wangle/archive/refs/tags/v2022.12.26.00.tar.gz
-    URL_HASH MD5=8e3200855c6382bf40ec2051e467cdab
-    DOWNLOAD_NAME wangle-2022-12-26.tar.gz
+    URL https://github.com/facebook/wangle/archive/refs/tags/v${fb_release_tag}.00.tar.gz
+    URL_HASH MD5=11f9bee98edf2ebaf852c80cedc4a179
+    DOWNLOAD_NAME wangle-${fb_package_name_part}.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}
@@ -32,10 +32,27 @@ ExternalProject_Add_Step(${name} mannual-configure
         -DBoost_NO_BOOST_CMAKE=ON
         -DCMAKE_BUILD_TYPE=Release
         -DBUILD_TESTS=OFF
+        -DBUILD_EXAMPLES=OFF
         -DCMAKE_EXE_LINKER_FLAGS=-latomic
         -DOPENSSL_ROOT_DIR=${CMAKE_INSTALL_PREFIX}
         .
     WORKING_DIRECTORY <SOURCE_DIR>/wangle
+)
+
+ExternalProject_Add_Step(${name} copy-headers
+    DEPENDEES build
+    DEPENDERS install
+    COMMAND mkdir -p ${CMAKE_INSTALL_PREFIX}/include/wangle/acceptor
+    COMMAND mkdir -p ${CMAKE_INSTALL_PREFIX}/include/wangle/ssl
+    COMMAND mkdir -p ${CMAKE_INSTALL_PREFIX}/include/wangle/bootstrap
+    COMMAND mkdir -p ${CMAKE_INSTALL_PREFIX}/include/wangle/channel
+    COMMAND mkdir -p ${CMAKE_INSTALL_PREFIX}/include/wangle/client/persistence
+    COMMAND bash -c "cp ${source_dir}/wangle/acceptor/*.h ${CMAKE_INSTALL_PREFIX}/include/wangle/acceptor/."
+    COMMAND bash -c "cp ${source_dir}/wangle/ssl/*.h ${CMAKE_INSTALL_PREFIX}/include/wangle/ssl/."
+    COMMAND bash -c "cp ${source_dir}/wangle/bootstrap/*.h ${CMAKE_INSTALL_PREFIX}/include/wangle/bootstrap/."
+    COMMAND bash -c "cp ${source_dir}/wangle/channel/*.h ${CMAKE_INSTALL_PREFIX}/include/wangle/channel/."
+    COMMAND bash -c "cp ${source_dir}/wangle/client/persistence/*.h ${CMAKE_INSTALL_PREFIX}/include/wangle/client/persistence/."
+    WORKING_DIRECTORY <SOURCE_DIR>
 )
 
 ExternalProject_Add_Step(${name} clean

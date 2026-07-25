@@ -6,13 +6,14 @@ set(name automake)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL https://ftp.gnu.org/gnu/automake/automake-1.16.5.tar.xz
-    URL_HASH MD5=4017e96f89fca45ca946f1c5db6be714
+    URL https://ftp.gnu.org/gnu/automake/automake-1.17.tar.xz
+    URL_HASH MD5=7ab3a02318fee6f5bd42adfc369abf10
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}
     DOWNLOAD_DIR ${DOWNLOAD_DIR}
     SOURCE_DIR ${source_dir}
+    PATCH_COMMAND patch -p1 < ${CMAKE_SOURCE_DIR}/patches/${name}-1.17.patch
     CONFIGURE_COMMAND
         ${common_configure_envs}
         "LIBS=${LIBS}"

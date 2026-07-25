@@ -6,9 +6,9 @@ set(name valijson)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL https://github.com/tristanpenman/valijson/archive/refs/tags/v1.0.4.tar.gz
-    URL_HASH MD5=8149558a10e73dc39a7a6baef1b3d19c
-    DOWNLOAD_NAME ${name}-1.0.4.tar.gz
+    URL https://github.com/tristanpenman/valijson/archive/refs/tags/v1.1.0.tar.gz
+    URL_HASH MD5=b57ea4c0ae601889433e86e5cc626ff0
+    DOWNLOAD_NAME ${name}-1.1.0.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}

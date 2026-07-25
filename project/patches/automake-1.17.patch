@@ -1,0 +1,12 @@
+diff -ur a/Makefile.in b/Makefile.in
+--- a/Makefile.in	2024-07-12 13:07:36.511072945 +0800
++++ b/Makefile.in	2024-11-24 09:14:59.001018283 +0800
+@@ -738,7 +738,7 @@
+ update_mans = \
+     $(MKDIR_P) doc \
+     && AUTOMAKE_HELP2MAN=true ./pre-inst-env \
+-       $(PERL) $(srcdir)/doc/help2man --output=$@ --info-page=automake \
++       $(PERL) $(srcdir)/doc/help2man --no-discard-stderr --output=$@ --info-page=automake \
+                --name="$${HELP2MAN_NAME}"
+
+ checklinkx = $(top_srcdir)/contrib/checklinkx

@@ -6,9 +6,9 @@ set(name eigen)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL https://gitlab.com/libeigen/eigen/-/archive/3.4.0/eigen-3.4.0.zip
-    URL_HASH MD5=a83cb9a2cbba2dd52c137ac62d33d847
-    DOWNLOAD_NAME eigen-3.4.0.zip
+    URL https://gitlab.com/libeigen/eigen/-/archive/5.0.0/eigen-5.0.1.zip
+    URL_HASH MD5=b531d6c5c1e32cdddb4658a4c6655f69
+    DOWNLOAD_NAME eigen-5.0.1.zip
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}

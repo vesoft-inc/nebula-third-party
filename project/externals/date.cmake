@@ -6,14 +6,15 @@ set(name date)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL https://github.com/HowardHinnant/date/archive/refs/tags/v3.0.1.tar.gz
-    URL_HASH MD5=78902f47f7931a3ae8a320e0dea1f20a
-    DOWNLOAD_NAME date-3.0.1.tar.gz
+    URL https://github.com/HowardHinnant/date/archive/refs/tags/v3.0.4.tar.gz
+    URL_HASH MD5=7a716762dcf1f8d8f40ed1aaa207a22e
+    DOWNLOAD_NAME date-3.0.4.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}
     DOWNLOAD_DIR ${DOWNLOAD_DIR}
     SOURCE_DIR ${source_dir}
+    PATCH_COMMAND patch -p1 < ${CMAKE_SOURCE_DIR}/patches/${name}-3.0.4.patch
     CMAKE_ARGS
         ${common_cmake_args}
         -DUSE_SYSTEM_TZ_DB=ON

@@ -6,9 +6,9 @@ set(name utf8proc)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL https://github.com/JuliaStrings/utf8proc/archive/refs/tags/v2.8.0.tar.gz
-    URL_HASH MD5=00de586d00c133bfb3caae335279d741
-    DOWNLOAD_NAME utf8proc-2.8.0.tar.gz
+    URL https://github.com/JuliaStrings/utf8proc/archive/refs/tags/v2.11.3.tar.gz
+    URL_HASH MD5=09773a9a9c4029b1e547fe398e555411
+    DOWNLOAD_NAME utf8proc-2.11.3.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}

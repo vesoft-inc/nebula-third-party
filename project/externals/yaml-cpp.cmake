@@ -6,9 +6,9 @@ set(name yaml-cpp)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL https://github.com/jbeder/yaml-cpp/archive/2f86d13775d119edbb69af52e5f566fd65c6953b.zip
-    URL_HASH MD5=8cba45665536adf41356e964b07d04f2
-    DOWNLOAD_NAME ${name}-master.zip
+    URL https://github.com/jbeder/yaml-cpp/archive/refs/tags/yaml-cpp-0.9.0.tar.gz
+    URL_HASH MD5=7d17de1b2a4b1d2776181f67c940bcdf
+    DOWNLOAD_NAME ${name}-0.9.0.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}

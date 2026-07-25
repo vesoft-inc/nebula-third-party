@@ -1,25 +1,25 @@
 diff -ur a/CMakeLists.txt b/CMakeLists.txt
---- a/CMakeLists.txt  2021-05-04 15:53:34.000000000 -0700
-+++ b/CMakeLists.txt  2021-11-14 09:50:53.929196683 -0800
-@@ -51,10 +51,6 @@
-   string(REGEX REPLACE "/EH[a-z]+" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
-   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHs-c-")
+--- a/CMakeLists.txt  2025-05-05 11:45:59.292627915 +0800
++++ b/CMakeLists.txt  2025-05-05 11:46:50.922592710 +0800
+@@ -53,8 +53,8 @@
    add_definitions(-D_HAS_EXCEPTIONS=0)
--
--  # Disable RTTI.
+
+   # Disable RTTI.
 -  string(REGEX REPLACE "/GR" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
 -  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /GR-")
- else(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
++#  string(REGEX REPLACE "/GR" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
++#  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /GR-")
+ else(MSVC)
    # Use -Wall for clang and gcc.
    if(NOT CMAKE_CXX_FLAGS MATCHES "-Wall")
-@@ -76,10 +72,6 @@
-   # Disable C++ exceptions.
-   string(REGEX REPLACE "-fexceptions" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+@@ -83,8 +83,8 @@
    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-exceptions")
--
--  # Disable RTTI.
+
+   # Disable RTTI.
 -  string(REGEX REPLACE "-frtti" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
 -  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-rtti")
- endif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
++#  string(REGEX REPLACE "-frtti" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
++#  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-rtti")
+ endif(MSVC)
 
  # BUILD_SHARED_LIBS is a standard CMake variable, but we declare it here to make

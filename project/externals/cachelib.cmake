@@ -4,26 +4,25 @@
 
 set(name cachelib)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
-set(version "2022.12.26")
+set(version "20240621")
 
 ExternalProject_Add(
     ${name}
-    URL http://github.com/facebook/cachelib/archive/refs/tags/v${version}.00.tar.gz
-    URL_HASH MD5=6ff1cc495ab500d5b1053248f069a087
-    DOWNLOAD_NAME cachelib-${version}.tar.gz
+    URL https://github.com/facebook/CacheLib/archive/refs/tags/v${fb_release_tag}.00.tar.gz
+    URL_HASH MD5=4e99f64f93829b18d2b8afaad4f5ce2e
+    DOWNLOAD_NAME cachelib-${fb_package_name_part}.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}
     DOWNLOAD_DIR ${DOWNLOAD_DIR}
     SOURCE_DIR ${source_dir}
     SOURCE_SUBDIR cachelib
-    PATCH_COMMAND patch -p1 < ${CMAKE_SOURCE_DIR}/patches/${name}-2022-12-26.patch
     CMAKE_ARGS
         ${common_cmake_args}
         -DCMAKE_BUILD_TYPE=Release
         -DBoost_NO_BOOST_CMAKE=ON
         -DBUILD_TESTS=OFF
-        "-DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS} -Wno-error=deprecated-declarations ${extra_cpp_flags}"
+        "-DCMAKE_CXX_FLAGS=${default_cxx_flags} -Wno-error=deprecated-declarations"
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     BUILD_IN_SOURCE 1
     INSTALL_COMMAND make -s install -j${BUILDING_JOBS_NUM}

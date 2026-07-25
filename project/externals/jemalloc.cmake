@@ -12,9 +12,9 @@ endif()
 
 ExternalProject_Add(
     ${name}
-    URL https://github.com/jemalloc/jemalloc/archive/refs/tags/5.3.0.tar.gz
-    URL_HASH MD5=594dd8e0a1e8c1ef8a1b210a1a5aff5b
-    DOWNLOAD_NAME jemalloc-5.3.0.tar.gz
+    URL https://github.com/jemalloc/jemalloc/archive/refs/tags/5.3.1.tar.gz
+    URL_HASH MD5=e35b6fc789595e634ae126d28cbfb9bc
+    DOWNLOAD_NAME jemalloc-5.3.1.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}
@@ -23,7 +23,9 @@ ExternalProject_Add(
     CONFIGURE_COMMAND
         ${common_configure_envs}
         ./autogen.sh ${common_configure_args}
-                    --enable-stats --enable-prof
+                    --enable-stats
+                    --enable-prof
+                    --disable-cxx
                     --with-version=5.3.0-0-gdeadbeaf    # jemalloc relies on this option to set various version related macros
                     ${page_size_opts}
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}

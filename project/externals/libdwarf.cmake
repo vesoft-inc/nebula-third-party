@@ -2,9 +2,9 @@ set(name libdwarf)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL https://www.prevanders.net/libdwarf-0.9.0.tar.xz
-    URL_HASH MD5=4b36d4b3031f8937b7c408d2eed221ed
-    DOWNLOAD_NAME libdwarf-0.9.0.tar.xz
+    URL https://www.prevanders.net/libdwarf-0.11.1.tar.xz
+    URL_HASH MD5=883624189484e8864cf5962a6838479f
+    DOWNLOAD_NAME libdwarf-0.11.1.tar.xz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}

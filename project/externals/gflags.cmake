@@ -6,9 +6,9 @@ set(name gflags)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL https://github.com/gflags/gflags/archive/v2.2.2.tar.gz
-    URL_HASH MD5=1a865b93bacfa963201af3f75b7bd64c
-    DOWNLOAD_NAME gflags-2.2.2.tar.gz
+    URL https://github.com/gflags/gflags/archive/refs/tags/v2.3.0.tar.gz
+    URL_HASH MD5=7a151c1019d8a9fd2c126b7d9905e75b
+    DOWNLOAD_NAME gflags-2.3.0.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}

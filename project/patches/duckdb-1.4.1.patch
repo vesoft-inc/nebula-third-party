@@ -1,0 +1,20 @@
+--- a/third_party/thrift/thrift/transport/TBufferTransports.h   2025-07-30 10:52:34.532383760 +0800
++++ b/third_party/thrift/thrift/transport/TBufferTransports.h   2025-07-30 10:52:19.344425107 +0800
+@@ -22,6 +22,7 @@
+
+ #include <cstdlib>
+ #include <cstddef>
++#include <cstdint>
+ #include <cstring>
+ #include <limits>
+
+--- a/third_party/thrift/thrift/transport/TTransport.h  2025-07-30 10:52:50.308361504 +0800
++++ b/third_party/thrift/thrift/transport/TTransport.h  2025-07-30 10:52:04.812427372 +0800
+@@ -24,6 +24,7 @@
+ #include "thrift/transport/TTransportException.h"
+ #include <memory>
+ #include <string>
++#include <cstdint>
+
+ namespace duckdb_apache {
+ namespace thrift {

@@ -6,9 +6,9 @@ set(name simdjson)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL https://github.com/simdjson/simdjson/archive/refs/tags/v3.0.1.tar.gz
-    URL_HASH MD5=993576b47249f2bade2bfb2552b2896a
-    DOWNLOAD_NAME simdjson-3.0.1.tar.gz
+    URL https://github.com/simdjson/simdjson/archive/refs/tags/v4.3.1.tar.gz
+    URL_HASH MD5=c1da512aecfc85dbfe62951537ef5747
+    DOWNLOAD_NAME simdjson-4.3.1.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}

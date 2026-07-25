@@ -6,9 +6,9 @@ set(name openblas)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL https://github.com/OpenMathLib/OpenBLAS/archive/refs/tags/v0.3.27.tar.gz
-    URL_HASH MD5=ef71c66ffeb1ab0f306a37de07d2667f
-    DOWNLOAD_NAME openblas-0.3.27.tar.gz
+    URL https://github.com/OpenMathLib/OpenBLAS/archive/refs/tags/v0.3.33.tar.gz
+    URL_HASH MD5=96c5cd9013013faefc294bc57830c77d
+    DOWNLOAD_NAME openblas-0.3.33.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}
@@ -16,7 +16,7 @@ ExternalProject_Add(
     SOURCE_DIR ${source_dir}
     PATCH_COMMAND ""
     CONFIGURE_COMMAND ""
-    BUILD_COMMAND make NO_LAPACKE=1 NO_AFFINITY=1 NO_WARMUP=1 DYNAMIC_ARCH=1 DYNAMIC_OLDER=1 TARGET=GENERIC NUM_THREADS=8
+    BUILD_COMMAND make NO_LAPACKE=1 NO_AFFINITY=1 NO_WARMUP=1 NO_STATIC=1 BINARY=64 DYNAMIC_OLDER=1 NUM_THREADS=8
     BUILD_IN_SOURCE 1
     INSTALL_COMMAND make PREFIX=${CMAKE_INSTALL_PREFIX} install
     LOG_CONFIGURE TRUE

@@ -8,7 +8,9 @@ if(POLICY CMP0097)
     cmake_policy(SET CMP0097 NEW)
 endif()
 
-if(POLICY CMP0135) #Since cmake 3.24 it will make some download warning
+# Since 3.24, all extracted files will have the timestamps when they are extracted. We
+# want to keep the old behavior, which uses the timestamp in the archive file.
+if(POLICY CMP0135)
     cmake_policy(SET CMP0135 OLD)
 endif()
 
@@ -29,6 +31,12 @@ elseif ("${CMAKE_HOST_SYSTEM_PROCESSOR}" STREQUAL "aarch64" OR "${CMAKE_HOST_SYS
     cmake_host_system_information(RESULT num_cores QUERY NUMBER_OF_LOGICAL_CORES)
 endif()
 cmake_host_system_information(RESULT available_memory_mb QUERY AVAILABLE_PHYSICAL_MEMORY)
+execute_process(
+    OUTPUT_VARIABLE kernel_version
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+    COMMAND "uname" "-r"
+    COMMAND "cut" "-d" "-" "-f1"
+)
 
 execute_process(
     COMMAND ldd --version
@@ -60,13 +68,12 @@ if (NOT BUILDING_JOBS_NUM OR BUILDING_JOBS_NUM EQUAL 0)
     endif()
 endif()
 
-# BerkeleyDB dirs
-set(BERKELEYDB_LIB_DIR ${CMAKE_INSTALL_PREFIX}/lib/berkeleydb-5.1.29)
-set(BERKELEYDB_INCLUDE_DIR ${CMAKE_INSTALL_PREFIX}/include/berkeleydb-5.1.29)
-
+message(STATUS "The host system is ${CMAKE_HOST_SYSTEM_NAME}")
+message(STATUS "The host architecture is ${CMAKE_SYSTEM_PROCESSOR}")
 message(STATUS "Number of online physcial CPU cores: ${num_cores}")
 message(STATUS "Available physical memory: ${available_memory_mb} MB")
 message(STATUS "Building third party with ${BUILDING_JOBS_NUM} jobs")
+message(STATUS "Kernal version: ${kernel_version}")
 message(STATUS "Glibc version: ${GLIBC_VERSION}")
 message(STATUS "Linux distribution name: ${DISTRO_NAME}")
 message(STATUS "Linux distribution version ID: ${DISTRO_VERSION_ID}")
@@ -126,7 +133,7 @@ get_filename_component(LIB_GCC_DIR ${libgcc_path} DIRECTORY CACHE)
 message(STATUS "MIPS_LINK_FLAGS: ${MIPS_LINK_FLAGS}")
 
 set(extra_lib_dirs "-L${CMAKE_INSTALL_PREFIX}/lib -L${CMAKE_INSTALL_PREFIX}/lib64")
-set(extra_link_libs "${MIPS_LINK_FLAGS} ${extra_lib_dirs} -static-libstdc++ -static-libgcc -pthread -ldl")
+set(extra_link_libs "${MIPS_LINK_FLAGS} ${extra_lib_dirs} -pthread -ldl")
 if (${DISABLE_CXX11_ABI})
     set(extra_cpp_flags "-D_GLIBCXX_USE_CXX11_ABI=0")
 else()
@@ -137,6 +144,12 @@ set(ISA_FLAGS "")
 if (NOT ${USE_ISA} STREQUAL "" AND NOT ${USE_ISA} STREQUAL "generic")
     set(ISA_FLAGS "-march=${USE_ISA}")
 endif()
+set(default_cxx_flags "${CMAKE_CXX_FLAGS} -DGLOG_USE_GLOG_EXPORT -fno-omit-frame-pointer -fPIC ${extra_cpp_flags} ${ISA_FLAGS}")
+set(default_c_flags "${CMAKE_C_FLAGS} -fno-omit-frame-pointer -fPIC ${ISA_FLAGS}")
+if(${CMAKE_CXX_COMPILER_VERSION} VERSION_GREATER "15.0.0")
+    set(default_cxx_flags "${default_cxx_flagsS} -Wno-error=unterminated-string-initialization -Wno-error=incompatible-pointer-types")
+    set(default_c_flags "${default_c_flags} -Wno-error=unterminated-string-initialization -Wno-error=incompatible-pointer-types")
+endif()
 
 if(GLIBC_VERSION VERSION_LESS 2.17)
     set(extra_link_libs "${extra_link_libs} -lrt")
@@ -144,12 +157,12 @@ endif()
 
 set(common_cmake_args
     -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-    "-DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}"
-    "-DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}"
-    "-DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS} -fno-omit-frame-pointer -fPIC ${extra_cpp_flags} ${ISA_FLAGS}"
-    "-DCMAKE_C_FLAGS=${CMAKE_C_FLAGS} -fno-omit-frame-pointer -fPIC ${ISA_FLAGS}"
+    -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
+    -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
+    -DCMAKE_CXX_FLAGS=${default_cxx_flags}
+    "-DCMAKE_C_FLAGS=${default_c_flags}"
     "-DCMAKE_EXE_LINKER_FLAGS=${extra_link_libs} -Wl,-rpath=\$ORIGIN/../lib:\$ORIGIN/../lib64"
-    -DCMAKE_SHARED_LINKER_FLAGS=-Wl,-rpath=\$ORIGIN:\$ORIGIN/../3rd:\$ORIGIN/../lib64:\$ORIGIN/../lib
+    "-DCMAKE_SHARED_LINKER_FLAGS=${extra_link_libs} -Wl,-rpath=\$ORIGIN:\$ORIGIN/../3rd:\$ORIGIN/../lib64:\$ORIGIN/../lib"
     -DCMAKE_INCLUDE_PATH=${CMAKE_INSTALL_PREFIX}/include
     "-DCMAKE_LIBRARY_PATH=${CMAKE_INSTALL_PREFIX}/lib:${CMAKE_INSTALL_PREFIX}/lib64"
     -DBUILD_SHARED_LIBS=ON
@@ -162,7 +175,6 @@ set(common_configure_args
 set(ld_flags
     "-L${CMAKE_INSTALL_PREFIX}/lib"
     "-L${CMAKE_INSTALL_PREFIX}/lib64"
-    "-L${BERKELEYDB_LIB_DIR}"
 )
 if (EXISTS "/usr/lib/${CMAKE_LIBRARY_ARCHITECTURE}")
     set(ld_flags
@@ -181,38 +193,44 @@ set(ld_flags
     "${extra_link_libs}"
 )
 string(JOIN " " ld_flags ${ld_flags})
+# gcc v14 by default does not allow implicit function declaration. For the sake of
+# compatitbility, we need to add -Wno-error=implicit-function-declaration flag
 set(common_configure_envs
     "env"
     "CC=${CMAKE_C_COMPILER}"
     "CXX=${CMAKE_CXX_COMPILER}"
-    "CFLAGS=${CMAKE_C_FLAGS} -fcommon -fno-omit-frame-pointer -fPIC -O2 -D_DEFAULT_SOURCE -D_GNU_SOURCE ${extra_cpp_flags} ${ISA_FLAGS}"
-    "CXXFLAGS=${CMAKE_CXX_FLAGS} -fcommon -fno-omit-frame-pointer -fPIC -O2 -D_DEFAULT_SOURCE -D_GNU_SOURCE ${extra_cpp_flags} ${ISA_FLAGS}"
-    "CPPFLAGS=-isystem ${CMAKE_INSTALL_PREFIX}/include -I${BERKELEYDB_INCLUDE_DIR} ${extra_cpp_flags}"
-    "LDFLAGS=-Wl,-rpath=\\\\$\\$ORIGIN ${ld_flags}"
+    "CFLAGS=${default_c_flags} -fcommon -fno-omit-frame-pointer -fPIC -Wno-error=implicit-function-declaration -O2 -D_DEFAULT_SOURCE -D_GNU_SOURCE ${extra_cpp_flags} ${ISA_FLAGS}"
+    "CXXFLAGS=${default_cxx_flags} -fcommon -fpermissive -Wno-error=implicit-function-declaration -O2 -D_DEFAULT_SOURCE -D_GNU_SOURCE"
+    "CPPFLAGS=-isystem ${CMAKE_INSTALL_PREFIX}/include ${extra_cpp_flags}"
+    "LDFLAGS=-Wl,-rpath=\\\\$\\$ORIGIN:\\\\$\\$ORIGIN/../3rd:\\\\$\\$ORIGIN/../lib:\\\\$\\$ORIGIN/../lib64 ${ld_flags}"
     "LD_LIBRARY_PATH=$$LD_LIBRARY_PATH:${CMAKE_INSTALL_PREFIX}/lib:${CMAKE_INSTALL_PREFIX}/lib64"
     "PATH=${BUILDING_PATH}"
     "ACLOCAL_PATH=${ACLOCAL_PATH}"
 )
 
+set(fb_release_tag "2026.07.20")
+string(REPLACE "." "-" fb_package_name_part ${fb_release_tag})
+
 set(ALL_TARGETS
     abseil
     annoy
     arrow
-    berkeleydb
+    #berkeleydb
     bison
     boost
     #breakpad
     bzip2
     #cachelib
     cppjieba
-    cyrus-sasl
+    #cyrus-sasl
     c-ares
     datasketches
     date
-    double-conversion
+    #double-conversion
     duckdb
     eigen
     faiss
+    fast_float
     fatal
     fizz
     flex
@@ -230,18 +248,19 @@ set(ALL_TARGETS
     jwt-cpp
     ldap
     libcurl
-    libdwarf
+    #libdwarf
     libev
     libevent
     libunwind
     libxml2
     limonp
-    llvm
+    #llvm
     lz4
     lzma
     mstch
     nlohmann-json
     openblas
+    mvfst
     openssl
     protobuf
     protoc-gen-go
@@ -262,6 +281,7 @@ set(ALL_TARGETS
     wangle
     xsimd
     yaml-cpp
+    xxHash
     zlib
     zstd
 )
@@ -298,6 +318,11 @@ if (NOT Gettext_FOUND)
     list(APPEND ALL_TARGETS gettext)
 endif()
 
+find_package(Ninja 1.9.0 QUIET)
+if (NOT Ninja_FOUND)
+    list(APPEND ALL_TARGETS ninja)
+endif()
+
 foreach(target ${ALL_TARGETS})
     include(externals/${target}.cmake)
     list(APPEND CLEAN_TARGETS ${target}-clean)
@@ -317,7 +342,7 @@ maybe_add_dependencies(autoconf-archive autoconf)
 maybe_add_dependencies(automake autoconf autoconf-archive)
 maybe_add_dependencies(libtool automake)
 
-maybe_add_dependencies(glog libtool libunwind)
+maybe_add_dependencies(glog gflags libtool libunwind)
 maybe_add_dependencies(gettext libtool)
 maybe_add_dependencies(bison gettext libtool)
 maybe_add_dependencies(flex libtool)
@@ -328,30 +353,34 @@ maybe_add_dependencies(libevent libtool openssl)
 maybe_add_dependencies(libcurl libtool openssl)
 # maybe_add_dependencies(date libcurl)
 maybe_add_dependencies(gperf libtool)
-maybe_add_dependencies(cyrus-sasl openssl berkeleydb automake libtool)
-maybe_add_dependencies(ldap berkeleydb libtool openssl cyrus-sasl)
+#maybe_add_dependencies(cyrus-sasl openssl automake libtool)
+#maybe_add_dependencies(ldap libtool openssl cyrus-sasl)
+maybe_add_dependencies(ldap libtool openssl)
 
-maybe_add_dependencies(boost zlib bzip2 lzma)
+maybe_add_dependencies(boost openssl zlib bzip2 lzma)
 maybe_add_dependencies(mstch boost)
-
-maybe_add_dependencies(glog gflags)
 
 maybe_add_dependencies(googlebenchmark googletest)
 
+if (NOT Ninja_FOUND)
+    maybe_add_dependencies(duckdb ninja)
+endif()
+
 maybe_add_dependencies(s2geometry googletest glog openssl abseil)
 
-maybe_add_dependencies(folly glog boost double-conversion openssl libevent lzma zstd snappy lz4 libunwind fmt sodium jemalloc libdwarf)
+maybe_add_dependencies(folly glog boost openssl libevent lzma zstd snappy lz4 libunwind fmt sodium jemalloc fast_float)
 maybe_add_dependencies(fizz folly)
 maybe_add_dependencies(wangle folly fizz)
-maybe_add_dependencies(proxygen wangle libunwind gperf)
+maybe_add_dependencies(mvfst fizz libunwind)
+maybe_add_dependencies(proxygen mvfst wangle libunwind gperf)
 maybe_add_dependencies(rocksdb snappy zlib zstd bzip2 lz4 lzma libunwind)
-maybe_add_dependencies(cachelib fbthrift sparsemap fizz googletest)
+#maybe_add_dependencies(cachelib fbthrift sparsemap fizz googletest)
 
 # RocksDB has its own copy of gtest, which may conflict with ours
 # Here we build gtest after rocksdb intentionally
 maybe_add_dependencies(googletest rocksdb gflags)
 
-maybe_add_dependencies(arrow openssl xsimd llvm boost jemalloc zstd utf8proc protobuf re2 libxml2 libcurl googletest)
+maybe_add_dependencies(arrow openssl xsimd boost jemalloc zstd utf8proc protobuf re2 libxml2 libcurl googletest)
 maybe_add_dependencies(protobuf zlib abseil)
 maybe_add_dependencies(re2 abseil)
 maybe_add_dependencies(grpc protobuf re2 c-ares openssl)

@@ -6,9 +6,9 @@ set(name protobuf)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL https://github.com/protocolbuffers/protobuf/releases/download/v25.1/protobuf-25.1.tar.gz
-    URL_HASH MD5=105105aae0153d60059e982ead4d1d94
-    DOWNLOAD_NAME protobuf-25.1.tar.gz
+    URL https://github.com/protocolbuffers/protobuf/archive/refs/tags/v35.1.tar.gz
+    URL_HASH MD5=a05f9d48606773f52252988f0be87e84
+    DOWNLOAD_NAME protobuf-35.1.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}

@@ -6,9 +6,9 @@ set(name lzma)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 ExternalProject_Add(
     ${name}
-    URL https://tukaani.org/xz/xz-5.4.0.tar.xz
-    URL_HASH MD5=3518b2c6e00400f4df5dd8d2a70fc2a9
-    DOWNLOAD_NAME lzma-5.4.0.tar.xz
+    URL https://github.com/tukaani-project/xz/releases/download/v5.8.2/xz-5.8.2.tar.xz
+    URL_HASH MD5=87c8bb8addf7189d3a51f6a5f03163fc
+    DOWNLOAD_NAME lzma-5.8.2.tar.xz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
     STAMP_DIR ${BUILD_INFO_DIR}
@@ -17,7 +17,7 @@ ExternalProject_Add(
     CONFIGURE_COMMAND
         ${common_configure_envs}
         ./configure ${common_configure_args}
-                    --enable-shared --disable-static
+                    --enable-shared --disable-static SKIP_WERROR_CHECK=yes
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     BUILD_IN_SOURCE 1
     INSTALL_COMMAND make -s install -j${BUILDING_JOBS_NUM} PREFIX=${CMAKE_INSTALL_PREFIX}

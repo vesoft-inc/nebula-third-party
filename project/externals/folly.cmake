@@ -5,16 +5,15 @@
 set(name folly)
 set(source_dir ${CMAKE_CURRENT_BINARY_DIR}/${name}/source)
 
+set(folly_extra_cxx_flags "-fpermissive -D__STDC_FORMAT_MACROS=1 -DFOLLY_HAVE_CLOCK_GETTIME -D__USE_POSIX199309")
 if (kernel_version VERSION_LESS "4.12")
-    set(folly_extra_cxx_flags "-D__linux_too_old")
-else()
-    set(folly_extra_cxx_flags "")
+    set(folly_extra_cxx_flags "-D__linux_too_old ${folly_extra_cxx_flags}")
 endif()
 
 ExternalProject_Add(
     ${name}
     URL https://github.com/facebook/folly/archive/refs/tags/v${fb_release_tag}.00.tar.gz
-    URL_HASH MD5=d83be6983a5eba991e46da04dfd31593
+    URL_HASH MD5=9df1c60ee872db2b3a8fb6a9295aecd4
     DOWNLOAD_NAME folly-${fb_package_name_part}.tar.gz
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/${name}
     TMP_DIR ${BUILD_INFO_DIR}
@@ -25,9 +24,9 @@ ExternalProject_Add(
     CMAKE_ARGS
         ${common_cmake_args}
         -DCMAKE_BUILD_TYPE=Release
-        -DBoost_NO_BOOST_CMAKE=ON
-        "-DCMAKE_CXX_FLAGS=${default_cxx_flags} ${folly_extra_cxx_flags} -fpermissive -D__STDC_FORMAT_MACROS=1 -DFOLLY_HAVE_CLOCK_GETTIME -D__USE_POSIX199309"
-        -DFOLLY_CXX_FLAGS=-Wno-error
+        "-DCMAKE_CXX_FLAGS=${default_cxx_flags} ${folly_extra_cxx_flags}"
+        "-DFOLLY_CXX_FLAGS=-Wno-error"
+        -Wno-dev
     BUILD_COMMAND make -s -j${BUILDING_JOBS_NUM}
     BUILD_IN_SOURCE 1
     INSTALL_COMMAND make -s -j${BUILDING_JOBS_NUM} install

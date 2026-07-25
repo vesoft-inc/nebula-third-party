@@ -68,6 +68,8 @@ if (NOT BUILDING_JOBS_NUM OR BUILDING_JOBS_NUM EQUAL 0)
     endif()
 endif()
 
+message(STATUS "The host system is ${CMAKE_HOST_SYSTEM_NAME}")
+message(STATUS "The host architecture is ${CMAKE_SYSTEM_PROCESSOR}")
 message(STATUS "Number of online physcial CPU cores: ${num_cores}")
 message(STATUS "Available physical memory: ${available_memory_mb} MB")
 message(STATUS "Building third party with ${BUILDING_JOBS_NUM} jobs")
@@ -145,8 +147,8 @@ endif()
 set(default_cxx_flags "${CMAKE_CXX_FLAGS} -DGLOG_USE_GLOG_EXPORT -fno-omit-frame-pointer -fPIC ${extra_cpp_flags} ${ISA_FLAGS}")
 set(default_c_flags "${CMAKE_C_FLAGS} -fno-omit-frame-pointer -fPIC ${ISA_FLAGS}")
 if(${CMAKE_CXX_COMPILER_VERSION} VERSION_GREATER "15.0.0")
-    set(default_cxx_flags "${default_cxx_flagsS} -Wno-error=unterminated-string-initialization")
-    set(default_c_flags "${default_c_flags} -Wno-error=unterminated-string-initialization")
+    set(default_cxx_flags "${default_cxx_flagsS} -Wno-error=unterminated-string-initialization -Wno-error=incompatible-pointer-types")
+    set(default_c_flags "${default_c_flags} -Wno-error=unterminated-string-initialization -Wno-error=incompatible-pointer-types")
 endif()
 
 if(GLIBC_VERSION VERSION_LESS 2.17)
@@ -162,7 +164,7 @@ set(common_cmake_args
     "-DCMAKE_EXE_LINKER_FLAGS=${extra_link_libs} -Wl,-rpath=\$ORIGIN/../lib:\$ORIGIN/../lib64"
     "-DCMAKE_SHARED_LINKER_FLAGS=${extra_link_libs} -Wl,-rpath=\$ORIGIN:\$ORIGIN/../3rd:\$ORIGIN/../lib64:\$ORIGIN/../lib"
     -DCMAKE_INCLUDE_PATH=${CMAKE_INSTALL_PREFIX}/include
-    "-DCMAKE_LIBRARY_PATH=${CMAKE_INSTALL_PREFIX}/lib;${CMAKE_INSTALL_PREFIX}/lib64"
+    "-DCMAKE_LIBRARY_PATH=${CMAKE_INSTALL_PREFIX}/lib:${CMAKE_INSTALL_PREFIX}/lib64"
     -DBUILD_SHARED_LIBS=ON
 )
 
@@ -197,7 +199,7 @@ set(common_configure_envs
     "env"
     "CC=${CMAKE_C_COMPILER}"
     "CXX=${CMAKE_CXX_COMPILER}"
-    "CFLAGS=${CMAKE_C_FLAGS} -fcommon -fno-omit-frame-pointer -fPIC -Wno-error=implicit-function-declaration -O2 -D_DEFAULT_SOURCE -D_GNU_SOURCE ${extra_cpp_flags} ${ISA_FLAGS}"
+    "CFLAGS=${default_c_flags} -fcommon -fno-omit-frame-pointer -fPIC -Wno-error=implicit-function-declaration -O2 -D_DEFAULT_SOURCE -D_GNU_SOURCE ${extra_cpp_flags} ${ISA_FLAGS}"
     "CXXFLAGS=${default_cxx_flags} -fcommon -fpermissive -Wno-error=implicit-function-declaration -O2 -D_DEFAULT_SOURCE -D_GNU_SOURCE"
     "CPPFLAGS=-isystem ${CMAKE_INSTALL_PREFIX}/include ${extra_cpp_flags}"
     "LDFLAGS=-Wl,-rpath=\\\\$\\$ORIGIN:\\\\$\\$ORIGIN/../3rd:\\\\$\\$ORIGIN/../lib:\\\\$\\$ORIGIN/../lib64 ${ld_flags}"
@@ -206,7 +208,7 @@ set(common_configure_envs
     "ACLOCAL_PATH=${ACLOCAL_PATH}"
 )
 
-set(fb_release_tag "2026.06.15")
+set(fb_release_tag "2026.07.20")
 string(REPLACE "." "-" fb_package_name_part ${fb_release_tag})
 
 set(ALL_TARGETS
@@ -224,7 +226,7 @@ set(ALL_TARGETS
     c-ares
     datasketches
     date
-    double-conversion
+    #double-conversion
     duckdb
     eigen
     faiss
@@ -366,7 +368,7 @@ endif()
 
 maybe_add_dependencies(s2geometry googletest glog openssl abseil)
 
-maybe_add_dependencies(folly glog boost double-conversion openssl libevent lzma zstd snappy lz4 libunwind fmt sodium jemalloc fast_float)
+maybe_add_dependencies(folly glog boost openssl libevent lzma zstd snappy lz4 libunwind fmt sodium jemalloc fast_float)
 maybe_add_dependencies(fizz folly)
 maybe_add_dependencies(wangle folly fizz)
 maybe_add_dependencies(mvfst fizz libunwind)

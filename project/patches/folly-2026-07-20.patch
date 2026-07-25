@@ -117,3 +117,45 @@ diff -ur a/folly/io/async/AsyncSocketTransport.cpp b/folly/io/async/AsyncSocketT
    int id = -1;
    socklen_t len = sizeof(id);
    auto ret = ::getsockopt(
+--- a/folly/external/aor/CMakeLists.txt     2026-07-25 13:33:20.854313190 +0800
++++ b/folly/external/aor/CMakeLists.txt     2026-07-25 13:33:47.510298271 +0800
+@@ -33,21 +33,6 @@
+ )
+
+ folly_add_library(
+-  NAME memcpy_aarch64-use
+-  EXCLUDE_FROM_MONOLITH
+-  SRCS
+-    memcpy-advsimd.S
+-    memcpy-armv8.S
+-    memcpy-mops.S
+-    memcpy_sve.S
+-    memmove-mops.S
+-  HEADERS
+-    asmdefs.h
+-  COMPILE_OPTIONS
+-    -DFOLLY_MEMCPY_IS_MEMCPY
+-)
+-
+-folly_add_library(
+   NAME memset_aarch64
+   SRCS
+     memset-advsimd.S
+@@ -57,17 +42,4 @@
+     asmdefs.h
+ )
+
+-folly_add_library(
+-  NAME memset_aarch64-use
+-  EXCLUDE_FROM_MONOLITH
+-  SRCS
+-    memset-advsimd.S
+-    memset-mops.S
+-    memset-sve.S
+-  HEADERS
+-    asmdefs.h
+-  COMPILE_OPTIONS
+-    -DFOLLY_MEMSET_IS_MEMSET
+-)
+-
+ endif()

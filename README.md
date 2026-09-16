@@ -138,7 +138,7 @@ The `build` workflow runs on pushes to `master`, after a successful `docker`
 workflow, or manually through `workflow_dispatch`. After all OS/architecture
 builds succeed, it publishes their self-extracting `.sh` packages together with
 `install-third-party.sh`, `cxx-compiler-abi-version.sh`, and `.env` to the GitHub
-Release tagged with `VERSION` (currently `5.1`). Re-running the workflow replaces
+Release tagged with `v${VERSION}` (currently `v5.1`). Re-running the workflow replaces
 assets with the same names. Release publishing uses `GITHUB_TOKEN` with
 `contents: write`; no object-storage credentials are needed. The downstream
 Docker repository is notified only after publishing succeeds (using the existing
@@ -155,7 +155,7 @@ Download the installer and its companion files from the same Release:
 
 ```bash
 version=5.1
-base="https://github.com/vesoft-inc/nebula-third-party/releases/download/$version"
+base="https://github.com/vesoft-inc/nebula-third-party/releases/download/v$version"
 mkdir -p nebula-third-party
 for file in install-third-party.sh cxx-compiler-abi-version.sh .env; do
     curl -fL "$base/$file" -o "nebula-third-party/$file" || exit 1

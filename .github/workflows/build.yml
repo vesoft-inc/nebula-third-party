@@ -118,13 +118,17 @@ jobs:
         cp .env install-third-party.sh cxx-compiler-abi-version.sh release-assets/
     - name: Publish GitHub Release
       run: |
-        if ! gh release view "$VERSION" >/dev/null 2>&1; then
-          gh release create "$VERSION" --target "$RELEASE_COMMIT" --draft \
+        release_tag="v$VERSION"
+        if ! gh release view "$release_tag" >/dev/null 2>&1; then
+          gh release create "$release_tag" --target "$RELEASE_COMMIT" --draft \
             --title "Nebula Third Party $VERSION" \
             --notes "Pre-built third-party packages and installation scripts."
         fi
-        gh release upload "$VERSION" release-assets/*.sh release-assets/.env --clobber
-        gh release edit "$VERSION" --draft=false
+        for file in install-third-party.sh cxx-compiler-abi-version.sh .env; do
+          test -s "release-assets/$file"
+        done
+        gh release upload "$release_tag" release-assets/*.sh release-assets/.env --clobber
+        gh release edit "$release_tag" --draft=false
 
   repo-dispatch:
     needs: release

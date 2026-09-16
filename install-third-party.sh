@@ -92,7 +92,8 @@ selected_gcc_version=$(select_by_version $this_gcc_version "${gcc_preset_version
 
 selected_archive=vesoft-third-party-$VERSION-$(uname -m)-libc-$selected_libc_version-gcc-$selected_gcc_version-abi-$this_abi_version.sh
 
-url=$URL_BASE/$VERSION/$selected_archive
+release_tag=${RELEASE_TAG:-v$VERSION}
+url=$URL_BASE/$release_tag/$selected_archive
 echo "Downloading $selected_archive..."
 $download_cmd "$url"
 [[ $? -ne 0 ]] && {

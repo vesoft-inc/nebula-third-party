@@ -37,18 +37,6 @@ RUN wget https://github.com/Kitware/CMake/releases/download/v3.23.5/cmake-3.23.5
     && ./cmake-3.23.5-linux-$(uname -m).sh --skip-license --prefix=/usr/local \
     && rm cmake-3.23.5-linux-$(uname -m).sh
 
-# Install ossutil
-RUN curl https://gosspublic.alicdn.com/ossutil/install.sh | bash
-
-# Install MinIO Client
-RUN if [ "$(uname -m)" = "aarch64" ]; then \
-        curl -O https://dl.min.io/client/mc/release/linux-arm64/mc; \
-    else \
-        curl -O https://dl.min.io/client/mc/release/linux-amd64/mc; \
-    fi \
-    && chmod +x mc \
-    && mv mc /usr/local/bin
-
 ENV PACKAGE_DIR=/usr/src/third-party
 RUN mkdir -p ${PACKAGE_DIR}
 WORKDIR ${PACKAGE_DIR}

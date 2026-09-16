@@ -1,6 +1,7 @@
 name: build
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - master
@@ -13,22 +14,25 @@ on:
       - master
     types:
       - completed
-    conclusion: success
+
+permissions:
+  contents: read
 
 concurrency:
-  group: ${{ github.ref }}
-  cancel-in-progress: true
+  group: third-party-release
+  cancel-in-progress: false
 
 defaults:
   run:
     shell: bash
 
 env:
-  VERSION: 5.1
-  URL_BASE: https://minio.vesoft-inc.com/rc-build/third-party
+  VERSION: '5.1'
+  URL_BASE: https://github.com/${{ github.repository }}/releases/download
 
 jobs:
   build_and_upload:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on:
       - self-hosted
       - Linux
@@ -55,6 +59,8 @@ jobs:
       with:
         run: find . -mindepth 1 -delete
     - uses: actions/checkout@v4
+      with:
+        ref: ${{ github.event.workflow_run.head_sha || github.sha }}
     - name: Set up environment
       if: matrix.os == 'centos7'
       run: |
@@ -78,25 +84,50 @@ jobs:
         fi
         build_package=1 ../build.sh
       working-directory: _build/
-    - name: Setup MinIO
-      uses: vesoft-inc/.github/actions/setup-minio@master
+    - name: Store packages for release
+      uses: actions/upload-artifact@v4
       with:
-        minio_url: ${{ secrets.MINIO_ENDPOINT }}
-        access_key: ${{ secrets.MINIO_KEY }}
-        secret_key: ${{ secrets.MINIO_SECRET }}
-    - name: Copy dir to MinIO
-      run: mc cp -r _build/packages/ minio/rc-build/third-party/$VERSION/
-    - uses: vesoft-inc/.github/actions/upload-to-oss@master
+        name: packages-${{ matrix.os }}-${{ matrix.arch }}
+        path: _build/packages/*.sh
+        if-no-files-found: error
+        compression-level: 0
+        retention-days: 7
+
+  release:
+    needs: build_and_upload
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      RELEASE_COMMIT: ${{ github.event.workflow_run.head_sha || github.sha }}
+    steps:
+    - uses: actions/checkout@v4
       with:
-        key-id: ${{ secrets.OSS_ID }}
-        key-secret: ${{ secrets.OSS_SECRET }}
-        endpoint: ${{ secrets.OSS_ENDPOINT }}
-        bucket: nebula-graph
-        asset-path: _build/packages
-        target-path: third-party/${{ env.VERSION }}
+        ref: ${{ env.RELEASE_COMMIT }}
+    - uses: actions/download-artifact@v4
+      with:
+        pattern: packages-*
+        path: release-assets
+        merge-multiple: true
+    - name: Prepare installation scripts
+      run: |
+        sed -i "s#^URL_BASE=.*#URL_BASE=$URL_BASE#" .env
+        sed -i "s#^VERSION=.*#VERSION=$VERSION#" .env
+        cp .env install-third-party.sh cxx-compiler-abi-version.sh release-assets/
+    - name: Publish GitHub Release
+      run: |
+        if ! gh release view "$VERSION" >/dev/null 2>&1; then
+          gh release create "$VERSION" --target "$RELEASE_COMMIT" --draft \
+            --title "Nebula Third Party $VERSION" \
+            --notes "Pre-built third-party packages and installation scripts."
+        fi
+        gh release upload "$VERSION" release-assets/*.sh release-assets/.env --clobber
+        gh release edit "$VERSION" --draft=false
 
   repo-dispatch:
-    needs: build_and_upload
+    needs: release
     runs-on: ubuntu-latest
     steps:
     - uses: peter-evans/repository-dispatch@v3

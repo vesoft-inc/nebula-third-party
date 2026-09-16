@@ -151,21 +151,22 @@ source cache.
 
 # How to Install Pre-built Packages
 
-Download the installer and its companion files from the same Release:
+Get the installer and its companion files from this repository, then run it:
 
 ```bash
-version=5.1
-base="https://github.com/vesoft-inc/nebula-third-party/releases/download/v$version"
-mkdir -p nebula-third-party
-for file in install-third-party.sh cxx-compiler-abi-version.sh .env; do
-    curl -fL "$base/$file" -o "nebula-third-party/$file" || exit 1
-done
-chmod +x nebula-third-party/*.sh
-bash nebula-third-party/install-third-party.sh --prefix=/opt/vesoft/third-party/$version
+git clone https://github.com/vesoft-inc/nebula-third-party.git
+cd nebula-third-party
+bash install-third-party.sh
 ```
 
-The installer downloads the matching package from GitHub Releases. Keep `.env`
-and `cxx-compiler-abi-version.sh` beside the installer.
+For an existing checkout, run `bash install-third-party.sh` from its directory.
+Use a branch containing the GitHub Releases download configuration (before the
+migration is merged into `master`, check out the branch containing that change).
+The repository provides `install-third-party.sh`, `.env`, and
+`cxx-compiler-abi-version.sh`; no installer assets need to be downloaded from a
+Release. The installer reads `VERSION` from `.env` and downloads the matching
+compiled package from the `v${VERSION}` Release. The default installation path
+is `/opt/vesoft/third-party/$VERSION`; use `--prefix=/path/to/install` to change it.
 
 You could invoke the `install-third-party.sh` script to install a pre-built package of third party. It automatically chooses an applicable version for your environment,
 according to the version of GCC and glibc.

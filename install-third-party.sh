@@ -15,14 +15,14 @@
 shell=$(basename $(readlink /proc/$$/exe))
 if [ ! x$shell = x"bash" ] && [[ x$shell != x"qemu-aarch64"* ]]
 then
-    bash $0 $@
+    bash "$0" "$@"
     exit $?
 fi
 
 this_dir=$(dirname $(readlink -f $0))
 cxx_cmd=${CXX:-g++}
 
-source $this_dir/.env
+source "$this_dir/.env"
 
 # We consider two derivatives: Red Hat and Debian
 # Place preset libc versions of each from newer to older
@@ -34,7 +34,7 @@ selected_gcc_version=
 selected_archive=
 this_libc_version=$(ldd --version | head -1 | cut -d ')' -f 2 | cut -d ' ' -f 2)
 this_gcc_version=$($cxx_cmd -dumpfullversion -dumpversion)
-this_abi_version=$($this_dir/cxx-compiler-abi-version.sh)
+this_abi_version=$(bash "$this_dir/cxx-compiler-abi-version.sh")
 
 hash wget &>/dev/null || {
     echo "'wget' not fould, please install it first" 1>&2
@@ -92,12 +92,13 @@ selected_gcc_version=$(select_by_version $this_gcc_version "${gcc_preset_version
 
 selected_archive=vesoft-third-party-$VERSION-$(uname -m)-libc-$selected_libc_version-gcc-$selected_gcc_version-abi-$this_abi_version.sh
 
-url=$URL_BASE/$VERSION/$selected_archive
+release_tag=${RELEASE_TAG:-v$VERSION}
+url=$URL_BASE/$release_tag/$selected_archive
 echo "Downloading $selected_archive..."
-$download_cmd $url
+$download_cmd "$url"
 [[ $? -ne 0 ]] && {
     echo "Downloading $selected_archive failed" 1>&2
     exit 1
 }
 
-bash $selected_archive $@ && rm -rf $selected_archive
+bash "$selected_archive" "$@" && rm -f "$selected_archive"

@@ -112,7 +112,7 @@ vesoft-third-party-5.0-x86_64-libc-xxx-gcc-xxx-abi-11.sh ...
 ```
 
 **NOTE**:
- * If OSS credential were setup properly in `$HOME/.ossutilconfig`, all built packages will be uploaded to `oss://nebula-graph/third-party/5.0`
+ * Local Docker builds save packages locally. GitHub Actions publishes packages to GitHub Releases.
  * Invoke with `make -ik` to continue to build the next target even if some target fails.
  * Packages for different architectures(x86_64, aarch64) need to be built separately on the target machine.
  * It's always a bad idea to run a Docker container whose native kernel is newer than the hosting system's, e.g. Ubuntu 1804 container on Centos 7 host.
@@ -132,7 +132,42 @@ $ make -C $path/docker
  * Images for different architectures(x86_64, aarch64) need to be built separately on the target machine.
 
 
+## Publish Packages
+
+The `build` workflow runs on pushes to `master`, after a successful `docker`
+workflow, or manually through `workflow_dispatch`. After all OS/architecture
+builds succeed, it publishes their self-extracting `.sh` packages together with
+`install-third-party.sh`, `cxx-compiler-abi-version.sh`, and `.env` to the GitHub
+Release tagged with `v${VERSION}` (currently `v5.1`). Re-running the workflow replaces
+assets with the same names. Release publishing uses `GITHUB_TOKEN` with
+`contents: write`; no object-storage credentials are needed. The downstream
+Docker repository is notified only after publishing succeeds (using the existing
+`GH_PAT` secret).
+
+The optional source cache `nebula-third-party-src-$VERSION.tgz` is also looked up
+in that Release. If it is absent, the build downloads dependencies from their
+upstream sources as before; this workflow publishes compiled packages, not the
+source cache.
+
 # How to Install Pre-built Packages
+
+Get the installer and its companion files from this repository, then run it:
+
+```bash
+git clone https://github.com/vesoft-inc/nebula-third-party.git
+cd nebula-third-party
+bash install-third-party.sh
+```
+
+For an existing checkout, run `bash install-third-party.sh` from its directory.
+Use a branch containing the GitHub Releases download configuration (before the
+migration is merged into `master`, check out the branch containing that change).
+The repository provides `install-third-party.sh`, `.env`, and
+`cxx-compiler-abi-version.sh`; no installer assets need to be downloaded from a
+Release. The installer reads `VERSION` from `.env` and downloads the matching
+compiled package from the `v${VERSION}` Release. The default installation path
+is `/opt/vesoft/third-party/$VERSION`; use `--prefix=/path/to/install` to change it.
+
 You could invoke the `install-third-party.sh` script to install a pre-built package of third party. It automatically chooses an applicable version for your environment,
 according to the version of GCC and glibc.
 

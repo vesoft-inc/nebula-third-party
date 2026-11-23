@@ -1,0 +1,13 @@
+{
+  "duckdb": {
+    "archive": "duckdb-0.6.1.tar.gz",
+    "patches": [
+      "project/patches/duckdb-0.6.1.patch"
+    ],
+    "sha256": "ea9bba89ae3e461f3fc9f83911b2f3b6c386c23463bcf7b1ed6bb4cc13e822a4",
+    "urls": [
+      "https://codeload.github.com/duckdb/duckdb/tar.gz/refs/tags/v0.6.1",
+      "https://github.com/duckdb/duckdb/archive/refs/tags/v0.6.1.tar.gz"
+    ]
+  }
+}

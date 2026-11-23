@@ -92,6 +92,25 @@ This profile includes the C++ generators and runtime dependencies for the
 four daemons. Arrow provides local filesystem, IPC and CSV support. Gandiva,
 HDFS, S3, GCS, Parquet and ORC are outside this profile.
 
+### Local test dependencies
+
+To build Nebula NG's unit tests and TCK, add DuckDB and the Arrow dataset,
+columnar format and cloud filesystem libraries to a separate copy of the
+daemon SDK. Run this from the third-party checkout on Apple Silicon, with the
+same host tools and network access to the source archives.
+
+```sh
+python3 macos/build-test-sdk.py \
+    --sdk-root /path/to/installed/vesoft-third-party-5.1-macos-arm64 \
+    --work-dir "$PWD/build/macos-arm64-test-sdk" --jobs 3
+```
+
+Use the printed `NEBULA_THIRDPARTY_ROOT` when configuring Nebula NG. The
+command copies the base SDK and then builds xsimd, DuckDB 0.6.1 and Arrow
+18.0.0 from the locked sources. Arrow's bundled dependencies use the versions
+and checksums recorded in its source. The work directory contains per-library
+build logs and can be reused to resume the same build.
+
 ## Build Requirements
 
  * Access to the Internet

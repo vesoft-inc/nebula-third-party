@@ -326,8 +326,8 @@ class Build:
         if name == "grpc":
             self.install_notices("opencensus-proto", source / "third_party/opencensus-proto")
 
-    def build(self):
-        for name in ORDER:
+    def build(self, dependencies=ORDER):
+        for name in dependencies:
             stamp = self.work / "done" / name
             if stamp.exists():
                 continue

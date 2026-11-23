@@ -1,0 +1,34 @@
+--- a/folly/memory/UninitializedMemoryHacks.h
++++ b/folly/memory/UninitializedMemoryHacks.h
+@@ -139,6 +139,10 @@
+         std::is_trivially_destructible<T>::value &&
+         !std::is_same<T, bool>::value>::type>
+ void resizeWithoutInitialization(std::vector<T>& v, std::size_t n) {
++#if defined(__APPLE__) && defined(_LIBCPP_VECTOR)
++  // Use the public API when Apple's libc++ changes its private ASan hooks.
++  v.resize(n);
++#else
+   if (n <= v.size()) {
+     v.resize(n);
+   } else {
+@@ -147,6 +151,7 @@
+     }
+     detail::unsafeVectorSetLargerSize(v, n);
+   }
++#endif
+ }
+ 
+ namespace detail {
+@@ -291,7 +296,11 @@
+   }                                                                      \
+   }
+ 
+-#if defined(_LIBCPP_VECTOR) && _LIBCPP_VERSION >= 14000
++#if defined(__APPLE__) && defined(_LIBCPP_VECTOR)
++// The vector overload on Apple uses the public resize API.
++#define FOLLY_DECLARE_VECTOR_RESIZE_WITHOUT_INIT(TYPE)
++
++#elif defined(_LIBCPP_VECTOR) && _LIBCPP_VERSION >= 14000
+ // libc++ newer
+ 
+ template <

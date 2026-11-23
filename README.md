@@ -54,6 +54,44 @@
 
 # How to Build
 
+## macOS arm64 SDK for Nebula Graph NG
+
+Use Apple Silicon macOS 15 or newer, Xcode Command Line Tools, Python 3.11 or
+newer, CMake, Ninja, pkg-config, and Autoconf. The SDK targets macOS 15.0.
+The source lock records the exact dependency archives and patches used by this
+profile. Build tools installed on the host do not become SDK dependencies.
+
+```sh
+python3 macos/build.py --work-dir "$PWD/build/macos-arm64" --jobs 8
+python3 macos/package.py --work-dir "$PWD/build/macos-arm64" --output-dir "$PWD/build/packages"
+```
+
+Use a new work directory when changing recipes, toolchains, or SDK versions.
+Rerun the build in the same directory to resume after a failed command. Each
+dependency has a log in the work directory. The optional `--source-cache`
+argument to both commands points to a directory of the locked archives. For
+an offline rebuild, extract the sources package and use its `archives/`
+directory as the cache with `build.py --offline`.
+
+The output contains `vesoft-third-party-5.1-macos-arm64.tar.gz`, its matching
+sources archive, and SHA-256 files. Keep the sources archive and license
+notices with the SDK when distributing it. The package audits every Mach-O
+library and generator for architecture and relocatable loader paths. Archive
+metadata uses a fixed timestamp and sorted paths.
+
+In the Nebula Graph NG checkout, extract the SDK to any directory and point
+the `macos-arm64` preset at the extracted root:
+
+```sh
+export NEBULA_THIRDPARTY_ROOT=/path/to/vesoft-third-party-5.1-macos-arm64
+cmake --preset macos-arm64
+cmake --build build-macos-arm64 --target nebula-metad nebula-storaged nebula-graphd nebula-analyticd
+```
+
+This profile includes the C++ generators and runtime dependencies for the
+four daemons. Arrow provides local filesystem, IPC and CSV support. Gandiva,
+HDFS, S3, GCS, Parquet and ORC are outside this profile.
+
 ## Build Requirements
 
  * Access to the Internet

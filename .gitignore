@@ -36,5 +36,6 @@ build
 build.log
 tarballs
 install
+__pycache__/
 nebula-third-party-src-*
 

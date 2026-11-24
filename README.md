@@ -54,6 +54,48 @@
 
 # How to Build
 
+## macOS arm64 SDK for Nebula Graph NG
+
+Use Apple Silicon macOS 15 or newer, Xcode Command Line Tools, Python 3.11 or
+newer, CMake, Ninja, pkg-config, and Autoconf to build the SDK. It targets
+macOS 15.0. The source locks record the dependency archives and patches.
+
+The [v5.1 Release](https://github.com/vesoft-inc/nebula-third-party/releases/tag/v5.1)
+provides `vesoft-third-party-5.1-macos-arm64.tar.gz` with the daemon dependencies,
+DuckDB, and Arrow support for datasets, Parquet, ORC, HDFS, S3, and GCS.
+Install it from the Nebula Graph NG checkout.
+
+```sh
+third-party/install-third-party.sh
+```
+
+The installer verifies the SHA-256 checksum and installs the SDK under
+`build-macos-arm64/third-party/install`. The `macos-arm64` preset uses this
+SDK for both daemon and test builds.
+
+To rebuild and package the SDK, run the following from the third-party
+checkout. The first command builds the base dependencies as a local
+intermediate. The second adds DuckDB 0.6.1 and builds Arrow 18.0.0 with the
+features needed by the connectors and tests.
+
+```sh
+SDK_SOURCE_CACHE="$PWD/build/macos-arm64-archives"
+python3 macos/build.py --work-dir "$PWD/build/macos-arm64-base" \
+    --source-cache "$SDK_SOURCE_CACHE" --jobs 3
+python3 macos/build-test-sdk.py \
+    --base-work-dir "$PWD/build/macos-arm64-base" \
+    --work-dir "$PWD/build/macos-arm64" --source-cache "$SDK_SOURCE_CACHE" --jobs 3
+python3 macos/package.py --work-dir "$PWD/build/macos-arm64" \
+    --source-cache "$SDK_SOURCE_CACHE" --output-dir "$PWD/build/packages"
+```
+
+Reuse the work directories to resume a failed build. Use new directories when
+changing recipes, toolchains, or SDK versions. The output includes one binary
+archive, one sources archive and their SHA-256 files. The sources archive covers
+both build stages and includes the locked sources, patches, recipes, and Arrow's
+bundled dependencies. The binary archive includes license notices. The packager
+audits the Mach-O files and writes archives with a fixed timestamp and sorted paths.
+
 ## Build Requirements
 
  * Access to the Internet

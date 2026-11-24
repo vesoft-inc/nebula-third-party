@@ -1,0 +1,475 @@
+{
+  "abseil": {
+    "archive": "abseil-20230802.1.tar.gz",
+    "sha256": "987ce98f02eefbaf930d6e38ab16aa05737234d7afbab2d5c4ea7adbe50c28ed",
+    "urls": [
+      "https://codeload.github.com/abseil/abseil-cpp/tar.gz/refs/tags/20230802.1",
+      "https://github.com/abseil/abseil-cpp/archive/refs/tags/20230802.1.tar.gz"
+    ]
+  },
+  "annoy": {
+    "archive": "annoy-1.17.3.tar.gz",
+    "sha256": "c121d38cacd98f5103b24ca4e94ca097f18179eed3037e9eb93ad70ec1e6356e",
+    "urls": [
+      "https://codeload.github.com/spotify/annoy/tar.gz/refs/tags/v1.17.3",
+      "https://github.com/spotify/annoy/archive/refs/tags/v1.17.3.tar.gz"
+    ]
+  },
+  "arrow": {
+    "archive": "apache-arrow-18.0.0.tar.gz",
+    "patches": [
+      "project/patches/arrow-18.0.0.patch"
+    ],
+    "sha256": "9c473f2c9914c59ab571761c9497cf0e5cfd3ea335f7782ccc6121f5cb99ae9b",
+    "urls": [
+      "https://codeload.github.com/apache/arrow/tar.gz/refs/tags/apache-arrow-18.0.0",
+      "https://github.com/apache/arrow/archive/refs/tags/apache-arrow-18.0.0.tar.gz"
+    ]
+  },
+  "bison": {
+    "archive": "bison-3.8.2.tar.xz",
+    "sha256": "9bba0214ccf7f1079c5d59210045227bcf619519840ebfa80cd3849cff5a5bf2",
+    "urls": [
+      "https://ftp.gnu.org/gnu/bison/bison-3.8.2.tar.xz"
+    ]
+  },
+  "boost": {
+    "archive": "boost-1.81.0.tar.gz",
+    "sha256": "205666dea9f6a7cfed87c7a6dfbeb52a2c1b9de55712c9c1a87735d7181452b6",
+    "urls": [
+      "https://archives.boost.io/release/1.81.0/source/boost-1.81.0.tar.gz",
+      "https://cytranet.dl.sourceforge.net/project/boost/boost/1.81.0/boost_1_81_0.tar.gz"
+    ]
+  },
+  "bzip2": {
+    "archive": "bzip2-1.0.8.tar.gz",
+    "sha256": "ab5a03176ee106d3f0fa90e381da478ddae405918153cca248e682cd0c4a2269",
+    "urls": [
+      "https://sourceware.org/pub/bzip2/bzip2-1.0.8.tar.gz"
+    ]
+  },
+  "c-ares": {
+    "archive": "c-ares-1.24.0.tar.gz",
+    "sha256": "c517de6d5ac9cd55a9b72c1541c3e25b84588421817b5f092850ac09a8df5103",
+    "urls": [
+      "https://github.com/c-ares/c-ares/releases/download/cares-1_24_0/c-ares-1.24.0.tar.gz"
+    ]
+  },
+  "cppjieba": {
+    "archive": "cppjieba-5.6.0.tar.gz",
+    "sha256": "41eb2b1da55fd52aaadcd36e35cec873d338ec54c3f81684bfb9f76a6220a9d5",
+    "urls": [
+      "https://codeload.github.com/yanyiwu/cppjieba/zip/refs/tags/v5.6.0",
+      "https://github.com/yanyiwu/cppjieba/archive/refs/tags/v5.6.0.zip"
+    ]
+  },
+  "datasketches": {
+    "archive": "datasketches-4.1.0.tar.gz",
+    "sha256": "228cfe6e4dead315117d9d802425e8f1f6db0d53f4098909fd1b07e9efefb507",
+    "urls": [
+      "https://codeload.github.com/apache/datasketches-cpp/tar.gz/refs/tags/4.1.0",
+      "https://github.com/apache/datasketches-cpp/archive/refs/tags/4.1.0.tar.gz"
+    ]
+  },
+  "date": {
+    "archive": "date-3.0.1.tar.gz",
+    "sha256": "7a390f200f0ccd207e8cff6757e04817c1a0aec3e327b006b7eb451c57ee3538",
+    "urls": [
+      "https://codeload.github.com/HowardHinnant/date/tar.gz/refs/tags/v3.0.1",
+      "https://github.com/HowardHinnant/date/archive/refs/tags/v3.0.1.tar.gz"
+    ]
+  },
+  "double-conversion": {
+    "archive": "double-conversion-3.2.1.tar.gz",
+    "sha256": "e40d236343cad807e83d192265f139481c51fc83a1c49e406ac6ce0a0ba7cd35",
+    "urls": [
+      "https://codeload.github.com/google/double-conversion/tar.gz/v3.2.1",
+      "https://github.com/google/double-conversion/archive/v3.2.1.tar.gz"
+    ]
+  },
+  "eigen": {
+    "archive": "eigen-3.4.0.zip",
+    "sha256": "eba3f3d414d2f8cba2919c78ec6daab08fc71ba2ba4ae502b7e5d4d99fc02cda",
+    "urls": [
+      "https://gitlab.com/libeigen/eigen/-/archive/3.4.0/eigen-3.4.0.zip"
+    ]
+  },
+  "faiss": {
+    "archive": "faiss-1.8.0.tar.gz",
+    "sha256": "56ece0a419d62eaa11e39022fa27c8ed6d5a9b9eb7416cc5a0fdbeab07ec2f0c",
+    "urls": [
+      "https://codeload.github.com/facebookresearch/faiss/tar.gz/refs/tags/v1.8.0",
+      "https://github.com/facebookresearch/faiss/archive/refs/tags/v1.8.0.tar.gz"
+    ]
+  },
+  "fizz": {
+    "archive": "fizz-2022-12-26.tar.gz",
+    "patches": [
+      "project/patches/fizz-2022-12-26.patch"
+    ],
+    "sha256": "88d7d25dbe61a81d5d3d3842186cebd71f6fd757d8050e88216fb26a184d1f58",
+    "urls": [
+      "https://codeload.github.com/facebookincubator/fizz/tar.gz/refs/tags/v2022.12.26.00",
+      "https://github.com/facebookincubator/fizz/archive/refs/tags/v2022.12.26.00.tar.gz"
+    ]
+  },
+  "flex": {
+    "archive": "flex-2.6.4.tar.gz",
+    "sha256": "e87aae032bf07c26f85ac0ed3250998c37621d95f8bd748b31f15b33c45ee995",
+    "urls": [
+      "https://github.com/westes/flex/releases/download/v2.6.4/flex-2.6.4.tar.gz"
+    ]
+  },
+  "fmt": {
+    "archive": "fmt-9.1.0.tar.gz",
+    "patches": [
+      "project/patches/fmt-9.1.0.patch"
+    ],
+    "sha256": "5dea48d1fcddc3ec571ce2058e13910a0d4a6bab4cc09a809d8b1dd1c88ae6f2",
+    "urls": [
+      "https://codeload.github.com/fmtlib/fmt/tar.gz/refs/tags/9.1.0",
+      "https://github.com/fmtlib/fmt/archive/refs/tags/9.1.0.tar.gz"
+    ]
+  },
+  "folly": {
+    "archive": "folly-2022-12-26.tar.gz",
+    "patches": [
+      "project/patches/folly-2022-12-26.patch",
+      "project/patches/folly-apple-libcpp-vector.patch"
+    ],
+    "sha256": "43de1d3d88f03d031c5ad742ef862397671dd89cd4dbf127f4e23f50681b8d82",
+    "urls": [
+      "https://codeload.github.com/facebook/folly/tar.gz/refs/tags/v2022.12.26.00",
+      "https://github.com/facebook/folly/archive/refs/tags/v2022.12.26.00.tar.gz"
+    ]
+  },
+  "gflags": {
+    "archive": "gflags-2.2.2.tar.gz",
+    "sha256": "34af2f15cf7367513b352bdcd2493ab14ce43692d2dcd9dfc499492966c64dcf",
+    "urls": [
+      "https://codeload.github.com/gflags/gflags/tar.gz/v2.2.2",
+      "https://github.com/gflags/gflags/archive/v2.2.2.tar.gz"
+    ]
+  },
+  "glog": {
+    "archive": "glog-0.6.0.tar.gz",
+    "sha256": "8a83bf982f37bb70825df71a9709fa90ea9f4447fb3c099e1d720a439d88bad6",
+    "urls": [
+      "https://codeload.github.com/google/glog/tar.gz/refs/tags/v0.6.0",
+      "https://github.com/google/glog/archive/refs/tags/v0.6.0.tar.gz"
+    ]
+  },
+  "googlebenchmark": {
+    "archive": "googlebenchmark-1.7.1.tar.gz",
+    "sha256": "6430e4092653380d9dc4ccb45a1e2dc9259d581f4866dc0759713126056bc1d7",
+    "urls": [
+      "https://codeload.github.com/google/benchmark/tar.gz/refs/tags/v1.7.1",
+      "https://github.com/google/benchmark/archive/refs/tags/v1.7.1.tar.gz"
+    ]
+  },
+  "googletest": {
+    "archive": "googletest-1.12.1.tar.gz",
+    "sha256": "81964fe578e9bd7c94dfdb09c8e4d6e6759e19967e397dbea48d1c10e45d0df2",
+    "urls": [
+      "https://codeload.github.com/google/googletest/tar.gz/refs/tags/release-1.12.1",
+      "https://github.com/google/googletest/archive/refs/tags/release-1.12.1.tar.gz"
+    ]
+  },
+  "gperf": {
+    "archive": "gperf-3.1.tar.gz",
+    "sha256": "588546b945bba4b70b6a3a616e80b4ab466e3f33024a352fc2198112cdbb3ae2",
+    "urls": [
+      "https://ftp.gnu.org/gnu/gperf/gperf-3.1.tar.gz"
+    ]
+  },
+  "grpc": {
+    "archive": "grpc-1.60.0.tar.gz",
+    "sha256": "437068b8b777d3b339da94d3498f1dc20642ac9bfa76db43abdd522186b1542b",
+    "urls": [
+      "https://codeload.github.com/grpc/grpc/tar.gz/refs/tags/v1.60.0",
+      "https://github.com/grpc/grpc/archive/refs/tags/v1.60.0.tar.gz"
+    ]
+  },
+  "hnswlib": {
+    "archive": "v0.8.0.zip",
+    "sha256": "1ba55c1c4650964cc3b4f72133884b9a2cb2069439806d92e31db2922ce2482f",
+    "urls": [
+      "https://codeload.github.com/nmslib/hnswlib/zip/refs/tags/v0.8.0",
+      "https://github.com/nmslib/hnswlib/archive/refs/tags/v0.8.0.zip"
+    ]
+  },
+  "inja": {
+    "archive": "inja-master-2025-03-19.zip",
+    "sha256": "955b99adc6a722269e5342e98f194e941caaff683bcfe9338cf2682ee5fab6d1",
+    "urls": [
+      "https://codeload.github.com/pantor/inja/zip/34514c2658f809404b9a165591f242ee10250519",
+      "https://github.com/pantor/inja/archive/34514c2658f809404b9a165591f242ee10250519.zip"
+    ]
+  },
+  "jemalloc": {
+    "archive": "jemalloc-5.3.0.tar.gz",
+    "sha256": "ef6f74fd45e95ee4ef7f9e19ebe5b075ca6b7fbe0140612b2a161abafb7ee179",
+    "urls": [
+      "https://codeload.github.com/jemalloc/jemalloc/tar.gz/refs/tags/5.3.0",
+      "https://github.com/jemalloc/jemalloc/archive/refs/tags/5.3.0.tar.gz"
+    ]
+  },
+  "jwt-cpp": {
+    "archive": "jwt-cpp-v0.7.1.zip",
+    "sha256": "fe7edc6d1e79db296dfa2b3d5b80fbabf6dbcacd9ba1f09e7003e8994789d623",
+    "strip": 0,
+    "urls": [
+      "https://github.com/Thalhammer/jwt-cpp/releases/download/v0.7.1/jwt-cpp-v0.7.1.zip"
+    ]
+  },
+  "libcurl": {
+    "archive": "curl-7.87.0.tar.gz",
+    "sha256": "41cf1305f8f802616a27474ecf68135faeac38beccbe4e5f15a8c7e6f05a15a9",
+    "urls": [
+      "https://codeload.github.com/curl/curl/tar.gz/refs/tags/curl-7_87_0",
+      "https://github.com/curl/curl/archive/refs/tags/curl-7_87_0.tar.gz"
+    ]
+  },
+  "libdwarf": {
+    "archive": "libdwarf-0.9.0.tar.xz",
+    "sha256": "d3cad80a337276a7581bb90ebcddbd743484a99a959157c066dd30f7535db59b",
+    "urls": [
+      "https://download-mirror.savannah.nongnu.org/libdwarf/libdwarf-0.9.0.tar.xz",
+      "https://www.prevanders.net/libdwarf-0.9.0.tar.xz"
+    ]
+  },
+  "libev": {
+    "archive": "libev-4.33-6701966.zip",
+    "patches": [
+      "project/patches/libev-4.33.patch"
+    ],
+    "sha256": "b43dc3e14ba9b637b20e598a0f1bcd0781da45b04d0a472e73e6ba10cf8ee6b9",
+    "urls": [
+      "https://codeload.github.com/kindy/libev/zip/6701966dfd095a080ba0b7d77cf950168256b0d0"
+    ]
+  },
+  "libevent": {
+    "archive": "libevent-2.1.12-stable.tar.gz",
+    "sha256": "92e6de1be9ec176428fd2367677e61ceffc2ee1cb119035037a27d346b0403bb",
+    "urls": [
+      "https://github.com/libevent/libevent/releases/download/release-2.1.12-stable/libevent-2.1.12-stable.tar.gz"
+    ]
+  },
+  "libxml2": {
+    "archive": "libxml2-v2.13.4.tar.gz",
+    "sha256": "a8e3bb394654d5001b3afdec1666b656940c514088def4bcc6804c598c7fe0d0",
+    "urls": [
+      "https://codeload.github.com/GNOME/libxml2/tar.gz/refs/tags/v2.13.4",
+      "https://github.com/GNOME/libxml2/archive/refs/tags/v2.13.4.tar.gz"
+    ]
+  },
+  "limonp": {
+    "archive": "limonp-1.0.1.tar.gz",
+    "sha256": "c7b18794f020dbaa1006229b49a39217a463da0cb3586aee83eb7471f4ae71df",
+    "urls": [
+      "https://codeload.github.com/yanyiwu/limonp/tar.gz/refs/tags/v1.0.1",
+      "https://github.com/yanyiwu/limonp/archive/refs/tags/v1.0.1.tar.gz"
+    ]
+  },
+  "llvm": {
+    "archive": "llvm-project-15.0.7.src.tar.xz",
+    "sha256": "8b5fcb24b4128cf04df1b0b9410ce8b1a729cb3c544e6da885d234280dedeac6",
+    "urls": [
+      "https://github.com/llvm/llvm-project/releases/download/llvmorg-15.0.7/llvm-project-15.0.7.src.tar.xz"
+    ]
+  },
+  "lz4": {
+    "archive": "lz4-1.9.4.tar.gz",
+    "sha256": "0b0e3aa07c8c063ddf40b082bdf7e37a1562bda40a0ff5272957f3e987e0e54b",
+    "urls": [
+      "https://codeload.github.com/lz4/lz4/tar.gz/v1.9.4",
+      "https://github.com/lz4/lz4/archive/v1.9.4.tar.gz"
+    ]
+  },
+  "lzma": {
+    "archive": "lzma-5.4.0.tar.xz",
+    "sha256": "5f260e3b43f75cf43ca43d107dd18209f7d516782956a74ddd53288e02a83a31",
+    "urls": [
+      "https://github.com/tukaani-project/xz/releases/download/v5.4.0/xz-5.4.0.tar.xz",
+      "https://tukaani.org/xz/xz-5.4.0.tar.xz"
+    ]
+  },
+  "nlohmann-json": {
+    "archive": "nlohmann-json-develop-2025-03-29.tar.gz",
+    "sha256": "de3443618c408a86ebaa12322464c8a6d270f6c89e94a8c0f2198ab2dc22a9ba",
+    "urls": [
+      "https://codeload.github.com/nlohmann/json/zip/3a5703931ad70852b668a46cac34354d1b264442",
+      "https://github.com/nlohmann/json/archive/3a5703931ad70852b668a46cac34354d1b264442.zip"
+    ]
+  },
+  "openblas": {
+    "archive": "openblas-0.3.27.tar.gz",
+    "sha256": "aa2d68b1564fe2b13bc292672608e9cdeeeb6dc34995512e65c3b10f4599e897",
+    "urls": [
+      "https://codeload.github.com/OpenMathLib/OpenBLAS/tar.gz/refs/tags/v0.3.27",
+      "https://github.com/OpenMathLib/OpenBLAS/archive/refs/tags/v0.3.27.tar.gz"
+    ]
+  },
+  "opencensus-proto": {
+    "archive": "opencensus-proto-0.3.0.tar.gz",
+    "sha256": "b7e13f0b4259e80c3070b583c2f39e53153085a6918718b1c710caf7037572b0",
+    "urls": [
+      "https://storage.googleapis.com/grpc-bazel-mirror/github.com/census-instrumentation/opencensus-proto/archive/v0.3.0.tar.gz",
+      "https://codeload.github.com/census-instrumentation/opencensus-proto/tar.gz/refs/tags/v0.3.0"
+    ]
+  },
+  "openssl": {
+    "archive": "openssl-1.1.1s.tar.gz",
+    "sha256": "0dc03a5842801884e25211d81f9fa8d2fce5aad6a9e996eac0deb68994a80243",
+    "urls": [
+      "https://codeload.github.com/openssl/openssl/tar.gz/refs/tags/OpenSSL_1_1_1s",
+      "https://github.com/openssl/openssl/archive/refs/tags/OpenSSL_1_1_1s.tar.gz"
+    ]
+  },
+  "protobuf": {
+    "archive": "protobuf-25.1.tar.gz",
+    "sha256": "9bd87b8280ef720d3240514f884e56a712f2218f0d693b48050c836028940a42",
+    "urls": [
+      "https://github.com/protocolbuffers/protobuf/releases/download/v25.1/protobuf-25.1.tar.gz"
+    ]
+  },
+  "proxygen": {
+    "archive": "proxygen-2022-12-26.tar.gz",
+    "patches": [
+      "project/patches/proxygen-2022-12-26.patch"
+    ],
+    "sha256": "8b1bf541615c8cc2ab775d7397626a79480230fabba18d84fccbb111031bdf24",
+    "urls": [
+      "https://codeload.github.com/facebook/proxygen/tar.gz/refs/tags/v2022.12.26.00",
+      "https://github.com/facebook/proxygen/archive/refs/tags/v2022.12.26.00.tar.gz"
+    ]
+  },
+  "re2": {
+    "archive": "re2-2023-11-01.tar.gz",
+    "sha256": "4e6593ac3c71de1c0f322735bc8b0492a72f66ffccfad76e259fa21c41d27d8a",
+    "urls": [
+      "https://github.com/google/re2/releases/download/2023-11-01/re2-2023-11-01.tar.gz"
+    ]
+  },
+  "robin-hood-hashing": {
+    "archive": "robin-hood-hashing-3.11.5.tar.gz",
+    "sha256": "3693e44dda569e9a8b87ce8263f7477b23af448a3c3600c8ab9004fe79c20ad0",
+    "urls": [
+      "https://codeload.github.com/martinus/robin-hood-hashing/tar.gz/refs/tags/3.11.5",
+      "https://github.com/martinus/robin-hood-hashing/archive/refs/tags/3.11.5.tar.gz"
+    ]
+  },
+  "rocksdb": {
+    "archive": "rocksdb-7.8.3.tar.gz",
+    "patches": [
+      "project/patches/rocksdb-7.8.3.patch"
+    ],
+    "sha256": "b85408a374770897332bf15e51620a5f35720dd416a4749e3899057f9cfaf84d",
+    "urls": [
+      "https://codeload.github.com/facebook/rocksdb/tar.gz/refs/tags/v7.8.3",
+      "https://github.com/facebook/rocksdb/archive/refs/tags/v7.8.3.tar.gz"
+    ]
+  },
+  "s2geometry": {
+    "archive": "s2geometry-0.9.0.tar.gz",
+    "patches": [
+      "project/patches/s2geometry-0.9.0.patch"
+    ],
+    "sha256": "54c09b653f68929e8929bffa60ea568e26f3b4a51e1b1734f5c3c037f1d89062",
+    "urls": [
+      "https://codeload.github.com/google/s2geometry/tar.gz/v0.9.0",
+      "https://github.com/google/s2geometry/archive/v0.9.0.tar.gz"
+    ]
+  },
+  "simdjson": {
+    "archive": "simdjson-3.0.1.tar.gz",
+    "sha256": "156b1bc5eb0561b2bd166b46d191fd3d95a3e709cc63761477d3b7aec2b6e9ed",
+    "urls": [
+      "https://codeload.github.com/simdjson/simdjson/tar.gz/refs/tags/v3.0.1",
+      "https://github.com/simdjson/simdjson/archive/refs/tags/v3.0.1.tar.gz"
+    ]
+  },
+  "snappy": {
+    "archive": "snappy-1.1.9.tar.gz",
+    "patches": [
+      "project/patches/snappy-1.1.9.patch"
+    ],
+    "sha256": "75c1fbb3d618dd3a0483bff0e26d0a92b495bbe5059c8b4f1c962b478b6e06e7",
+    "urls": [
+      "https://codeload.github.com/google/snappy/tar.gz/refs/tags/1.1.9",
+      "https://github.com/google/snappy/archive/refs/tags/1.1.9.tar.gz"
+    ]
+  },
+  "sodium": {
+    "archive": "libsodium-1.0.18.tar.gz",
+    "sha256": "6f504490b342a4f8a4c4a02fc9b866cbef8622d5df4e5452b46be121e46636c1",
+    "urls": [
+      "https://download.libsodium.org/libsodium/releases/old/libsodium-1.0.18.tar.gz",
+      "https://download.libsodium.org/libsodium/releases/libsodium-1.0.18.tar.gz"
+    ]
+  },
+  "tomlplusplus": {
+    "archive": "tomlplusplus-master.zip",
+    "sha256": "f9232c4b41ef5659c48f82b7b2f81ec27ac07b9c5fc4c255fa1ac5cfab1c643b",
+    "urls": [
+      "https://codeload.github.com/marzer/tomlplusplus/zip/708fff700f36ab3c2ab107b984ec9f3b8be5f055",
+      "https://github.com/marzer/tomlplusplus/archive/708fff700f36ab3c2ab107b984ec9f3b8be5f055.zip"
+    ]
+  },
+  "utf8proc": {
+    "archive": "utf8proc-2.8.0.tar.gz",
+    "sha256": "a0a60a79fe6f6d54e7d411facbfcc867a6e198608f2cd992490e46f04b1bcecc",
+    "urls": [
+      "https://codeload.github.com/JuliaStrings/utf8proc/tar.gz/refs/tags/v2.8.0",
+      "https://github.com/JuliaStrings/utf8proc/archive/refs/tags/v2.8.0.tar.gz"
+    ]
+  },
+  "valijson": {
+    "archive": "valijson-1.0.4.tar.gz",
+    "sha256": "2890921a1cdceae2b065c2efaddca72fc2027ceedda92404e44276b01dfb2b7e",
+    "urls": [
+      "https://codeload.github.com/tristanpenman/valijson/tar.gz/refs/tags/v1.0.4",
+      "https://github.com/tristanpenman/valijson/archive/refs/tags/v1.0.4.tar.gz"
+    ]
+  },
+  "wangle": {
+    "archive": "wangle-2022-12-26.tar.gz",
+    "sha256": "c8fc72a05f5669a3d71805bc522242ca4bee966fd88f8e730f7501f8d1ecd960",
+    "urls": [
+      "https://codeload.github.com/facebook/wangle/tar.gz/refs/tags/v2022.12.26.00",
+      "https://github.com/facebook/wangle/archive/refs/tags/v2022.12.26.00.tar.gz"
+    ]
+  },
+  "xsimd": {
+    "archive": "xsimd-10.0.0.tar.gz",
+    "sha256": "73f818368b3a4dad92fab1b2933d93694241bd2365a6181747b2df1768f6afdd",
+    "urls": [
+      "https://codeload.github.com/xtensor-stack/xsimd/tar.gz/refs/tags/10.0.0",
+      "https://github.com/xtensor-stack/xsimd/archive/refs/tags/10.0.0.tar.gz"
+    ]
+  },
+  "yaml-cpp": {
+    "archive": "yaml-cpp-master.zip",
+    "sha256": "a0fe4a51bdc90bf6070e59434a4bcd59a7e55def747c8749ac0103d152bb8072",
+    "urls": [
+      "https://codeload.github.com/jbeder/yaml-cpp/zip/2f86d13775d119edbb69af52e5f566fd65c6953b",
+      "https://github.com/jbeder/yaml-cpp/archive/2f86d13775d119edbb69af52e5f566fd65c6953b.zip"
+    ]
+  },
+  "zlib": {
+    "archive": "zlib-1.2.13.tar.gz",
+    "sha256": "1525952a0a567581792613a9723333d7f8cc20b87a81f920fb8bc7e3f2251428",
+    "urls": [
+      "https://codeload.github.com/madler/zlib/tar.gz/refs/tags/v1.2.13",
+      "https://github.com/madler/zlib/archive/refs/tags/v1.2.13.tar.gz"
+    ]
+  },
+  "zstd": {
+    "archive": "zstd-1.5.2.tar.gz",
+    "sha256": "f7de13462f7a82c29ab865820149e778cbfe01087b3a55b5332707abf9db4a6e",
+    "urls": [
+      "https://codeload.github.com/facebook/zstd/tar.gz/refs/tags/v1.5.2",
+      "https://github.com/facebook/zstd/archive/refs/tags/v1.5.2.tar.gz"
+    ]
+  }
+}

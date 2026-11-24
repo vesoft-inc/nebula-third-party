@@ -79,32 +79,24 @@ notices with the SDK when distributing it. The package audits every Mach-O
 library and generator for architecture and relocatable loader paths. Archive
 metadata uses a fixed timestamp and sorted paths.
 
-In the Nebula Graph NG checkout, extract the SDK to any directory and point
-the `macos-arm64` preset at the extracted root:
+This base SDK includes the C++ generators and runtime dependencies for the
+four daemons, with local filesystem, IPC and CSV support in Arrow. Use it as
+the input for the full SDK build below.
 
-```sh
-export NEBULA_THIRDPARTY_ROOT=/path/to/vesoft-third-party-5.1-macos-arm64
-cmake --preset macos-arm64
-cmake --build build-macos-arm64 --target nebula-metad nebula-storaged nebula-graphd nebula-analyticd
-```
-
-This profile includes the C++ generators and runtime dependencies for the
-four daemons. Arrow provides local filesystem, IPC and CSV support. Gandiva,
-HDFS, S3, GCS, Parquet and ORC are outside this profile.
-
-### Test SDK
+### Full SDK
 
 The [v5.1 Release](https://github.com/vesoft-inc/nebula-third-party/releases/tag/v5.1)
-provides a prebuilt test SDK. It includes the daemon dependencies, DuckDB, and
-Arrow support for datasets, Parquet, ORC, HDFS, S3, and GCS. From the Nebula
-Graph NG checkout, run:
+provides a full SDK with the daemon dependencies, DuckDB, and Arrow support
+for datasets, Parquet, ORC, HDFS, S3, and GCS. Install it from the Nebula Graph
+NG checkout.
 
 ```sh
-third-party/install-third-party.sh --with-tests
+third-party/install-third-party.sh
 ```
 
 The installer verifies the SHA-256 checksum and installs the SDK under
-`build-macos-arm64-tests/third-party/install`.
+`build-macos-arm64/third-party/install`. The `macos-arm64` preset uses this
+SDK for both daemon and test builds.
 
 To rebuild and package this profile, run the following from the third-party
 checkout using the same host tools and network access to the source archives.

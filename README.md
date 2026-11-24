@@ -57,38 +57,13 @@
 ## macOS arm64 SDK for Nebula Graph NG
 
 Use Apple Silicon macOS 15 or newer, Xcode Command Line Tools, Python 3.11 or
-newer, CMake, Ninja, pkg-config, and Autoconf. The SDK targets macOS 15.0.
-The source lock records the exact dependency archives and patches used by this
-profile. Build tools installed on the host do not become SDK dependencies.
-
-```sh
-python3 macos/build.py --work-dir "$PWD/build/macos-arm64" --jobs 8
-python3 macos/package.py --work-dir "$PWD/build/macos-arm64" --output-dir "$PWD/build/packages"
-```
-
-Use a new work directory when changing recipes, toolchains, or SDK versions.
-Rerun the build in the same directory to resume after a failed command. Each
-dependency has a log in the work directory. The optional `--source-cache`
-argument to both commands points to a directory of the locked archives. For
-an offline rebuild, extract the sources package and use its `archives/`
-directory as the cache with `build.py --offline`.
-
-The output contains `vesoft-third-party-5.1-macos-arm64.tar.gz`, its matching
-sources archive, and SHA-256 files. Keep the sources archive and license
-notices with the SDK when distributing it. The package audits every Mach-O
-library and generator for architecture and relocatable loader paths. Archive
-metadata uses a fixed timestamp and sorted paths.
-
-This base SDK includes the C++ generators and runtime dependencies for the
-four daemons, with local filesystem, IPC and CSV support in Arrow. Use it as
-the input for the full SDK build below.
-
-### Full SDK
+newer, CMake, Ninja, pkg-config, and Autoconf to build the SDK. It targets
+macOS 15.0. The source locks record the dependency archives and patches.
 
 The [v5.1 Release](https://github.com/vesoft-inc/nebula-third-party/releases/tag/v5.1)
-provides a full SDK with the daemon dependencies, DuckDB, and Arrow support
-for datasets, Parquet, ORC, HDFS, S3, and GCS. Install it from the Nebula Graph
-NG checkout.
+provides `vesoft-third-party-5.1-macos-arm64.tar.gz` with the daemon dependencies,
+DuckDB, and Arrow support for datasets, Parquet, ORC, HDFS, S3, and GCS.
+Install it from the Nebula Graph NG checkout.
 
 ```sh
 third-party/install-third-party.sh
@@ -98,24 +73,28 @@ The installer verifies the SHA-256 checksum and installs the SDK under
 `build-macos-arm64/third-party/install`. The `macos-arm64` preset uses this
 SDK for both daemon and test builds.
 
-To rebuild and package this profile, run the following from the third-party
-checkout using the same host tools and network access to the source archives.
+To rebuild and package the SDK, run the following from the third-party
+checkout. The first command builds the base dependencies as a local
+intermediate. The second adds DuckDB 0.6.1 and builds Arrow 18.0.0 with the
+features needed by the connectors and tests.
 
 ```sh
+SDK_SOURCE_CACHE="$PWD/build/macos-arm64-archives"
+python3 macos/build.py --work-dir "$PWD/build/macos-arm64-base" \
+    --source-cache "$SDK_SOURCE_CACHE" --jobs 3
 python3 macos/build-test-sdk.py \
-    --sdk-root /path/to/installed/vesoft-third-party-5.1-macos-arm64 \
-    --work-dir "$PWD/build/macos-arm64-test-sdk" --jobs 3
-python3 macos/package.py --with-tests \
-    --work-dir "$PWD/build/macos-arm64-test-sdk" --output-dir "$PWD/build/packages"
+    --base-work-dir "$PWD/build/macos-arm64-base" \
+    --work-dir "$PWD/build/macos-arm64" --source-cache "$SDK_SOURCE_CACHE" --jobs 3
+python3 macos/package.py --work-dir "$PWD/build/macos-arm64" \
+    --source-cache "$SDK_SOURCE_CACHE" --output-dir "$PWD/build/packages"
 ```
 
-The build copies the daemon SDK and builds xsimd, DuckDB 0.6.1 and Arrow 18.0.0
-from the locked sources. Arrow's bundled dependencies use the versions and
-checksums recorded in its source. The release files are
-`vesoft-third-party-5.1-macos-arm64-tests.tar.gz`, a supplemental sources
-archive, and their SHA-256 files. The supplemental archive includes the
-test-specific recipes and source archives, including dependencies bundled by
-Arrow. The base SDK sources are available as a separate release asset.
+Reuse the work directories to resume a failed build. Use new directories when
+changing recipes, toolchains, or SDK versions. The output includes one binary
+archive, one sources archive and their SHA-256 files. The sources archive covers
+both build stages and includes the locked sources, patches, recipes, and Arrow's
+bundled dependencies. The binary archive includes license notices. The packager
+audits the Mach-O files and writes archives with a fixed timestamp and sorted paths.
 
 ## Build Requirements
 

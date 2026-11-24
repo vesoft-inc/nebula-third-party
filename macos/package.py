@@ -195,7 +195,7 @@ def stage(prefix, root, with_tests=False):
         test_lock = HERE / "test-sources.json"
         shutil.copyfile(test_lock, root / test_lock.name)
         profile = (
-            "Profile: Nebula NG test SDK\n"
+            "Profile: Nebula NG SDK\n"
             f"Test source lock SHA-256: {digest(test_lock)}\n"
         )
     (root / "version-info").write_text(
@@ -236,16 +236,12 @@ def archive(path, root_name, entries):
     print(path, flush=True)
 
 
-def source_entries(cache, with_tests):
+def source_entries(cache):
     lock = json.loads((HERE / "sources.json").read_text())
-    recipes = {".env", "README.md", "macos/build.py", "macos/package.py", "macos/sources.json"}
-    names = tuple(lock)
-    if with_tests:
-        lock.update(json.loads((HERE / "test-sources.json").read_text()))
-        recipes.update(("macos/build-test-sdk.py", "macos/test-sources.json"))
-        names = TEST_DEPENDENCIES
-    for name in names:
-        entry = lock[name]
+    lock.update(json.loads((HERE / "test-sources.json").read_text()))
+    recipes = {".env", "README.md", "macos/build.py", "macos/build-test-sdk.py",
+               "macos/package.py", "macos/sources.json", "macos/test-sources.json"}
+    for entry in lock.values():
         recipes.update(entry.get("patches", ()))
         source = (cache / entry["archive"]).resolve(strict=True)
         if digest(source) != entry["sha256"]:
@@ -271,36 +267,30 @@ def main():
     parser.add_argument("--work-dir", required=True, type=Path)
     parser.add_argument("--output-dir", required=True, type=Path)
     parser.add_argument("--source-cache", type=Path)
-    parser.add_argument("--with-tests", action="store_true",
-                        help="Package a work directory built by build-test-sdk.py.")
     args = parser.parse_args()
     work = args.work_dir.resolve()
     cache = args.source_cache.resolve() if args.source_cache else work / "archives"
     output = args.output_dir.resolve()
     output.mkdir(parents=True, exist_ok=True)
     root_name = f"vesoft-third-party-{package_version()}-macos-arm64"
-    bundled = []
-    if args.with_tests:
-        if not (work / "base-sdk").is_file() or not all(
-            (work / "done" / name).is_file() for name in TEST_DEPENDENCIES
-        ):
-            parser.error("--with-tests requires a completed build-test-sdk.py work directory.")
-        root_name += "-tests"
-        bundled = list(arrow_bundled_sources(work))
-        if not bundled:
-            parser.error("Expected Arrow's bundled dependencies in the test SDK build.")
-    sources = list(source_entries(cache, args.with_tests))
+    if not (work / "base-sdk").is_file() or not all(
+        (work / "done" / name).is_file() for name in TEST_DEPENDENCIES
+    ):
+        parser.error("--work-dir must contain a completed build-test-sdk.py build.")
+    bundled = list(arrow_bundled_sources(work))
+    if not bundled:
+        parser.error("Expected Arrow's bundled dependencies in the SDK build.")
+    sources = list(source_entries(cache))
     with tempfile.TemporaryDirectory(prefix="package-", dir=work) as staging:
         stage_root = Path(staging)
-        stage(work / "prefix", stage_root, args.with_tests)
-        if args.with_tests:
-            notices = stage_root / "share/licenses"
-            for name, source, download in bundled:
-                copy_notices(source, notices / "arrow/bundled" / name)
-                sources.append((f"arrow-bundled/{name}/{download.name}", download))
-            for source in sorted((work / "src/duckdb/third_party").iterdir()):
-                if source.is_dir():
-                    copy_notices(source, notices / "duckdb/bundled" / source.name)
+        stage(work / "prefix", stage_root, with_tests=True)
+        notices = stage_root / "share/licenses"
+        for name, source, download in bundled:
+            copy_notices(source, notices / "arrow/bundled" / name)
+            sources.append((f"arrow-bundled/{name}/{download.name}", download))
+        for source in sorted((work / "src/duckdb/third_party").iterdir()):
+            if source.is_dir():
+                copy_notices(source, notices / "duckdb/bundled" / source.name)
         archive(output / f"{root_name}.tar.gz", root_name,
                 ((str(item.relative_to(stage_root)), item) for item in stage_root.rglob("*")))
     archive(output / f"{root_name}-sources.tar.gz", f"{root_name}-sources", sources)

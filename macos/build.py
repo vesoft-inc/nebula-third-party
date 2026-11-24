@@ -95,11 +95,21 @@ CMAKE_OPTIONS = {
 }
 CMAKE_SUBDIRS = {"arrow": "cpp", "fizz": "fizz", "llvm": "openmp", "lz4": "build/cmake",
                  "wangle": "wangle", "zstd": "build/cmake"}
+TEST_DEPENDENCIES = ("xsimd", "duckdb", "arrow")
 
 
 def digest(path):
     with path.open("rb") as stream:
         return hashlib.file_digest(stream, "sha256").hexdigest()
+
+
+def copy_notices(source, destination):
+    for item in sorted(source.iterdir()):
+        if item.is_file() and item.name.upper().startswith(
+            ("LICENSE", "LICENCE", "COPYING", "NOTICE", "COPYRIGHT", "AUTHORS", "PATENTS")
+        ):
+            destination.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(item, destination / item.name)
 
 
 class Build:
@@ -311,12 +321,7 @@ class Build:
 
     def install_notices(self, name, source):
         dest = self.prefix / "share/licenses" / name
-        for item in sorted(source.iterdir()):
-            if item.is_file() and item.name.upper().startswith(
-                ("LICENSE", "COPYING", "NOTICE", "COPYRIGHT", "AUTHORS", "PATENTS")
-            ):
-                dest.mkdir(parents=True, exist_ok=True)
-                shutil.copyfile(item, dest / item.name)
+        copy_notices(source, dest)
         if name == "libev":
             dest.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(source / "src/LICENSE", dest / "LICENSE")

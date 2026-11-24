@@ -15,7 +15,7 @@ import subprocess
 import tarfile
 import tempfile
 
-from build import DEPLOYMENT_TARGET, EPOCH, HERE, REPO, digest
+from build import DEPLOYMENT_TARGET, EPOCH, HERE, REPO, TEST_DEPENDENCIES, copy_notices, digest
 
 
 TOOLS = ("bison", "flex", "gperf", "protoc", "grpc_cpp_plugin")
@@ -139,7 +139,7 @@ def verify_pkg_config(root):
                 raise RuntimeError(f"pkg-config references an unpackaged library: {flag}")
 
 
-def stage(prefix, root):
+def stage(prefix, root, with_tests=False):
     shutil.copytree(prefix / "include", root / "include", symlinks=True)
     for name in ("bison", "licenses"):
         shutil.copytree(prefix / "share" / name, root / "share" / name, symlinks=True)
@@ -163,7 +163,8 @@ def stage(prefix, root):
 
     for name in TOOLS:
         tool = root / "bin" / (f"{name}.real" if name == "bison" else name)
-        shutil.copyfile(prefix / "bin" / name, tool)
+        source = tool.name if with_tests else name
+        shutil.copyfile(prefix / "bin" / source, tool)
         tool.chmod(0o755)
     bison = root / "bin/bison"
     bison.write_text(
@@ -189,6 +190,14 @@ def stage(prefix, root):
 
     lock = HERE / "sources.json"
     shutil.copyfile(lock, root / "sources.json")
+    profile = "Profile: Nebula NG daemon SDK (Arrow filesystem, IPC and CSV)\n"
+    if with_tests:
+        test_lock = HERE / "test-sources.json"
+        shutil.copyfile(test_lock, root / test_lock.name)
+        profile = (
+            "Profile: Nebula NG test SDK\n"
+            f"Test source lock SHA-256: {digest(test_lock)}\n"
+        )
     (root / "version-info").write_text(
         f"Package: Nebula Third Party\nVersion: {package_version()}\n"
         f"Platform: macOS arm64\nDeployment target: {DEPLOYMENT_TARGET}\n"
@@ -196,7 +205,7 @@ def stage(prefix, root):
         f"Source lock SHA-256: {digest(lock)}\n"
         f"Compiler: {capture('/usr/bin/clang', '--version').splitlines()[0]}\n"
         f"SDK: {capture('xcrun', '--sdk', 'macosx', '--show-sdk-version').strip()}\n"
-        "Profile: Nebula NG daemon SDK (Arrow filesystem, IPC and CSV)\n"
+        f"{profile}"
     )
 
 
@@ -227,10 +236,16 @@ def archive(path, root_name, entries):
     print(path, flush=True)
 
 
-def source_entries(cache):
+def source_entries(cache, with_tests):
     lock = json.loads((HERE / "sources.json").read_text())
     recipes = {".env", "README.md", "macos/build.py", "macos/package.py", "macos/sources.json"}
-    for entry in lock.values():
+    names = tuple(lock)
+    if with_tests:
+        lock.update(json.loads((HERE / "test-sources.json").read_text()))
+        recipes.update(("macos/build-test-sdk.py", "macos/test-sources.json"))
+        names = TEST_DEPENDENCIES
+    for name in names:
+        entry = lock[name]
         recipes.update(entry.get("patches", ()))
         source = (cache / entry["archive"]).resolve(strict=True)
         if digest(source) != entry["sha256"]:
@@ -240,23 +255,55 @@ def source_entries(cache):
         yield recipe, REPO / recipe
 
 
+def arrow_bundled_sources(work):
+    # ExternalProject keeps the source tarball and extracted tree beside its build stamps.
+    for stamp in sorted((work / "build/arrow").rglob("*_ep-stamp")):
+        project = stamp.name.removesuffix("-stamp")
+        source = stamp.with_name(project)
+        downloads = sorted(stamp.parent.glob("*.tar.gz"))
+        if not (stamp / f"{project}-done").is_file() or len(downloads) != 1:
+            raise RuntimeError(f"Incomplete Arrow dependency build: {project}")
+        yield project.removesuffix("_ep"), source, downloads[0]
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--work-dir", required=True, type=Path)
     parser.add_argument("--output-dir", required=True, type=Path)
     parser.add_argument("--source-cache", type=Path)
+    parser.add_argument("--with-tests", action="store_true",
+                        help="Package a work directory built by build-test-sdk.py.")
     args = parser.parse_args()
     work = args.work_dir.resolve()
     cache = args.source_cache.resolve() if args.source_cache else work / "archives"
     output = args.output_dir.resolve()
     output.mkdir(parents=True, exist_ok=True)
     root_name = f"vesoft-third-party-{package_version()}-macos-arm64"
+    bundled = []
+    if args.with_tests:
+        if not (work / "base-sdk").is_file() or not all(
+            (work / "done" / name).is_file() for name in TEST_DEPENDENCIES
+        ):
+            parser.error("--with-tests requires a completed build-test-sdk.py work directory.")
+        root_name += "-tests"
+        bundled = list(arrow_bundled_sources(work))
+        if not bundled:
+            parser.error("Expected Arrow's bundled dependencies in the test SDK build.")
+    sources = list(source_entries(cache, args.with_tests))
     with tempfile.TemporaryDirectory(prefix="package-", dir=work) as staging:
         stage_root = Path(staging)
-        stage(work / "prefix", stage_root)
+        stage(work / "prefix", stage_root, args.with_tests)
+        if args.with_tests:
+            notices = stage_root / "share/licenses"
+            for name, source, download in bundled:
+                copy_notices(source, notices / "arrow/bundled" / name)
+                sources.append((f"arrow-bundled/{name}/{download.name}", download))
+            for source in sorted((work / "src/duckdb/third_party").iterdir()):
+                if source.is_dir():
+                    copy_notices(source, notices / "duckdb/bundled" / source.name)
         archive(output / f"{root_name}.tar.gz", root_name,
                 ((str(item.relative_to(stage_root)), item) for item in stage_root.rglob("*")))
-    archive(output / f"{root_name}-sources.tar.gz", f"{root_name}-sources", source_entries(cache))
+    archive(output / f"{root_name}-sources.tar.gz", f"{root_name}-sources", sources)
 
 
 if __name__ == "__main__":

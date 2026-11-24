@@ -10,7 +10,7 @@ import platform
 import shutil
 import sys
 
-from build import Build, HERE, digest
+from build import Build, HERE, TEST_DEPENDENCIES, digest
 
 
 class TestSdk(Build):
@@ -72,7 +72,7 @@ def main():
     else:
         shutil.copytree(sdk_root, build.prefix, symlinks=True, dirs_exist_ok=True)
         base_marker.write_text(f"{sdk_root}\n")
-    build.build(("xsimd", "duckdb", "arrow"))
+    build.build(TEST_DEPENDENCIES)
     print(f"NEBULA_THIRDPARTY_ROOT={build.prefix}")
 
 

@@ -92,24 +92,38 @@ This profile includes the C++ generators and runtime dependencies for the
 four daemons. Arrow provides local filesystem, IPC and CSV support. Gandiva,
 HDFS, S3, GCS, Parquet and ORC are outside this profile.
 
-### Local test dependencies
+### Test SDK
 
-To build Nebula NG's unit tests and TCK, add DuckDB and the Arrow dataset,
-columnar format and cloud filesystem libraries to a separate copy of the
-daemon SDK. Run this from the third-party checkout on Apple Silicon, with the
-same host tools and network access to the source archives.
+The [v5.1 Release](https://github.com/vesoft-inc/nebula-third-party/releases/tag/v5.1)
+provides a prebuilt test SDK. It includes the daemon dependencies, DuckDB, and
+Arrow support for datasets, Parquet, ORC, HDFS, S3, and GCS. From the Nebula
+Graph NG checkout, run:
+
+```sh
+third-party/install-third-party.sh --with-tests
+```
+
+The installer verifies the SHA-256 checksum and installs the SDK under
+`build-macos-arm64-tests/third-party/install`.
+
+To rebuild and package this profile, run the following from the third-party
+checkout using the same host tools and network access to the source archives.
 
 ```sh
 python3 macos/build-test-sdk.py \
     --sdk-root /path/to/installed/vesoft-third-party-5.1-macos-arm64 \
     --work-dir "$PWD/build/macos-arm64-test-sdk" --jobs 3
+python3 macos/package.py --with-tests \
+    --work-dir "$PWD/build/macos-arm64-test-sdk" --output-dir "$PWD/build/packages"
 ```
 
-Use the printed `NEBULA_THIRDPARTY_ROOT` when configuring Nebula NG. The
-command copies the base SDK and then builds xsimd, DuckDB 0.6.1 and Arrow
-18.0.0 from the locked sources. Arrow's bundled dependencies use the versions
-and checksums recorded in its source. The work directory contains per-library
-build logs and can be reused to resume the same build.
+The build copies the daemon SDK and builds xsimd, DuckDB 0.6.1 and Arrow 18.0.0
+from the locked sources. Arrow's bundled dependencies use the versions and
+checksums recorded in its source. The release files are
+`vesoft-third-party-5.1-macos-arm64-tests.tar.gz`, a supplemental sources
+archive, and their SHA-256 files. The supplemental archive includes the
+test-specific recipes and source archives, including dependencies bundled by
+Arrow. The base SDK sources are available as a separate release asset.
 
 ## Build Requirements
 
